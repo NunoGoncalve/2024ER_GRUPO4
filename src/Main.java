@@ -8,6 +8,7 @@ public class Main {
         Livros livros=new Livros();
         livros.ler_livros();
         do {
+            System.out.println("- Livros -");
             System.out.println("1 - Listar");
             System.out.println("2 - Adicionar");
             System.out.println("3 - Pesquisar");
@@ -32,10 +33,11 @@ public class Main {
                     break;
 
                 case 5:
-                    /**/
+                    livros.eliminar_livro();
                     break;
 
                 case 6:
+                    System.out.println("A sair do menu livro...");
                     break;
                 default:
                     System.out.println("Opção incorreta! Tente novamente");

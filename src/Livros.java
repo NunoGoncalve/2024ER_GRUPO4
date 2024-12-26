@@ -34,7 +34,6 @@ public class Livros {
 
     /** Verifica se o ficheiro está vazio, se não estiver procura o ISBN no array e imprime o livro correspondente */
     public void mostra_livro(){
-
         if(this.livros.isEmpty()){
             System.out.println("Ficheiro vazio! Adicione um livro");
         }else{
@@ -48,6 +47,20 @@ public class Livros {
                 }
             }
             System.out.println("--------------- Fim ---------------");
+        }
+    }
+
+    /** Verifica se o ficheiro está vazio, se não estiver procura o ISBN no array elimina-o, e chama a função reescrever_livros */
+    public void eliminar_livro(){
+        if(this.livros.isEmpty()){
+            System.out.println("Ficheiro vazio! Adicione um livro");
+        }else{
+            Scanner ler = new Scanner(System.in);
+            System.out.print("Insira o ISBN do livro: ");
+            String isbn = ler.nextLine();
+            if(this.livros.removeIf(liv -> liv.getISBN().equals(isbn))) System.out.println("O livro foi removido com sucesso!");
+            else System.out.println("Livro não encontrado!");
+            reescrever_livros();
         }
     }
 
@@ -67,6 +80,19 @@ public class Livros {
                 writer.close();
             }
 
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void reescrever_livros(){
+        try {
+            FileWriter writer = new FileWriter("livros.txt");
+            for (Livro livro : this.livros) {
+                if(this.livros.getFirst()==livro) writer.write(livro.get_livrof());
+                else writer.write("\n"+livro.get_livrof());
+            }
+            writer.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
