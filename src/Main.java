@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static void menu_livros(){
+    public static void menuLivros(){
         int op;
         Scanner ler = new Scanner(System.in);
         Livros livros=new Livros();
@@ -26,7 +26,7 @@ public class Main {
                     break;
 
                 case 3:
-                    livros.pesquisaLivro();
+                    livros.listaLivro();
                     break;
                 case 4:
                     livros.atualizarLivro();
@@ -38,6 +38,7 @@ public class Main {
 
                 case 6:
                     livros.guardarLivros();
+                    livros.limparLivros();
                     System.out.println("A sair do menu livro...");
                     break;
                 default:
@@ -61,7 +62,7 @@ public class Main {
             op=ler.nextInt();
             switch(op){
                 case 1:
-                    menu_livros();
+                    menuLivros();
                     break;
 
                 case 2:

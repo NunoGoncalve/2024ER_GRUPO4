@@ -4,12 +4,12 @@ import java.util.Scanner;
 
 /** Class livros guarda um array de livros */
 public class Livros {
-    ArrayList<Livro> livros = new ArrayList<>();
+    private ArrayList<Livro> livros = new ArrayList<>();
 
     /** Chama a função ler_ficheiro e guarda as linhas lidas num array e envia-as para a função setLivros*/
     public void ler_livros() {
         int n_linhas = contLinhas();
-        if(n_linhas!=0)  setLivros(lerFicheiro(n_linhas));
+        if(n_linhas!=0) setLivros(lerFicheiro(n_linhas));
     }
 
     /** Cria um livro adiciona-o ao array livros e chama a função write_livro*/
@@ -25,7 +25,7 @@ public class Livros {
         }else {
             for (Livro liv : this.livros) {
                 System.out.println("--------------- Livro ---------------");
-                System.out.println(liv.getLivro());
+                System.out.println(liv.formataLivroE());
             }
             System.out.println("--------------- Fim ---------------");
         }
@@ -47,22 +47,28 @@ public class Livros {
         op = ler.nextInt();
         switch (op){
             case 1:
-                liv.setTitulo();
+                System.out.print("Insira o titulo do livro: ");
+                liv.setTitulo(ler.nextLine());
                 break;
             case 2:
-                liv.setEditora();
+                System.out.print("Insira a editora do livro: ");
+                liv.setEditora(ler.nextLine());
                 break;
             case 3:
-                liv.setAutor();
+                System.out.print("Insira o(s) autor(es) do livro: ");
+                liv.setAutor(ler.nextLine());
                 break;
             case 4:
-                liv.setCategoria();
+                System.out.print("Insira a categoria do livro: ");
+                liv.setCategoria(ler.nextLine());
                 break;
             case 5:
-                liv.setISBN();
+                System.out.print("Insira o ISBN do livro: ");
+                liv.setISBN(ler.nextLine());
                 break;
             case 6:
-                liv.setAno_edicao();
+                System.out.print("Insira o ano de edição do livro: ");
+                liv.setAno_edicao(ler.nextInt());
                 break;
             case 7:
                 this.livros.set(this.livros.indexOf(liv),liv.criarLivro());
@@ -76,35 +82,36 @@ public class Livros {
         }
     }
 
+    private String pedeIsbn(){
+        Scanner ler = new Scanner(System.in);
+        System.out.print("Insira o ISBN do livro: ");
+        return ler.nextLine();
+    }
+
     /** Verifica se o livro retornado tem valores, caso tenha chama o menu atualizar*/
     public void atualizarLivro(){
-        Livro liv = procuraLivro();
+        Livro liv = procuraLivro(pedeIsbn());
         if(liv.getAno_edicao()!=-1) menuAtualizar(liv);
     }
 
     /** Verifica se o livro retornado tem valores, caso tenha imprime-o no ecrã */
-    public void pesquisaLivro(){
-        Livro liv = procuraLivro();
+    public void listaLivro(){
+        Livro liv = procuraLivro(pedeIsbn());
         if(liv.getAno_edicao()!=-1){
             System.out.println("--------------- Livro ---------------");
-            System.out.println(liv.getLivro());
+            System.out.println(liv.formataLivroE());
             System.out.println("--------------- Fim ---------------");
         }
     }
 
     /** Procura o livro no array, caso não encontre retorna um livro vazio, caso encontre retorna o livro que encontrou*/
-    private Livro procuraLivro(){
+    public Livro procuraLivro(String isbn){
         Livro liv_flag = new Livro(-1);
         if(this.livros.isEmpty()){
             System.out.println("Ficheiro vazio! Adicione um livro");
         }else{
-            Scanner ler = new Scanner(System.in);
-            System.out.print("Insira o ISBN do livro: ");
-            String isbn = ler.nextLine();
             for (Livro liv : this.livros) {
-                if(liv.getISBN().equals(isbn)) {
-                    return liv;
-                }
+                if(liv.getISBN().equals(isbn)) return liv;
             }
             System.out.println("ISBN não encontrado! Tente novamente!");
         }
@@ -116,9 +123,7 @@ public class Livros {
         if(this.livros.isEmpty()){
             System.out.println("Ficheiro vazio! Adicione um livro");
         }else{
-            Scanner ler = new Scanner(System.in);
-            System.out.print("Insira o ISBN do livro: ");
-            String isbn = ler.nextLine();
+            String isbn = pedeIsbn();
             if(this.livros.removeIf(liv -> liv.getISBN().equals(isbn))) System.out.println("O livro foi removido com sucesso!");
             else System.out.println("Livro não encontrado!");
         }
@@ -129,8 +134,8 @@ public class Livros {
         try {
             FileWriter writer = new FileWriter("livros.txt");
             for (Livro livro : this.livros) {
-                if(this.livros.getFirst()==livro) writer.write(livro.getLivrof());
-                else writer.write("\n"+livro.getLivrof());
+                if(this.livros.getFirst()==livro) writer.write(livro.formataLivroF());
+                else writer.write("\n"+livro.formataLivroF());
             }
             writer.close();
         } catch (IOException e) {
@@ -138,7 +143,11 @@ public class Livros {
         }
     }
 
-    /** Verifica se o ficheiro está vazio, se não estiver lê as linhas do ficheiro e guarda-as num array */
+    public void limparLivros(){
+        this.livros.clear();
+    }
+
+    /** Lê as linhas do ficheiro e guarda-as num array */
     private String[] lerFicheiro(int n_linhas){
         int i=0;
         String[] livros = new String[n_linhas];

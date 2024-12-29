@@ -61,12 +61,12 @@ public class Livro {
     }
 
     /** Retorna uma string apropriada à visualização*/
-    public String getLivro(){
+    public String formataLivroE(){
         return "Titulo: "+this.titulo+"\nEditora: "+this.editora+"\nAutor: "+this.autor+"\nCategoria: "+this.categoria+"\nISBN: "+this.ISBN+"\nAno de edição: "+this.ano_edicao;
     }
 
     /** Retorna uma string apropriada à escrita no ficheiro*/
-    public String getLivrof(){
+    public String formataLivroF(){
         return titulo+"|"+editora+"|"+autor+"|"+categoria+"|"+ISBN+"|"+ano_edicao+";";
     }
 
@@ -78,39 +78,28 @@ public class Livro {
         return ano_edicao;
     }
 
-    public void setTitulo() {
-        Scanner ler = new Scanner(System.in);
-        System.out.print("Insira o titulo do livro: ");
-        this.titulo = ler.nextLine();
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
 
-    public void setEditora() {
-        Scanner ler = new Scanner(System.in);
-        System.out.print("Insira a editora do livro: ");
-        this.editora = ler.nextLine();
+    public void setEditora(String editora) {
+        this.editora = editora;
     }
 
-    public void setAutor() {
-        Scanner ler = new Scanner(System.in);
-        System.out.print("Insira o(s) autor(es) do livro: ");
-        this.autor = ler.nextLine();
+    public void setAutor(String autor) {
+
+        this.autor = autor;
     }
 
-    public void setISBN() {
-        Scanner ler = new Scanner(System.in);
-        System.out.print("Insira o ISBN do livro: ");
-        this.ISBN = ler.nextLine();
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
     }
 
-    public void setCategoria() {
-        Scanner ler = new Scanner(System.in);
-        System.out.print("Insira a categoria do livro: ");
-        this.categoria = ler.nextLine();
+    public void setISBN(String ISBN) {
+        this.ISBN = ISBN;
     }
 
-    public void setAno_edicao() {
-        Scanner ler = new Scanner(System.in);
-        System.out.print("Insira o ano de edição do livro: ");
-        this.ano_edicao = ler.nextInt();
+    public void setAno_edicao(int ano_edicao) {
+        this.ano_edicao = ano_edicao;
     }
 }
