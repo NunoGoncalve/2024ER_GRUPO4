@@ -36,7 +36,7 @@ public class Main {
                     break;
 
                 case 5:
-                  //  uts.eliminarUtente();
+                    uts.eliminarUtente();
                     break;
 
                 case 6:

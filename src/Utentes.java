@@ -9,6 +9,7 @@ public class Utentes {
        Utente ut = new Utente();
        this.uts.add(ut.criarUtente());
        System.out.println("Utente adicionado com sucesso!");
+       System.out.println("--------------- Fim ---------------");
    }
 
    public void listarUtentes(){
@@ -18,6 +19,19 @@ public class Utentes {
        }
        System.out.println("--------------- Fim ---------------");
    }
+    public void eliminarUtente(){
+        int Nif;
+        Scanner ler = new Scanner(System.in);
+        System.out.println("Insira o NIF do Utente");
+        Nif = ler.nextInt();
+        if (this.uts.removeIf(ute -> ute.getNif() == Nif)){
+            System.out.println("Utente eliminado com sucesso!");
+        }
+        else System.out.println("Utente não encontrado! Verifique o NIF introduzido");
+        System.out.println("A retornar ao Menu...");
+        System.out.println("--------------- Fim ---------------");
+   }
+
 
    public void atualizarUtente(){
        int NIF, escolha;
