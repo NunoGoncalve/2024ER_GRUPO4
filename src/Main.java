@@ -7,7 +7,7 @@ public class Main {
         Utentes uts = new Utentes();
         do {
 
-            System.out.println("Bem vindo a Utente");
+            System.out.println("--------------- Bem vindo à secção Utente ---------------");
             System.out.println("1) Listar");
             System.out.println("2) Adicionar");
             System.out.println("3) Pesquisar");
@@ -40,7 +40,7 @@ public class Main {
                     break;
 
                 case 6:
-                    System.out.println("A sair do menu Utente....");
+                    System.out.println("A sair do menu Utente....\n");
                     break;
                 default:
                     System.out.println("ERRO!!  Escolha uma das opções");
