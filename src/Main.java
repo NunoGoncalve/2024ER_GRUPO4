@@ -28,7 +28,7 @@ public class Main {
                     break;
 
                 case 3:
-                    //  uts.pesquisarUtente();
+                    uts.pesquisarUtente();
                     break;
 
                 case 4:

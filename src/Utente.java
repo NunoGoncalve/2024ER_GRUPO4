@@ -13,7 +13,7 @@ public class Utente {
             Scanner ler = new Scanner(System.in);
             System.out.println("Nome: ");
             this.nome = ler.nextLine();
-            System.out.println("Genero: ");
+            System.out.println("Género: ");
             this.genero = ler.nextLine();
             System.out.println("NIF: ");
             this.Nif = ler.nextInt();
@@ -27,22 +27,15 @@ public class Utente {
         // Metodo
         public void eliminarUtente(){
             System.out.println("Insira o NIF:  " + Nif);
-
-            //motor de busca com for até achar o nif
-            // eleminar nif
         }
         // Metodo
         public void atualizarUtente(){
             System.out.println("Insira o NIF:  " + Nif);
-            // Sistema de atualização com vetores e armazenamento em ficheiros ".txt"
         }
         // Metodo
         public void listarUtentes(){
             System.out.println("NIF´s Registrados:  ");
-            //criar lista com outra classe UTENTES
         }
-
-
 
         // Para a função MOSTRAR
         public String getUtente() {
@@ -75,7 +68,6 @@ public class Utente {
             System.out.println("Insira o cotacto do Utente");
             this.contacto = ler.nextInt();
         }
-
         public int getNif(){
             return this.Nif;
         }

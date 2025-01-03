@@ -25,19 +25,39 @@ public class Utentes {
         System.out.println("Insira o NIF do Utente");
         Nif = ler.nextInt();
         if (this.uts.removeIf(ute -> ute.getNif() == Nif)){
-            System.out.println("Utente eliminado com sucesso!");
-        }
+        System.out.println("Utente eliminado com sucesso!");}
         else System.out.println("Utente não encontrado! Verifique o NIF introduzido");
         System.out.println("A retornar ao Menu...");
         System.out.println("--------------- Fim ---------------");
    }
+    public void pesquisarUtente(){
+        int Nif;
+        Scanner ler = new Scanner(System.in);
+        System.out.println("Insira o NIF do Utente");
+        Nif = ler.nextInt();
 
+        boolean encontrado= false;
+
+        for(Utente ut: this.uts) { //definição do ut
+            if (ut.getNif() == Nif) {
+                System.out.println("--------------- Utente encontrado com sucesso! ---------------");
+                System.out.println(ut.getUtente());
+                encontrado = true;
+            }
+        }
+        if (!encontrado){  // Só será alterado para satisfazer a condição de true se não achar no loop for.
+            System.out.println("--------------- Utente não encontrado! ---------------");
+            System.out.println("Por favor verifique o NIF introduzido");
+            System.out.println("A retornar ao Menu...");}
+
+        System.out.println("--------------- Fim ---------------");
+    }
 
    public void atualizarUtente(){
-       int NIF, escolha;
+       int Nif, escolha;
        Scanner ler = new Scanner(System.in);
        System.out.println("Insira o NIF do Utente");
-       NIF = ler.nextInt();
+       Nif = ler.nextInt();
        do {
            System.out.println("--------------- Atualizar Utente ---------------");
            System.out.println("1) Nome");
@@ -49,8 +69,8 @@ public class Utentes {
            System.out.println("Selecione uma opção");
            escolha = ler.nextInt();
 
-           for(Utente ut: this.uts) {
-               if (ut.getNif() == NIF) {
+           for(Utente ut: this.uts) { //definição do ut
+               if (ut.getNif() == Nif) {
                    switch (escolha) {
                        case 1:
                            ut.setNome();
