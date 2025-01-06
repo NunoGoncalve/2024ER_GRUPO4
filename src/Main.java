@@ -5,7 +5,7 @@ import java.util.Calendar;
 
 public class Main {
 
-    // Instância da classe Reservas para manipulação de reservas
+    // Criando uma instância de Reservas
     static Reservas reservas = new Reservas();
 
     public static void menuReserva() {
@@ -25,8 +25,8 @@ public class Main {
                 // Adicionar reserva
                 System.out.print("Digite o número da reserva: ");
                 int numeroReserva = ler.nextInt();
-                System.out.print("Digite o nome do utente: ");
-                String nomeUtente = ler.next();
+                System.out.print("Digite o nome do utente (NIF): ");
+                String nifUtente = ler.next();
 
                 // Data de registo será a data atual
                 Date dataRegisto = new Date();
@@ -52,7 +52,7 @@ public class Main {
                     System.out.println("A data de devolução será: " + sdf.format(dataDevolucao));
 
                     // Criar a reserva com a data de devolução
-                    Reserva reserva = new Reserva(numeroReserva, dataRegisto, dataInicio, nomeUtente);
+                    Reserva reserva = new Reserva(numeroReserva, dataRegisto, dataInicio, nifUtente);
                     reservas.adicionarReserva(reserva);
                 }
                 break;
@@ -63,8 +63,10 @@ public class Main {
                 reservas.removerReserva(numeroRemover);
                 break;
             case 3:
-                // Exibir todas as reservas
-                reservas.exibirReservas();
+                // Exibir reservas - Solicitar NIF do utente
+                System.out.print("Digite o NIF do utente para exibir suas reservas: ");
+                String nifParaExibir = ler.next();
+                reservas.exibirReservasPorNIF(nifParaExibir); // Exibe as reservas com base no NIF
                 break;
             case 4:
                 // Pesquisar reservas por intervalo de datas
@@ -75,7 +77,7 @@ public class Main {
                 try {
                     Date inicioData = sdf.parse(inicioPesquisa);
                     Date fimData = sdf.parse(fimPesquisa);
-                    reservas.pesquisarReservasPorData(inicioData, fimData);
+                    reservas.pesquisarReservasPorData(inicioData, fimData); // Pesquisar dentro do intervalo
                 } catch (Exception e) {
                     System.out.println("Formato de data inválido.");
                 }

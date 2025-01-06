@@ -18,14 +18,25 @@ public class Reservas {
 
     // Pesquisar reservas por intervalo de datas
     public void pesquisarReservasPorData(Date dataInicio, Date dataFim) {
+        boolean encontrouReserva = false;
+
+        // Percorrer todas as reservas e verificar se a data de início ou data de fim está dentro do intervalo fornecido
         for (Reserva reserva : reservas) {
-            if (!reserva.getDataInicio().before(dataInicio) && !reserva.getDataFim().after(dataFim)) {
+            // Verificar se a reserva tem dataInicio ou dataFim dentro do intervalo fornecido
+            if ((reserva.getDataInicio().after(dataInicio) || reserva.getDataInicio().equals(dataInicio)) &&
+                    (reserva.getDataInicio().before(dataFim) || reserva.getDataInicio().equals(dataFim)) ||
+                    (reserva.getDataFim().after(dataInicio) && reserva.getDataFim().before(dataFim))) {
                 reserva.exibirDetalhes();
+                encontrouReserva = true;
             }
+        }
+
+        if (!encontrouReserva) {
+            System.out.println("Não há reservas no intervalo de datas fornecido.");
         }
     }
 
-    // Exibir reservas para um utente específico, com base no NIF
+    // Exibir todas as reservas de um determinado utente, com base no NIF
     public void exibirReservasPorNIF(String nifUtente) {
         boolean encontrouReserva = false;
 
