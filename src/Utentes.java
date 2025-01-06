@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -120,8 +121,61 @@ public class Utentes {
 
            }
        }
-
-
-
    }
+
+    private int contLinhas(){
+        int i=0;
+        File myfile = new File("utentes.txt");
+        try {
+            if (myfile.createNewFile()) return i;
+            else {
+                try (BufferedReader reader = new BufferedReader(new FileReader("utentes.txt"))) {
+                    while (reader.readLine() != null) i++;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return i;
+    }
+
+    private void setUts(String[] utentes) {
+        for (String s : utentes) {
+            Livro livro = new Livro(s);
+            this.uts.add(utente);
+        }
+    }
+
+    private String[] lerUtente(int n_linhas){
+        int i=0;
+        String[] livros = new String[n_linhas];
+
+        File myfile = new File("utentes.txt");
+        try {
+            Scanner myReader = new Scanner(myfile);
+            while (myReader.hasNextLine()) {
+                livros[i] = myReader.nextLine();
+                i++;
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return uts;
+    }
+
+    public void guardarUtentes(){
+        try {
+            FileWriter writer = new FileWriter("livros.txt");
+            for (Utente utente : this.uts) {
+                if(this.uts.getFirst()== Utente) writer.write(Utente.formataUtenteF());
+                else writer.write("\n"+ Utente.formataUtenteF());
+            }
+            writer.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
