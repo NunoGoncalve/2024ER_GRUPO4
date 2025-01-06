@@ -5,19 +5,19 @@ import java.util.Calendar;
 
 public class Main {
 
-    // Criando uma instância de Reservas
-    static Reservas reservas = new Reservas();
+    static Reservas reservas = new Reservas(); // Lista global de reservas
 
     public static void menuReserva() {
         Scanner ler = new Scanner(System.in);
         int op;
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy"); // Inicializando o SimpleDateFormat
-        // Menu de Reservas
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
         System.out.println("1 - Adicionar Reserva");
         System.out.println("2 - Remover Reserva");
-        System.out.println("3 - Exibir Reservas");
+        System.out.println("3 - Exibir Reservas por Utente");
         System.out.println("4 - Pesquisar Reservas por Data");
-        System.out.print("Escolha uma opção de reserva: ");
+        System.out.println("5 - Exibir Todas as Reservas (Anônimo)");
+        System.out.print("Escolha uma opção: ");
         int opcaoReserva = ler.nextInt();
 
         switch (opcaoReserva) {
@@ -25,66 +25,72 @@ public class Main {
                 // Adicionar reserva
                 System.out.print("Digite o número da reserva: ");
                 int numeroReserva = ler.nextInt();
-                System.out.print("Digite o nome do utente (NIF): ");
+                System.out.print("Digite o NIF do utente: ");
                 String nifUtente = ler.next();
 
                 // Data de registo será a data atual
                 Date dataRegisto = new Date();
 
                 // Pedir a data de início
-                System.out.print("Digite a data de início (formato: dd/MM/yyyy): ");
+                System.out.print("Digite a data de início (dd/MM/yyyy): ");
                 String inicioStr = ler.next();
-                Date dataInicio = null;
                 try {
-                    dataInicio = sdf.parse(inicioStr); // Converter para Date usando SimpleDateFormat
+                    Date dataInicio = sdf.parse(inicioStr);
+
+                    // Criar reserva
+                    Reserva reserva = new Reserva(numeroReserva, dataRegisto, dataInicio, nifUtente);
+                    reservas.adicionarReserva(reserva);
+
+                    // Mostrar data de devolução
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(dataInicio);
+                    calendar.add(Calendar.DAY_OF_YEAR, 15);
+                    Date dataFim = calendar.getTime();
+                    System.out.println("A data de devolução será: " + sdf.format(dataFim));
+
                 } catch (Exception e) {
                     System.out.println("Formato de data inválido.");
                 }
-
-                // Calcular a data de devolução (15 dias após a data de início)
-                if (dataInicio != null) {
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(dataInicio);
-                    calendar.add(Calendar.DAY_OF_YEAR, 15); // Adicionando 15 dias
-                    Date dataDevolucao = calendar.getTime();
-
-                    // Exibir a data de devolução ao usuário
-                    System.out.println("A data de devolução será: " + sdf.format(dataDevolucao));
-
-                    // Criar a reserva com a data de devolução
-                    Reserva reserva = new Reserva(numeroReserva, dataRegisto, dataInicio, nifUtente);
-                    reservas.adicionarReserva(reserva);
-                }
                 break;
+
             case 2:
                 // Remover reserva
                 System.out.print("Digite o número da reserva para remover: ");
                 int numeroRemover = ler.nextInt();
                 reservas.removerReserva(numeroRemover);
                 break;
+
             case 3:
-                // Exibir reservas - Solicitar NIF do utente
-                System.out.print("Digite o NIF do utente para exibir suas reservas: ");
-                String nifParaExibir = ler.next();
-                reservas.exibirReservasPorNIF(nifParaExibir); // Exibe as reservas com base no NIF
+                // Exibir reservas por utente
+                System.out.print("Digite o NIF do utente: ");
+                String nifConsulta = ler.next();
+                reservas.exibirReservasPorUtente(nifConsulta);
                 break;
+
             case 4:
-                // Pesquisar reservas por intervalo de datas
-                System.out.print("Digite a data de início para pesquisa (formato: dd/MM/yyyy): ");
+                // Pesquisar reservas por data
+                System.out.print("Digite o NIF do utente: ");
+                String nifPesquisa = ler.next();
+                System.out.print("Digite a data de início (dd/MM/yyyy): ");
                 String inicioPesquisa = ler.next();
-                System.out.print("Digite a data de fim para pesquisa (formato: dd/MM/yyyy): ");
+                System.out.print("Digite a data de fim (dd/MM/yyyy): ");
                 String fimPesquisa = ler.next();
                 try {
-                    Date inicioData = sdf.parse(inicioPesquisa);
-                    Date fimData = sdf.parse(fimPesquisa);
-                    reservas.pesquisarReservasPorData(inicioData, fimData); // Pesquisar dentro do intervalo
+                    Date dataInicioPesquisa = sdf.parse(inicioPesquisa);
+                    Date dataFimPesquisa = sdf.parse(fimPesquisa);
+                    reservas.pesquisarReservasPorData(nifPesquisa, dataInicioPesquisa, dataFimPesquisa);
                 } catch (Exception e) {
                     System.out.println("Formato de data inválido.");
                 }
                 break;
-            default:
-                System.out.println("Opção incorreta para reservas!");
+
+            case 5:
+                // Exibir todas as reservas anonimamente
+                reservas.exibirReservasAnonimas();
                 break;
+
+            default:
+                System.out.println("Opção inválida!");
         }
     }
 
@@ -101,26 +107,14 @@ public class Main {
             System.out.print("Selecione uma opção: ");
             op = ler.nextInt();
             switch (op) {
-                case 1:
-                    // Ações relacionadas a Livros (não implementadas aqui)
-                    break;
-                case 2:
-                    // Ações relacionadas a Jornais/Revistas (não implementadas aqui)
-                    break;
-                case 3:
-                    // Ações relacionadas a Utentes (não implementadas aqui)
-                    break;
                 case 4:
                     menuReserva();
-                    break;
-                case 5:
-                    // Empréstimos
                     break;
                 case 6:
                     System.out.println("A sair ...");
                     break;
                 default:
-                    System.out.println("Opção incorreta! Tente novamente.");
+                    System.out.println("Opção incorreta!");
                     break;
             }
         } while (op != 6);
