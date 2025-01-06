@@ -1,6 +1,7 @@
 import java.util.Scanner;
 
 public class Main {
+
     public static void menu(){
         Scanner ler = new Scanner(System.in);
         int op;
@@ -46,5 +47,6 @@ public class Main {
     public static void main(String[] args) {
         menu();
 
+        System.out.println("Hello, World!");
     }
 }
