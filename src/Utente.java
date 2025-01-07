@@ -6,6 +6,12 @@ public class Utente {
     private String nome, genero;
     private int Nif, telemovel;
 
+    public Utente(){
+        this.nome = "";
+        this.genero = "";
+        this.Nif = 0;
+        this.telemovel = 0;
+    }
 
     //adicionar utente
     // Metodo - Função
@@ -13,7 +19,7 @@ public class Utente {
         Scanner ler = new Scanner(System.in);
 
         do {  //Restrição do nome para apenas letras
-            System.out.println("Nome: ");
+            System.out.print("Nome:  ");
             this.nome = ler.nextLine();
 
             if (this.nome.matches("[a-zA-ZáéíóúÁÉÍÓÚçÇãõÃÕ\\\\s]+")){
@@ -25,7 +31,7 @@ public class Utente {
         } while (true);
 
         do {  //validação de Género
-            System.out.println("Género (Masculino/Feminino): ");
+            System.out.print("Género (Masculino/Feminino):  ");
             this.genero = ler.nextLine();
             if(this.genero.equalsIgnoreCase("Masculino") || this.genero.equalsIgnoreCase("Feminino")){
                 break;
@@ -35,7 +41,7 @@ public class Utente {
         } while (true);
 
         do { // validaçãodo NIF com 9 digitos
-            System.out.println("NIF (9 Dígitos): ");
+            System.out.print("NIF (9 Dígitos):  ");
             this.Nif = ler.nextInt();
             if (this.Nif >= 100000000 && this.Nif <= 999999999) {
                 break;
@@ -45,7 +51,7 @@ public class Utente {
         }while (true);
 
         do {
-            System.out.println("Telemóvel: ");
+            System.out.print("Telemóvel:  ");
             this.telemovel = ler.nextInt();
             if (this.telemovel >= 100000000 && this.telemovel <= 999999999) {
                 break;
@@ -57,19 +63,19 @@ public class Utente {
         return this;
     }
 
-    // Metodo
+    // Metodo    ****
     public void eliminarUtente(){
-        System.out.println("Insira o NIF:  " + Nif);
+        System.out.print("Insira o NIF:   " + Nif);
     }
 
     // Metodo
     public void atualizarUtente(){
-        System.out.println("Insira o NIF:  " + Nif);
+        System.out.print("Insira o NIF:   " + Nif);
     }
 
     // Metodo
     public void listarUtentes(){
-        System.out.println("NIF´s Registrados:  ");
+        System.out.println("NIF´s Registrados:   ");
     }
 
     // Para a função MOSTRAR
@@ -88,7 +94,7 @@ public class Utente {
     public void setNome() {
         Scanner ler = new Scanner(System.in);
         do {
-            System.out.println("Insira o novo nome do Utente");
+            System.out.print("Insira o novo nome do Utente:  ");
             this.nome = ler.nextLine();
 
             if (this.nome.matches("[a-zA-ZáéíóúÁÉÍÓÚçÇãõÃÕ\\\\s]+")){  // Apenas letras e espaços
@@ -104,7 +110,7 @@ public class Utente {
     public void setGenero() {
         Scanner ler = new Scanner(System.in);
         do {  //validação de Género
-            System.out.println("Insira o novo género do Utente (Masculino/Feminino): ");
+            System.out.print("Insira o novo género do Utente (Masculino/Feminino):  ");
             this.genero = ler.nextLine();
             if(this.genero.equalsIgnoreCase("Masculino") || this.genero.equalsIgnoreCase("Feminino")){
                 break;
@@ -118,7 +124,7 @@ public class Utente {
     public void setNif() {
         Scanner ler = new Scanner(System.in);
         do { // validaçãodo NIF com 9 digitos
-            System.out.println("NIF (9 Dígitos): ");
+            System.out.print("NIF (9 Dígitos):  ");
             this.Nif = ler.nextInt();
             if (this.Nif >= 100000000 && this.Nif <= 999999999) {
                 break;
@@ -131,7 +137,7 @@ public class Utente {
     public void setTelemovel() {
         Scanner ler = new Scanner(System.in);
         do{
-            System.out.println("Telemóvel: ");
+            System.out.print("Telemóvel:  ");
             this.telemovel = ler.nextInt();
             if (this.telemovel >= 100000000 && this.telemovel <= 999999999) {
                 break;
@@ -143,5 +149,14 @@ public class Utente {
 
     public int getNif(){
         return this.Nif;
+    }
+    public Utente (String utente) {
+        String reg="[|;]";
+        String[] campos = utente.split(reg);
+
+        this.nome = campos[0];
+        this.genero = campos[1];
+        this.Nif =  Integer.parseInt(campos[2]);
+        this.telemovel =  Integer.parseInt(campos[3]);
     }
 }

@@ -5,6 +5,7 @@ public class Main {
     public static void menuUtente(){
         int escolha;
         Utentes uts = new Utentes();
+        uts.lerUtentes();
         do {
 
             System.out.println("--------------- Bem vindo à secção Utente ---------------");
@@ -14,7 +15,7 @@ public class Main {
             System.out.println("4) Atualizar");
             System.out.println("5) Eliminar");
             System.out.println("6) Sair");
-            System.out.println("Como deseja prosseguir?");
+            System.out.print("Como deseja prosseguir?  ");
             Scanner ler = new Scanner(System.in);
             escolha = ler.nextInt();
 
@@ -41,6 +42,7 @@ public class Main {
 
                 case 6:
                     System.out.println("A sair do menu Utente....\n");
+                    uts.guardarUtentes();
                     break;
                 default:
                     System.out.println("ERRO!!  Escolha uma das opções");

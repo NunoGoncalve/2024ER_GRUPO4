@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class Utentes {
    private ArrayList<Utente> uts = new ArrayList<>();
 
-
+/** A função cria um novo Utente; e adiciona o Utente criado ao ArrayList*/
    public void adicionarUtente(){
        Utente ut = new Utente();
        this.uts.add(ut.criarUtente());
@@ -14,114 +14,183 @@ public class Utentes {
    }
 
    public void listarUtentes(){
-       for(Utente ut: this.uts){
-           System.out.println("--------------- Utente ---------------");
-           System.out.println(ut.getUtente());
+       if (this.uts.isEmpty()) {
+           System.out.println("O Ficheiro está vázio");
        }
-       System.out.println("--------------- Fim ---------------\n");
+       else {
+           for (Utente ut : this.uts) {
+               System.out.println("--------------- Utente ---------------");
+               System.out.println(ut.formataUtenteE());
+           }
+           System.out.println("--------------- Fim ---------------\n");
+       }
    }
     public void eliminarUtente(){
-        int Nif;
-        Scanner ler = new Scanner(System.in);
-        System.out.println("Insira o NIF do Utente");
-        Nif = ler.nextInt();
-        if (this.uts.removeIf(ute -> ute.getNif() == Nif)){
-        System.out.println("Utente eliminado com sucesso!");}
-        else System.out.println("Utente não encontrado! Verifique o NIF introduzido");
-        System.out.println("A retornar ao Menu...");
-        System.out.println("--------------- Fim ---------------\n");
+        if (this.uts.isEmpty()) {
+            System.out.println("O Ficheiro está vázio");
+        }
+        else {
+            int Nif;
+            Scanner ler = new Scanner(System.in);
+            System.out.print("Insira o NIF do Utente:  ");
+            Nif = ler.nextInt();
+            for (Utente ut : this.uts) { //definição do ut
+                if (ut.getNif() == Nif) {
+                    System.out.println("--------------- Utente encontrado com sucesso! ---------------");
+                    System.out.println("A eliminar...\n");
+                    System.out.println(ut.formataUtenteE());
+                }
+            }
+            if (this.uts.removeIf(ute -> ute.getNif() == Nif)) {
+                System.out.println("Utente eliminado com sucesso!");
+            } else System.out.println("Utente não encontrado! Verifique o NIF introduzido");
+            System.out.println("A retornar ao Menu...");
+            System.out.println("--------------- Fim ---------------\n");
+        }
    }
     public void pesquisarUtente(){
-        int Nif;
-        Scanner ler = new Scanner(System.in);
-        System.out.println("Insira o NIF do Utente");
-        Nif = ler.nextInt();
-
-        boolean encontrado= false;
-
-        for(Utente ut: this.uts) { //definição do ut
-            if (ut.getNif() == Nif) {
-                System.out.println("--------------- Utente encontrado com sucesso! ---------------");
-                System.out.println(ut.getUtente());
-                encontrado = true;
-            }
+        if (this.uts.isEmpty()) {
+            System.out.println("O Ficheiro está vázio");
         }
-        if (!encontrado){  // Só será alterado para satisfazer a condição de true se não achar no loop for.
-            System.out.println("--------------- Utente não encontrado! ---------------");
-            System.out.println("Por favor verifique o NIF introduzido");
-            System.out.println("A retornar ao Menu...\n");}
+        else {
+            int Nif;
+            Scanner ler = new Scanner(System.in);
+            System.out.print("Insira o NIF do Utente:  ");
+            Nif = ler.nextInt();
 
-        System.out.println("--------------- Fim ---------------\n");
+            boolean encontrado = false;
+
+            for (Utente ut : this.uts) { //definição do ut
+                if (ut.getNif() == Nif) {
+                    System.out.println("--------------- Utente encontrado com sucesso! ---------------");
+                    System.out.println(ut.formataUtenteE());
+                    encontrado = true;
+                }
+            }
+            if (!encontrado) {  // Só será alterado para satisfazer a condição de true se não achar no loop for.
+                System.out.println("--------------- Utente não encontrado! ---------------");
+                System.out.println("Por favor verifique o NIF introduzido");
+                System.out.println("A retornar ao Menu...\n");
+            }
+
+            System.out.println("--------------- Fim ---------------\n");
+        }
     }
 
    public void atualizarUtente(){
-       int Nif, escolha;
-       Scanner ler = new Scanner(System.in);
-       System.out.println("Insira o NIF do Utente");
-       Nif = ler.nextInt();
-
-       boolean encontrado= false;
-
-       for(Utente ut: this.uts) { //definição do ut
-           if (ut.getNif() == Nif) {
-               System.out.println("--------------- Utente encontrado com sucesso! ---------------");
-               System.out.println(ut.getUtente());
-               encontrado = true;
-           }
+       if (this.uts.isEmpty()) {
+           System.out.println("O Ficheiro está vázio");
        }
+       else {
+           int Nif, escolha;
+           Scanner ler = new Scanner(System.in);
+           System.out.print("Insira o NIF do Utente:  ");
+           Nif = ler.nextInt();
 
-       if (!encontrado){  // Só será alterado para satisfazer a condição de true se não achar no loop for.
-           System.out.println("--------------- Utente não encontrado! ---------------");
-           System.out.println("Por favor verifique o NIF introduzido");
-           System.out.println("A retornar ao Menu...\n");}
+           boolean encontrado= false;
 
-       for(Utente ut: this.uts) { //definição do ut
-           if (ut.getNif() == Nif) {
-               do {
-                   System.out.println("--------------- Selecione Campo Para Atualizar ---------------");
-                   System.out.println("1) Nome");
-                   System.out.println("2) Género");
-                   System.out.println("3) NIF");
-                   System.out.println("4) Contacto");
-                   System.out.println("5) Todos os campos acima");
-                   System.out.println("6) Cancelar");
-                   System.out.println("Selecione uma opção");
-                   escolha = ler.nextInt();
+           for(Utente ut: this.uts) { //definição do ut
+               if (ut.getNif() == Nif) {
+                   System.out.println("--------------- Utente encontrado com sucesso! ---------------");
+                   System.out.println(ut.formataUtenteE());
+                   encontrado = true;
+               }
+           }
 
-                   switch (escolha) {
-                               case 1:
-                                   ut.setNome();
-                                   break;
+           if (!encontrado){  // Só será alterado para satisfazer a condição de true se não achar no loop for.
+               System.out.println("--------------- Utente não encontrado! ---------------");
+               System.out.println("Por favor verifique o NIF introduzido");
+               System.out.println("A retornar ao Menu...\n");}
 
-                               case 2:
-                                   ut.setGenero();
-                                   break;
+           for(Utente ut: this.uts) { //definição do ut
+               if (ut.getNif() == Nif) {
+                   do {
+                       System.out.println("--------------- Selecione Campo Para Atualizar ---------------");
+                       System.out.println("1) Nome");
+                       System.out.println("2) Género");
+                       System.out.println("3) NIF");
+                       System.out.println("4) Contacto");
+                       System.out.println("5) Todos os campos acima");
+                       System.out.println("6) Cancelar");
+                       System.out.print("Selecione uma opção  ");
+                       escolha = ler.nextInt();
 
-                               case 3:
-                                   ut.setNif();
-                                   break;
+                       switch (escolha) {
+                           case 1:
+                               ut.setNome();
+                               break;
 
-                               case 4:
-                                   ut.setTelemovel();
-                                   break;
+                           case 2:
+                               ut.setGenero();
+                               break;
 
-                               case 5:
-                                   this.uts.set(this.uts.indexOf(ut), ut.criarUtente());
-                                   break;
+                           case 3:
+                               ut.setNif();
+                               break;
 
-                               case 6:
-                                   System.out.println("A cancelar...");
-                                   break;
+                           case 4:
+                               ut.setTelemovel();
+                               break;
 
-                               default:
-                                   System.out.println("Opção Invalida");
-                                   break;
-                   }
-               }while (escolha > 6);
+                           case 5:
+                               this.uts.set(this.uts.indexOf(ut), ut.criarUtente());
+                               break;
 
+                           case 6:
+                               System.out.println("A cancelar...");
+                               break;
+
+                           default:
+                               System.out.println("Opção Invalida");
+                               break;
+                       }
+                   }while (escolha > 6);
+               }
            }
        }
    }
+
+
+    public void setUtente(String[] utentes) {
+        for (String s : utentes) {
+            Utente ut = new Utente(s);
+            this.uts.add(ut);
+        }
+    }
+
+    public void lerUtentes() {
+        int n_linhas=contLinhas();
+        setUtente(lerFicheiro(n_linhas));
+    }
+
+    private String[] lerFicheiro(int n_linhas){
+       int i=0;
+        String[] uts = new String[n_linhas];
+        File myfile = new File("utentes.txt");
+        try {
+            Scanner myReader = new Scanner(myfile);
+            while (myReader.hasNextLine()) {
+                uts[i]=myReader.nextLine();
+                i++;
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return uts;
+    }
+
+    public void guardarUtentes(){
+        try {
+            FileWriter writer = new FileWriter("utentes.txt");
+            for (Utente ut : this.uts) {
+                if(this.uts.getFirst()== ut) writer.write(ut.formataUtenteF());
+                else writer.write("\n"+ ut.formataUtenteF());
+            }
+            writer.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     private int contLinhas(){
         int i=0;
@@ -139,43 +208,5 @@ public class Utentes {
             throw new RuntimeException(e);
         }
         return i;
-    }
-
-    private void setUts(String[] utentes) {
-        for (String s : utentes) {
-            Livro livro = new Livro(s);
-            this.uts.add(utente);
-        }
-    }
-
-    private String[] lerUtente(int n_linhas){
-        int i=0;
-        String[] livros = new String[n_linhas];
-
-        File myfile = new File("utentes.txt");
-        try {
-            Scanner myReader = new Scanner(myfile);
-            while (myReader.hasNextLine()) {
-                livros[i] = myReader.nextLine();
-                i++;
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        return uts;
-    }
-
-    public void guardarUtentes(){
-        try {
-            FileWriter writer = new FileWriter("livros.txt");
-            for (Utente utente : this.uts) {
-                if(this.uts.getFirst()== Utente) writer.write(Utente.formataUtenteF());
-                else writer.write("\n"+ Utente.formataUtenteF());
-            }
-            writer.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 }
