@@ -1,243 +1,88 @@
-import java.io.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Scanner;
 
-class JornalRevista implements Serializable {
-    private String titulo;
-    private String issn;
-    private String editora;
-    private String dataPublicacao;
-    private String categoria;
+public class Jornal_revista {
+    private String titulo, editora, categoria, ISSN;
+    private int ano_publicacao;
 
-    public JornalRevista(String titulo, String issn, String editora, String dataPublicacao, String categoria) {
+    public Jornal_revista() {
+        titulo = "";
+        editora = "";
+        categoria = "";
+        ISSN = "";
+        ano_publicacao = 0;
+    }
+
+    public Jornal_revista(int ano) {
+        titulo = "";
+        editora = "";
+        categoria = "";
+        ISSN = "";
+        ano_publicacao = ano;
+    }
+
+    /** Cria um jornal/revista de acordo com as informações obtidas do ficheiro */
+    public Jornal_revista(String jornalRevista) {
+        String reg = "[|;]";
+        String[] campos = jornalRevista.split(reg);
+
+        this.titulo = campos[0];
+        this.editora = campos[1];
+        this.categoria = campos[2];
+        this.ISSN = campos[3];
+        this.ano_publicacao = Integer.parseInt(campos[4]);
+    }
+
+    /** Pede ao utilizador as informações sobre o jornal/revista a adicionar */
+    public Jornal_revista criarJornalRevista() {
+        Scanner ler = new Scanner(System.in);
+        System.out.print("Insira o título do jornal/revista: ");
+        titulo = ler.nextLine();
+        System.out.print("Insira a editora do jornal/revista: ");
+        editora = ler.nextLine();
+        System.out.print("Insira a categoria do jornal/revista: ");
+        categoria = ler.nextLine();
+        System.out.print("Insira o ISSN do jornal/revista: ");
+        ISSN = ler.nextLine();
+        System.out.print("Insira o ano de publicação do jornal/revista: ");
+        ano_publicacao = ler.nextInt();
+        return this;
+    }
+
+    /** Retorna uma string apropriada à visualização */
+    public String formataJornalRevistaE() {
+        return "Título: " + this.titulo + "\nEditora: " + this.editora + "\nCategoria: " + this.categoria + "\nISSN: " + this.ISSN + "\nAno de publicação: " + this.ano_publicacao;
+    }
+
+    /** Retorna uma string apropriada à escrita no ficheiro */
+    public String formataJornalRevistaF() {
+        return titulo + "|" + editora + "|" + categoria + "|" + ISSN + "|" + ano_publicacao + ";";
+    }
+
+    public String getISSN() {
+        return ISSN;
+    }
+
+    public int getAno_publicacao() {
+        return ano_publicacao;
+    }
+
+    public void setTitulo(String titulo) {
         this.titulo = titulo;
-        this.issn = issn;
+    }
+
+    public void setEditora(String editora) {
         this.editora = editora;
-        this.dataPublicacao = dataPublicacao;
+    }
+
+    public void setCategoria(String categoria) {
         this.categoria = categoria;
     }
 
-    public String getTitulo() { return titulo; }
-
-    public void setTitulo(String titulo) { this.titulo = titulo; }
-
-    public String getIssn() { return issn; }
-
-    public void setIssn(String issn) { this.issn = issn; }
-
-    public String getEditora() { return editora; }
-    public void setEditora(String editora) { this.editora = editora; }
-    public String getDataPublicacao() { return dataPublicacao; }
-    public void setDataPublicacao(String dataPublicacao) { this.dataPublicacao = dataPublicacao; }
-    public String getCategoria() { return categoria; }
-    public void setCategoria(String categoria) { this.categoria = categoria; }
-
-    public static boolean validarISSN(String issn) {
-        return issn != null && issn.matches("\\d{4}-\\d{3}[\\dX]");
+    public void setISSN(String ISSN) {
+        this.ISSN = ISSN;
     }
 
-    public static boolean validarData(String data) {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-        sdf.setLenient(false);
-        try {
-            sdf.parse(data);
-            return true;
-        } catch (ParseException e) {
-            return false;
-        }
-    }
-
-    @Override
-    public String toString() {
-        return "Jornal/Revista: " + titulo + "\n" +
-                "ISSN: " + issn + "\n" +
-                "Editora: " + editora + "\n" +
-                "Data da publicação: " + dataPublicacao + "\n" +
-                "Categoria: " + categoria + "\n";
-    }
-}
-
-class Biblioteca implements Serializable {
-    private String nome;
-    private ArrayList<JornalRevista> listaJornais = new ArrayList<>();
-
-    public Biblioteca(String nome) {
-        this.nome = nome;
-    }
-
-    public String getNome() { return nome; }
-
-    public void adicionarJornalRevista(JornalRevista jornalRevista) {
-        listaJornais.add(jornalRevista);
-        System.out.println("Jornal/Revista adicionado com sucesso.");
-    }
-
-    public void listarJornaisRevistas() {
-        if (listaJornais.isEmpty()) {
-            System.out.println("Não há jornais/revistas cadastrados.");
-        } else {
-            for (JornalRevista jornal : listaJornais) {
-                System.out.println(jornal);
-            }
-        }
-    }
-
-    public void pesquisarPorISSN(String issn) {
-        for (JornalRevista jornal : listaJornais) {
-            if (jornal.getIssn().equals(issn)) {
-                System.out.println("Jornal/Revista encontrado: ");
-                System.out.println(jornal);
-                return;
-            }
-        }
-        System.out.println("ISSN não encontrado.");
-    }
-
-    public void pesquisarPorTituloOuCategoria(String termo) {
-        boolean encontrado = false;
-        for (JornalRevista jornal : listaJornais) {
-            if (jornal.getTitulo().equalsIgnoreCase(termo) || jornal.getCategoria().equalsIgnoreCase(termo)) {
-                System.out.println(jornal);
-                encontrado = true;
-            }
-        }
-        if (!encontrado) {
-            System.out.println("Nenhum jornal/revista encontrado com o termo: " + termo);
-        }
-    }
-
-    public boolean podeRemover(String issn) {
-        return true;
-    }
-
-    public void removerPorISSN(String issn) {
-        if (!podeRemover(issn)) {
-            System.out.println("Não é possível remover. Há dependências associadas.");
-            return;
-        }
-        for (JornalRevista jornal : listaJornais) {
-            if (jornal.getIssn().equals(issn)) {
-                listaJornais.remove(jornal);
-                System.out.println("Jornal/Revista removido com sucesso.");
-                return;
-            }
-        }
-        System.out.println("ISSN não encontrado para remoção.");
-    }
-
-    public void salvarParaFicheiro(String nomeFicheiro) throws IOException {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(nomeFicheiro))) {
-            oos.writeObject(this);
-            System.out.println("Dados salvos com sucesso no ficheiro: " + nomeFicheiro);
-        }
-    }
-
-    public static Biblioteca carregarDeFicheiro(String nomeFicheiro) throws IOException, ClassNotFoundException {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(nomeFicheiro))) {
-            return (Biblioteca) ois.readObject();
-        }
-    }
-}
-
-public class Jornal_revista {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        Biblioteca biblioteca = new Biblioteca("Biblioteca Central");
-        int escolha;
-
-        do {
-            System.out.println("\nMenu:");
-            System.out.println("1) Adicionar Jornal/Revista");
-            System.out.println("2) Listar Jornais/Revistas");
-            System.out.println("3) Pesquisar por ISSN");
-            System.out.println("4) Pesquisar por Título ou Categoria");
-            System.out.println("5) Remover por ISSN");
-            System.out.println("6) Salvar para Ficheiro");
-            System.out.println("7) Carregar de Ficheiro");
-            System.out.println("8) Sair");
-            System.out.print("Escolha: ");
-
-            while (!scanner.hasNextInt()) {
-                System.out.println("Por favor, insira um número válido.");
-                scanner.next();
-            }
-            escolha = scanner.nextInt();
-
-            switch (escolha) {
-                case 1:
-                    scanner.nextLine();
-                    System.out.print("Insira o título: ");
-                    String titulo = scanner.nextLine();
-                    System.out.print("Insira o ISSN: ");
-                    String issn = scanner.nextLine();
-                    if (!JornalRevista.validarISSN(issn)) {
-                        System.out.println("ISSN inválido.");
-                        break;
-                    }
-                    System.out.print("Insira a editora: ");
-                    String editora = scanner.nextLine();
-                    System.out.print("Insira a data de publicação (dd-MM-yyyy): ");
-                    String dataPublicacao = scanner.nextLine();
-                    if (!JornalRevista.validarData(dataPublicacao)) {
-                        System.out.println("Data inválida.");
-                        break;
-                    }
-                    System.out.print("Insira a categoria: ");
-                    String categoria = scanner.nextLine();
-                    biblioteca.adicionarJornalRevista(new JornalRevista(titulo, issn, editora, dataPublicacao, categoria));
-                    break;
-                case 2:
-                    biblioteca.listarJornaisRevistas();
-                    break;
-                case 3:
-                    scanner.nextLine();
-                    System.out.print("Insira o ISSN: ");
-                    String issnPesquisa = scanner.nextLine();
-                    biblioteca.pesquisarPorISSN(issnPesquisa);
-                    break;
-                case 4:
-                    scanner.nextLine();
-                    System.out.print("Insira o título ou categoria: ");
-                    String termo = scanner.nextLine();
-                    biblioteca.pesquisarPorTituloOuCategoria(termo);
-                    break;
-                case 5:
-                    scanner.nextLine();
-                    System.out.print("Insira o ISSN para remover: ");
-                    String issnRemover = scanner.nextLine();
-                    biblioteca.removerPorISSN(issnRemover);
-                    break;
-                case 6:
-                    scanner.nextLine();
-                    System.out.print("Insira o nome do ficheiro para salvar: ");
-                    String nomeFicheiro = scanner.nextLine();
-                    try {
-                        biblioteca.salvarParaFicheiro(nomeFicheiro);
-                    } catch (IOException e) {
-                        System.out.println("Erro ao salvar no ficheiro.");
-                    }
-                    break;
-                case 7:
-                    scanner.nextLine();
-                    System.out.print("Insira o nome do ficheiro para carregar: ");
-                    String nomeFicheiroCarregar = scanner.nextLine();
-                    try {
-                        biblioteca = Biblioteca.carregarDeFicheiro(nomeFicheiroCarregar);
-                        System.out.println("Dados carregados com sucesso.");
-                    } catch (IOException | ClassNotFoundException e) {
-                        System.out.println("Erro ao carregar do ficheiro.");
-                    }
-                    break;
-                case 8:
-                    System.out.println("Saindo...");
-                    break;
-                default:
-                    System.out.println("Opção inválida.");
-            }
-        } while (escolha != 8);
-
-        scanner.close();
+    public void setAno_publicacao(int ano_publicacao) {
+        this.ano_publicacao = ano_publicacao;
     }
 }
