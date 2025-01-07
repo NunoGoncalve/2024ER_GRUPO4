@@ -1,74 +1,40 @@
 import java.util.Scanner;
-import java.util.Date;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
+import java.util.Date;
 
 public class Main {
 
-    static Reservas reservas = new Reservas(); // Lista global de reservas
+    static Reservas reservas = new Reservas();  // Lista global de reservas
 
     public static void menuReserva() {
         Scanner ler = new Scanner(System.in);
-        int op;
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
         System.out.println("1 - Adicionar Reserva");
-        System.out.println("2 - Remover Reserva");
-        System.out.println("3 - Exibir Reservas por Utente");
-        System.out.println("4 - Pesquisar Reservas por Data");
-        System.out.println("5 - Exibir Todas as Reservas (Anônimo)");
+        System.out.println("2 - Exibir Reservas");
+        System.out.println("3 - Exibir Reservas com NIF");
+        System.out.println("4 - Remover Reserva");
+        System.out.println("5 - Pesquisar Reservas por Data");
+        System.out.println("6 - Sair");
         System.out.print("Escolha uma opção: ");
         int opcaoReserva = ler.nextInt();
 
         switch (opcaoReserva) {
             case 1:
-                // Adicionar reserva
-                System.out.print("Digite o número da reserva: ");
-                int numeroReserva = ler.nextInt();
-                System.out.print("Digite o NIF do utente: ");
-                String nifUtente = ler.next();
-
-                // Data de registo será a data atual
-                Date dataRegisto = new Date();
-
-                // Pedir a data de início
-                System.out.print("Digite a data de início (dd/MM/yyyy): ");
-                String inicioStr = ler.next();
-                try {
-                    Date dataInicio = sdf.parse(inicioStr);
-
-                    // Criar reserva
-                    Reserva reserva = new Reserva(numeroReserva, dataRegisto, dataInicio, nifUtente);
-                    reservas.adicionarReserva(reserva);
-
-                    // Mostrar data de devolução
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(dataInicio);
-                    calendar.add(Calendar.DAY_OF_YEAR, 15);
-                    Date dataFim = calendar.getTime();
-                    System.out.println("A data de devolução será: " + sdf.format(dataFim));
-
-                } catch (Exception e) {
-                    System.out.println("Formato de data inválido.");
-                }
+                reservas.criarReserva(sdf);  // Passando o SimpleDateFormat para o método
                 break;
-
             case 2:
-                // Remover reserva
+                reservas.exibirReservas();  // Exibe todas as reservas anonimamente
+                break;
+            case 3:
+                reservas.exibirReservasComNif();  // Exibe todas as reservas com NIF
+                break;
+            case 4:
                 System.out.print("Digite o número da reserva para remover: ");
                 int numeroRemover = ler.nextInt();
-                reservas.removerReserva(numeroRemover);
+                reservas.removerReserva(numeroRemover);  // Remove a reserva
                 break;
-
-            case 3:
-                // Exibir reservas por utente
-                System.out.print("Digite o NIF do utente: ");
-                String nifConsulta = ler.next();
-                reservas.exibirReservasPorUtente(nifConsulta);
-                break;
-
-            case 4:
-                // Pesquisar reservas por data
+            case 5:
                 System.out.print("Digite o NIF do utente: ");
                 String nifPesquisa = ler.next();
                 System.out.print("Digite a data de início (dd/MM/yyyy): ");
@@ -78,17 +44,15 @@ public class Main {
                 try {
                     Date dataInicioPesquisa = sdf.parse(inicioPesquisa);
                     Date dataFimPesquisa = sdf.parse(fimPesquisa);
+                    // Pesquisa reservas por intervalo de datas
                     reservas.pesquisarReservasPorData(nifPesquisa, dataInicioPesquisa, dataFimPesquisa);
                 } catch (Exception e) {
                     System.out.println("Formato de data inválido.");
                 }
                 break;
-
-            case 5:
-                // Exibir todas as reservas anonimamente
-                reservas.exibirReservasAnonimas();
+            case 6:
+                System.out.println("A sair ...");
                 break;
-
             default:
                 System.out.println("Opção inválida!");
         }
@@ -107,8 +71,20 @@ public class Main {
             System.out.print("Selecione uma opção: ");
             op = ler.nextInt();
             switch (op) {
+                case 1:
+                    // Funções para livros
+                    break;
+                case 2:
+                    // Funções para jornais/revistas
+                    break;
+                case 3:
+                    // Funções para utentes
+                    break;
                 case 4:
-                    menuReserva();
+                    menuReserva();  // Chama o menu de reservas
+                    break;
+                case 5:
+                    // Funções para empréstimos
                     break;
                 case 6:
                     System.out.println("A sair ...");
@@ -120,96 +96,7 @@ public class Main {
         } while (op != 6);
     }
 
-
-    public static void menuLivros(){
-        int op;
-        Scanner ler = new Scanner(System.in);
-        Livros livros=new Livros();
-        livros.ler_livros();
-        do {
-            System.out.println("- Livros -");
-            System.out.println("1) - Listar");
-            System.out.println("2) - Adicionar");
-            System.out.println("3) - Pesquisar");
-            System.out.println("4) - Atualizar");
-            System.out.println("5) - Eliminar");
-            System.out.println("6) - Sair");
-            System.out.print("Selecione uma opção: ");
-            op = ler.nextInt();
-            switch (op) {
-                case 1:
-                    livros.listarLivros();
-                    break;
-                case 2:
-                    livros.adicionarLivro();
-                    break;
-
-                case 3:
-                    livros.listaLivro();
-                    break;
-                case 4:
-                    livros.atualizarLivro();
-                    break;
-
-                case 5:
-                    livros.eliminarLivro();
-                    break;
-
-                case 6:
-                    livros.guardarLivros();
-                    livros.limparLivros();
-                    System.out.println("A sair do menu livro...");
-                    break;
-                default:
-                    System.out.println("Opção incorreta! Tente novamente");
-                    break;
-            }
-        }while (op != 6);
-    }
-
-    public static void menu(){
-        Scanner ler = new Scanner(System.in);
-        int op;
-        do{
-            System.out.println("1 - Livros");
-            System.out.println("2 - Jornais / Revistas");
-            System.out.println("3 - Utentes");
-            System.out.println("4 - Reservas");
-            System.out.println("5 - Empréstimos");
-            System.out.println("6 - Sair");
-            System.out.print("Selecione uma opção: ");
-            op=ler.nextInt();
-            switch(op){
-                case 1:
-                    menuLivros();
-                    break;
-
-                case 2:
-                    /**/
-                    break;
-
-                case 3:
-                    /**/
-                    break;
-
-                case 4:
-                    /**/
-                    break;
-
-                case 5:
-                    /**/
-                    break;
-                case 6:
-                    System.out.println("A sair ...");
-                    break;
-                default:
-                    System.out.println("Opção incorreta! Tente novamente");
-                    break;
-            }
-        }while(op!=6);
-    }
-
     public static void main(String[] args) {
-        menu();
+        menu();  // Chama o menu principal
     }
 }
