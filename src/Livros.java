@@ -18,6 +18,10 @@ public class Livros {
         this.livros.add(liv.criarLivro());
     }
 
+    public void adicionarLivro(Livro liv){
+        this.livros.add(liv);
+    }
+
     /** Verifica se o ficheiro está vazio, se não estiver imprime os livros que estão no array*/
     public void listarLivros(){
         if(this.livros.isEmpty()){

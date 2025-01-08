@@ -8,7 +8,7 @@ public class Main {
 
     public static void menuReserva() {
         Scanner ler = new Scanner(System.in);
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
 
         System.out.println("1 - Adicionar Reserva");
         System.out.println("2 - Exibir Reservas");
@@ -21,7 +21,7 @@ public class Main {
 
         switch (opcaoReserva) {
             case 1:
-                reservas.criarReserva(sdf);  // Passando o SimpleDateFormat para o método
+                reservas.adicionarReserva();  // Passando o SimpleDateFormat para o metodo, tive que diminuir aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
                 break;
             case 2:
                 reservas.exibirReservas();  // Exibe todas as reservas anonimamente
@@ -35,7 +35,7 @@ public class Main {
                 reservas.removerReserva(numeroRemover);  // Remove a reserva
                 break;
             case 5:
-                System.out.print("Digite o NIF do utente: ");
+                /*System.out.print("Digite o NIF do utente: ");
                 String nifPesquisa = ler.next();
                 System.out.print("Digite a data de início (dd/MM/yyyy): ");
                 String inicioPesquisa = ler.next();
@@ -48,7 +48,7 @@ public class Main {
                     reservas.pesquisarReservasPorData(nifPesquisa, dataInicioPesquisa, dataFimPesquisa);
                 } catch (Exception e) {
                     System.out.println("Formato de data inválido.");
-                }
+                }*/
                 break;
             case 6:
                 System.out.println("A sair ...");
@@ -72,7 +72,7 @@ public class Main {
             op = ler.nextInt();
             switch (op) {
                 case 1:
-                    // Funções para livros
+                    
                     break;
                 case 2:
                     // Funções para jornais/revistas

@@ -5,47 +5,13 @@ import java.text.SimpleDateFormat;
 
 public class Reservas {
     private ArrayList<Reserva> reservas = new ArrayList<>();
-    private ArrayList<String> livrosDisponiveis = new ArrayList<>();  // Lista de livros disponíveis
 
-    // Adicionar título de livro ao sistema
-    public void adicionarLivro(String livroTitulo) {
-        livrosDisponiveis.add(livroTitulo);
-    }
 
     // Criar uma nova reserva
-    public void criarReserva(SimpleDateFormat sdf) {
-        Scanner ler = new Scanner(System.in);
+    public void adicionarReserva() {
+        Reserva res = new Reserva();
 
-        // Exibir os livros disponíveis
-        System.out.println("Escolha um livro para a reserva:");
-        for (int i = 0; i < livrosDisponiveis.size(); i++) {
-            System.out.println(i + 1 + " - " + livrosDisponiveis.get(i));
-        }
-
-        int opcaoLivro = ler.nextInt();
-        String livroSelecionado = livrosDisponiveis.get(opcaoLivro - 1);  // Selecionando o livro escolhido
-
-        System.out.print("Digite o número da reserva: ");
-        int numeroReserva = ler.nextInt();
-        System.out.print("Digite o NIF do utente: ");
-        String nifUtente = ler.next();
-
-        Date dataRegisto = new Date();
-        System.out.print("Digite a data de início (dd/MM/yyyy): ");
-        String inicioStr = ler.next();
-        try {
-            Date dataInicio = sdf.parse(inicioStr);
-
-            // Criar reserva com o título do livro
-            Reserva reserva = new Reserva(numeroReserva, dataRegisto, dataInicio, nifUtente, livroSelecionado);
-            reservas.add(reserva);
-
-            // Exibir a data de devolução
-            System.out.println("A data de devolução será: " + sdf.format(reserva.getDataFim()));
-
-        } catch (Exception e) {
-            System.out.println("Formato de data inválido.");
-        }
+        this.reservas.add(res.criarReserva(reservas.size()+1));
     }
 
     // Exibir todas as reservas

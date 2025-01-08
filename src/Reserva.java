@@ -1,5 +1,9 @@
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Calendar;
+import java.util.Scanner;
 
 public class Reserva {
     private int numeroReserva;
@@ -8,6 +12,7 @@ public class Reserva {
     private Date dataFim;
     private String nifUtente;
     private String tituloLivro;  // Agora guardamos o título do livro
+    private Livros livrosDisponiveis; // Lista de livros disponíveis
 
     // Construtor da reserva
     public Reserva(int numeroReserva, Date dataRegisto, Date dataInicio, String nifUtente, String tituloLivro) {
@@ -19,12 +24,62 @@ public class Reserva {
         this.dataFim = calcularDataFim(dataInicio);  // Calcula a data de fim no construtor
     }
 
-    // Método para calcular a data de fim (15 dias após a data de início)
+    public Reserva() {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Livros liv = new Livros();
+        Date dataInicio = null;
+        try {
+            dataInicio = sdf.parse("00/00/0000");
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        this.numeroReserva = 0;
+        this.dataRegisto = dataInicio;
+        this.dataInicio= dataInicio;
+        this.dataFim = dataInicio;
+        this.livrosDisponiveis = liv;
+    }
+
+    // calc data
     private Date calcularDataFim(Date dataInicio) {
         Calendar calendar = Calendar.getInstance();  // Cria uma instância de Calendar
         calendar.setTime(dataInicio);  // Define a data de início no calendário
         calendar.add(Calendar.DAY_OF_MONTH, 15);  // Adiciona 15 dias à data de início
         return calendar.getTime();  // Retorna a nova data de devolução
+    }
+
+    public Reserva criarReserva(int numReserva){
+        this.livrosDisponiveis.ler_livros();
+
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Scanner ler = new Scanner(System.in);
+
+        // Exibir os livros disponíveis
+
+        System.out.println("-------- Livros disponiveis ----------");
+        this.livrosDisponiveis.listarLivros();
+        System.out.print("Escolha um livro para a reserva através do isbn: ");
+        String isbn = ler.next();
+        livrosDisponiveis.adicionarLivro(livrosDisponiveis.procuraLivro(isbn));   // Selecionando o livro escolhido
+
+        System.out.print(" o número da reserva: "+numReserva);
+        this.numeroReserva = numReserva;
+
+        System.out.print("Digite o NIF do utente: ");
+        this.nifUtente = ler.next();
+
+        Date dataRegisto = new Date();
+        System.out.print("Digite a data de início (dd/MM/yyyy): ");
+        String inicioStr = ler.next();
+        try {
+            Date dataInicio = sdf.parse(inicioStr);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        // Exibir a data de devolução
+        System.out.println("A data de devolução será: " + sdf.format(this.dataFim));
+        return this;
+
     }
 
     // Métodos getters
