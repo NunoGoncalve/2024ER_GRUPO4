@@ -40,42 +40,36 @@ public class Utente {
                 System.out.println("Escolha entre as opções apresentadas");}
         } while (true);
 
+
+        String NIF;
         do { // validaçãodo NIF com 9 digitos
             System.out.print("NIF (9 Dígitos):  ");
-            this.Nif = ler.nextInt();
-            if (this.Nif >= 100000000 && this.Nif <= 999999999) {
+            NIF = ler.next();
+
+            if (NIF.matches("\\d{9}")){
+                Nif = Integer.parseInt(NIF);
                 break;
             } else {
                 System.out.println("O NIF deve conter 9 dígitos!");
+                System.out.println("Caracteres são inválidos!");
             }
         }while (true);
 
+
+        String tel;
         do {
             System.out.print("Telemóvel:  ");
-            this.telemovel = ler.nextInt();
-            if (this.telemovel >= 100000000 && this.telemovel <= 999999999) {
+            tel = ler.next();
+            if (tel.matches("\\d{9}")){
+                telemovel = Integer.valueOf(tel);
                 break;
             } else {
                 System.out.println("O número de Telemóvel deve conter 9 dígitos!");
+                System.out.println("Caracteres são inválidos!");
             }
         }while (true);
 
         return this;
-    }
-
-    // Metodo    ****
-    public void eliminarUtente(){
-        System.out.print("Insira o NIF:   " + Nif);
-    }
-
-    // Metodo
-    public void atualizarUtente(){
-        System.out.print("Insira o NIF:   " + Nif);
-    }
-
-    // Metodo
-    public void listarUtentes(){
-        System.out.println("NIF´s Registrados:   ");
     }
 
     // Para a função MOSTRAR
@@ -123,29 +117,38 @@ public class Utente {
     // Redefinir o NIF na função ATUALIZAR
     public void setNif() {
         Scanner ler = new Scanner(System.in);
+        String NIF;
         do { // validaçãodo NIF com 9 digitos
             System.out.print("NIF (9 Dígitos):  ");
-            this.Nif = ler.nextInt();
-            if (this.Nif >= 100000000 && this.Nif <= 999999999) {
+            NIF = ler.next();
+
+            if (NIF.matches("\\d{9}")){
+                Nif = Integer.parseInt(NIF);
+                System.out.println("NIF atualizado com sucesso!");
                 break;
             } else {
                 System.out.println("O NIF deve conter 9 dígitos!");
+                System.out.println("Caracteres são inválidos!");
             }
         }while (true);
     }
     // Redefinir o Telemovel na função ATUALIZAR
     public void setTelemovel() {
         Scanner ler = new Scanner(System.in);
-        do{
+        String tel;
+        do {
             System.out.print("Telemóvel:  ");
-            this.telemovel = ler.nextInt();
-            if (this.telemovel >= 100000000 && this.telemovel <= 999999999) {
+            tel = ler.next();
+            if (tel.matches("\\d{9}")){
+                telemovel = Integer.valueOf(tel);
                 break;
             } else {
                 System.out.println("O número de Telemóvel deve conter 9 dígitos!");
+                System.out.println("Caracteres são inválidos!");
             }
         }while (true);
     }
+
 
     public int getNif(){
         return this.Nif;

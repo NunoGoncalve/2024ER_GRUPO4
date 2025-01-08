@@ -5,13 +5,20 @@ import java.util.Scanner;
 public class Utentes {
    private ArrayList<Utente> uts = new ArrayList<>();
 
-/** A função cria um novo Utente; e adiciona o Utente criado ao ArrayList*/
+   /** A função cria um novo Utente com os atributos definidos na Classe Utente.
+    Em seguida adiciona o Utente criado ao ArrayList (uts).*/
+
    public void adicionarUtente(){
        Utente ut = new Utente();
        this.uts.add(ut.criarUtente());
        System.out.println("Utente adicionado com sucesso!");
        System.out.println("--------------- Fim ---------------\n");
    }
+
+    /** A função abaixo Pesquisa os Utentes que estão no ArrayList (uts) e Salvos no doc. ".txt"
+     * Lista, separadamente, os imprimindo no ecrã com as informações dos Utentes.
+     * A busca é feita através do NIF; após o usúario inserir o NIF  a função 'For' vai comparar com os NIF's registrados
+     * e guardados no ficheiro ".txt"; após o encontar, imprime no ecrã. */
 
    public void listarUtentes(){
        if (this.uts.isEmpty()) {
@@ -25,6 +32,12 @@ public class Utentes {
            System.out.println("--------------- Fim ---------------\n");
        }
    }
+
+    /** A função abaixo Pesquisa os Utentes que estão no ArrayList (uts) e Salvos no doc. ".txt"
+     * Imprime e mostra na tela as informações do Utente.
+     * A busca é feita através do NIF; após o usúario inserir o NIF  a função 'For' vai comparar com os NIF's registrados
+     * e guardados no ficheiro ".txt"; após o encontar, imprime no ecrã e em seguida elimina o Utente do ArrayList e ficheiro ".txt"*/
+
     public void eliminarUtente(){
         if (this.uts.isEmpty()) {
             System.out.println("O Ficheiro está vázio");
@@ -48,9 +61,15 @@ public class Utentes {
             System.out.println("--------------- Fim ---------------\n");
         }
    }
+
+/** A função abaixo Pesquisa os Utentes que estão no ArrayList (uts) e Salvos no doc. ".txt"
+ * Imprime no ecrã as informações do Utente desejado.
+ * A busca é feita através do NIF; após o usúario inserir o NIF  a função 'For' vai comparar com os NIF's registrados
+ * e guardados no ficheiro ".txt"; após o encontar, imprime no ecrã. */
+
     public void pesquisarUtente(){
         if (this.uts.isEmpty()) {
-            System.out.println("O Ficheiro está vázio");
+            System.out.println("O Ficheiro está vázio...");
         }
         else {
             int Nif;
@@ -76,6 +95,13 @@ public class Utentes {
             System.out.println("--------------- Fim ---------------\n");
         }
     }
+
+    /** A função abaixo Pesquisa os Utentes que estão no ArrayList (uts) e Salvos no doc. ".txt"
+     * Imprime no ecrã as informações do Utente.
+     * A busca é feita através do NIF; após o usúario inserir o NIF  a função 'For' vai comparar com os NIF's registrados
+     * e guardados no ficheiro ".txt"; após o encontar, impreime no ecrã.
+     * Depois é impresso um menu paar saber o campo que o usúario gostaria de alterar.
+     * Após a escolha é chamado a Função para a nova definição*/
 
    public void atualizarUtente(){
        if (this.uts.isEmpty()) {
@@ -109,7 +135,7 @@ public class Utentes {
                        System.out.println("1) Nome");
                        System.out.println("2) Género");
                        System.out.println("3) NIF");
-                       System.out.println("4) Contacto");
+                       System.out.println("4) Telemóvel");
                        System.out.println("5) Todos os campos acima");
                        System.out.println("6) Cancelar");
                        System.out.print("Selecione uma opção  ");
