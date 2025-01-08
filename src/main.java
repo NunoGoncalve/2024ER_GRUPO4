@@ -54,7 +54,7 @@ public class Main {
         jornais_revistas jornaisRevistas =new jornais_revistas();
         jornaisRevistas.ler_jornaisRevistas();
         do {
-            System.out.println("- Livros -");
+            System.out.println("- Jornais/Revistas -");
             System.out.println("1) - Listar");
             System.out.println("2) - Adicionar");
             System.out.println("3) - Pesquisar");
@@ -139,6 +139,6 @@ public class Main {
     public static void main(String[] args) {
         menu();
 
-        System.out.println("Hello, World!");
+
     }
 }

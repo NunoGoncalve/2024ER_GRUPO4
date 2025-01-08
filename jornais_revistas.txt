@@ -1,2 +1,1 @@
-Noticia|Porto|Jornal|1234-567X|1990;
 Titulo|Editora|Categoria|1234-123X|1990;

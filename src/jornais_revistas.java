@@ -131,7 +131,7 @@ public class jornais_revistas {
         try {
             FileWriter writer = new FileWriter("jornais_revistas.txt");
             for (Jornal_revista jr : this.jornaisRevistas) {
-                if (this.jornaisRevistas.get(0) == jr) writer.write(jr.formataJornalRevistaF());
+                if (this.jornaisRevistas.getFirst() == jr) writer.write(jr.formataJornalRevistaF());
                 else writer.write("\n" + jr.formataJornalRevistaF());
             }
             writer.close();
