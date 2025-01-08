@@ -11,6 +11,7 @@ import java.util.Scanner;
 public class Livro {
     private String titulo, editora, autor, categoria, ISBN;
     private int ano_edicao;
+    private boolean livre;
 
     public Livro() {
         titulo = "";
@@ -19,6 +20,7 @@ public class Livro {
         categoria = "";
         ISBN = "";
         ano_edicao = 0;
+        livre = true;
     }
 
     /** Cria um livro de acordo com ad informações obtidas do ficheiro */
@@ -32,6 +34,7 @@ public class Livro {
         this.categoria = campos[3];
         this.ISBN = campos[4];
         this.ano_edicao = Integer.parseInt(campos[5]);
+        this.livre = Boolean.parseBoolean(campos[6]);
     }
 
     /** Pede ao utilizador as informações sobre o livro a adicionar*/
@@ -49,9 +52,17 @@ public class Livro {
             System.out.print("Insira o ISBN do livro: ");
             ISBN = ler.nextLine();
         }while(!verificaIsbn(ISBN));
-
-        System.out.print("Insira o ano de edição do livro: ");
-        ano_edicao = ler.nextInt();
+        String ano;
+        do{
+            System.out.print("Insira o ano de edição do livro: ");
+            ano = ler.next();
+            if(ano.matches("\\d{4}")){
+                ano_edicao = Integer.parseInt(ano);
+                break;
+            }
+            else  System.out.println("Erro insira um ano válido!");
+        }while(true);
+        livre = true;
         return this;
     }
 
@@ -83,11 +94,15 @@ public class Livro {
 
     /** Retorna uma string apropriada à escrita no ficheiro*/
     public String formataLivroF(){
-        return titulo+"|"+editora+"|"+autor+"|"+categoria+"|"+ISBN+"|"+ano_edicao+";";
+        return titulo+"|"+editora+"|"+autor+"|"+categoria+"|"+ISBN+"|"+ano_edicao+"|"+livre+";";
     }
 
     public String getISBN() {
         return ISBN;
+    }
+
+    public boolean getLivre() {
+        return livre;
     }
 
     public void setTitulo(String titulo) {
@@ -114,4 +129,9 @@ public class Livro {
     public void setAno_edicao(int ano_edicao) {
         this.ano_edicao = ano_edicao;
     }
+
+    public void setLivre(boolean livre) {
+        this.livre = livre;
+    }
+
 }

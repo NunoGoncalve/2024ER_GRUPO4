@@ -18,13 +18,30 @@ public class Livros {
         this.livros.add(liv.criarLivro());
     }
 
+    public void adicionarLivro(Livro liv){
+        this.livros.add(liv);
+    }
+
     /** Imprime os livros encontrados no array */
     public void listarLivros(){
         for (Livro liv : this.livros) {
             liv.formataLivroE();
         }
         System.out.println("--------------- Fim ---------------");
+    }
 
+    public void listarLivrosLivres(){
+        for (Livro liv : this.livros) {
+            if(liv.getLivre())liv.formataLivroE();
+        }
+        System.out.println("--------------- Fim ---------------");
+    }
+
+    public void listarLivrosUsado(){
+        for (Livro liv : this.livros) {
+            if(!liv.getLivre())liv.formataLivroE();
+        }
+        System.out.println("--------------- Fim ---------------");
     }
 
     /** Recebe uma variável Livro e apresenta o menu de atualização da mesma, chamando a função associada á escolha do utilizador*/
@@ -64,8 +81,17 @@ public class Livros {
                 liv.setISBN(pedeIsbn());
                 break;
             case 6:
-                System.out.print("Insira o ano de edição do livro: ");
-                liv.setAno_edicao(ler.nextInt());
+                String ano;
+                do{
+                    System.out.print("Insira o ano de edição do livro: ");
+                    ano = ler.next();
+                    if (ano.matches("\\d{4}")) {
+                        liv.setAno_edicao(Integer.parseInt(ano));
+                        break;
+                    }
+                    else System.out.println("Erro insira um ano válido!");
+                }while(true);
+
                 break;
             case 7:
                 this.livros.set(this.livros.indexOf(liv),liv.criarLivro());
