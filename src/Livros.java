@@ -7,7 +7,7 @@ public class Livros {
     private ArrayList<Livro> livros = new ArrayList<>();
 
     /** Chama a função ler_ficheiro e guarda as linhas lidas num array e envia-as para a função setLivros*/
-    public void ler_livros() {
+    public void lerLivros() {
         int n_linhas = contLinhas();
         if(n_linhas!=0) setLivros(lerFicheiro(n_linhas));
     }
@@ -18,19 +18,16 @@ public class Livros {
         this.livros.add(liv.criarLivro());
     }
 
-    /** Verifica se o ficheiro está vazio, se não estiver imprime os livros que estão no array*/
+    /** Imprime os livros encontrados no array */
     public void listarLivros(){
-        if(this.livros.isEmpty()){
-            System.out.println("Ficheiro vazio! Adicione um livro");
-        }else {
-            for (Livro liv : this.livros) {
-                System.out.println("--------------- Livro ---------------");
-                System.out.println(liv.formataLivroE());
-            }
-            System.out.println("--------------- Fim ---------------");
+        for (Livro liv : this.livros) {
+            liv.formataLivroE();
         }
+        System.out.println("--------------- Fim ---------------");
+
     }
 
+    /** Recebe uma variável Livro e apresenta o menu de atualização da mesma, chamando a função associada á escolha do utilizador*/
     private void menuAtualizar(Livro liv){
         Scanner ler = new Scanner(System.in);
         int op;
@@ -45,6 +42,7 @@ public class Livros {
         System.out.println("8) Cancelar");
         System.out.print("Selecione uma opção: ");
         op = ler.nextInt();
+        ler.skip("\n");
         switch (op){
             case 1:
                 System.out.print("Insira o titulo do livro: ");
@@ -55,7 +53,7 @@ public class Livros {
                 liv.setEditora(ler.nextLine());
                 break;
             case 3:
-                System.out.print("Insira o(s) autor(es) do livro: ");
+                System.out.print("Insira o(s)/a(s) autor(es) do livro: ");
                 liv.setAutor(ler.nextLine());
                 break;
             case 4:
@@ -63,8 +61,7 @@ public class Livros {
                 liv.setCategoria(ler.nextLine());
                 break;
             case 5:
-                System.out.print("Insira o ISBN do livro: ");
-                liv.setISBN(ler.nextLine());
+                liv.setISBN(pedeIsbn());
                 break;
             case 6:
                 System.out.print("Insira o ano de edição do livro: ");
@@ -82,54 +79,61 @@ public class Livros {
         }
     }
 
-    private String pedeIsbn(){
+    /** Pede o ISBN ao utilizador, verifica se este encontra-se com o formato correto e retorna-o */
+    public String pedeIsbn(){
+        String isbn;
         Scanner ler = new Scanner(System.in);
-        System.out.print("Insira o ISBN do livro: ");
-        return ler.nextLine();
+        Livro liv = new Livro();
+        do{
+            System.out.print("Insira o ISBN do livro: ");
+            isbn=ler.nextLine();
+        }while(!liv.verificaIsbn(isbn));
+        return isbn;
     }
 
-    /** Verifica se o livro retornado tem valores, caso tenha chama o menu atualizar*/
+    /** Cria uma variável Livro e atribui-lhe o resultado da função de procura,
+     * se o livro não estiver vazio lista-o e chama o menu atualizar enviando o livro */
     public void atualizarLivro(){
         Livro liv = procuraLivro(pedeIsbn());
-        if(liv.getAno_edicao()!=-1) menuAtualizar(liv);
+        if(!liv.isEmpty()){ listaLivro(liv); menuAtualizar(liv);}
     }
 
-    /** Verifica se o livro retornado tem valores, caso tenha imprime-o no ecrã */
-    public void listaLivro(){
-        Livro liv = procuraLivro(pedeIsbn());
-        if(liv.getAno_edicao()!=-1){
-            System.out.println("--------------- Livro ---------------");
-            System.out.println(liv.formataLivroE());
+    /** Verifica se o array está vazio retorna verdadeiro ou falso conforme */
+    public boolean isEmpty(){
+        return livros.isEmpty();
+    }
+
+    /** Recebe uma variável livro, verifica se a mesma não está vazia e imprime-a no ecrã */
+    public void listaLivro(Livro liv){
+        if(!liv.isEmpty()){
+            liv.formataLivroE();
             System.out.println("--------------- Fim ---------------");
+            System.out.println();
         }
     }
 
-    /** Procura o livro no array, caso não encontre retorna um livro vazio, caso encontre retorna o livro que encontrou*/
+    /** Procura o livro no array, caso não encontre retorna um livro vazio, caso encontre retorna o livro que encontrou */
     public Livro procuraLivro(String isbn){
-        Livro liv_flag = new Livro(-1);
-        if(this.livros.isEmpty()){
-            System.out.println("Ficheiro vazio! Adicione um livro");
-        }else{
-            for (Livro liv : this.livros) {
-                if(liv.getISBN().equals(isbn)) return liv;
-            }
-            System.out.println("ISBN não encontrado! Tente novamente!");
+        Livro liv_flag = new Livro();
+        for (Livro liv : this.livros) {
+            if(liv.getISBN().equals(isbn)) return liv;
         }
+        System.out.println("ISBN não encontrado! Tente novamente!");
         return liv_flag;
     }
 
-    /** Verifica se o ficheiro está vazio, se não estiver procura o ISBN no array elimina-o, e chama a função reescrever_livros */
-    public void eliminarLivro(){
-        if(this.livros.isEmpty()){
-            System.out.println("Ficheiro vazio! Adicione um livro");
-        }else{
-            String isbn = pedeIsbn();
-            if(this.livros.removeIf(liv -> liv.getISBN().equals(isbn))) System.out.println("O livro foi removido com sucesso!");
-            else System.out.println("Livro não encontrado!");
+    /** Recebe a String isbn e procura o livro correspondente, se o livro encontrado não estiver vazio elimina-o do array */
+    public void eliminarLivro(String isbn){
+        Livro liv = procuraLivro(isbn);
+        if(!liv.isEmpty()) {
+            liv.formataLivroE();
+            this.livros.remove(liv);
+            System.out.println();
+            System.out.println("O livro foi removido com sucesso!");
         }
     }
 
-    /** Escreve no ficheiro*/
+    /** Guarda o conteúdo do array no ficheiro verificando se é a primeira linha ou as seguintes */
     public void guardarLivros(){
         try {
             FileWriter writer = new FileWriter("livros.txt");
@@ -143,11 +147,13 @@ public class Livros {
         }
     }
 
+    /** Limpa o array livros para que este seja detetado pelo sistema de recolha de "lixo" do java */
     public void limparLivros(){
         this.livros.clear();
     }
 
-    /** Lê as linhas do ficheiro e guarda-as num array */
+    /** Recebe o número de linhas que o ficheiro têm e cria um array de strings desse tamanho, a seguir
+     * lê as linhas do ficheiro e guarda-as num array retornando o mesmo */
     private String[] lerFicheiro(int n_linhas){
         int i=0;
         String[] livros = new String[n_linhas];
@@ -166,7 +172,7 @@ public class Livros {
         return livros;
     }
 
-    /** Cria os livros e adiciona-os ao array conforme a informação no ficheiro */
+    /** Cria os livros e adiciona-os ao array conforme a informação encontrada no array de strings livros */
     private void setLivros(String[] livros) {
         for (String s : livros) {
             Livro livro = new Livro(s);
@@ -174,7 +180,8 @@ public class Livros {
         }
     }
 
-    /** Conta as linhas presentes no ficheiro */
+    /** Cria o ficheiro caso este não exista e retorna o número de linhas a 0.
+     * Caso o ficheiro exista conta as linhas presentes no ficheiro */
     private int contLinhas(){
         int i=0;
         File myfile = new File("livros.txt");
@@ -192,5 +199,4 @@ public class Livros {
         }
         return i;
     }
-
 }
