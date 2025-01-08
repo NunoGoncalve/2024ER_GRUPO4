@@ -20,19 +20,11 @@ public class Livro {
         ISBN = "";
         ano_edicao = 0;
     }
-    public Livro(int ano) {
-        titulo = "";
-        editora = "";
-        autor = "";
-        categoria = "";
-        ISBN = "";
-        ano_edicao = ano;
-    }
 
     /** Cria um livro de acordo com ad informações obtidas do ficheiro */
     public Livro(String livro) {
-        String reg="[|;]";
-        String[] campos = livro.split(reg);
+        String regra="[|;]";
+        String[] campos = livro.split(regra);
 
         this.titulo = campos[0];
         this.editora = campos[1];
@@ -49,20 +41,44 @@ public class Livro {
         titulo = ler.nextLine();
         System.out.print("Insira a editora do livro: ");
         editora = ler.nextLine();
-        System.out.print("Insira o autor(es) do livro: ");
+        System.out.print("Insira o(s)/a(s) autor(es) do livro: ");
         autor= ler.nextLine();
-        System.out.print("Insira o categoria do livro: ");
+        System.out.print("Insira a categoria do livro: ");
         categoria = ler.nextLine();
-        System.out.print("Insira o ISBN do livro: ");
-        ISBN = ler.nextLine();
+        do{
+            System.out.print("Insira o ISBN do livro: ");
+            ISBN = ler.nextLine();
+        }while(!verificaIsbn(ISBN));
+
         System.out.print("Insira o ano de edição do livro: ");
         ano_edicao = ler.nextInt();
         return this;
     }
 
+    public boolean verificaIsbn(String isbn){
+        if(isbn.matches("\\d{9}(\\d|[Xx])") || isbn.matches("\\d-\\d{2}-\\d{6}-(\\d|[Xx])")
+                || isbn.matches("\\d{13}") || isbn.matches("\\d{3}-\\d-\\d{3}-\\d{5}-\\d")){
+            return true;
+        }
+        else{
+            System.out.println("Formatação errada! Por favor insira um ISBN válido");
+            return false;
+        }
+    }
+
     /** Retorna uma string apropriada à visualização*/
-    public String formataLivroE(){
-        return "Titulo: "+this.titulo+"\nEditora: "+this.editora+"\nAutor: "+this.autor+"\nCategoria: "+this.categoria+"\nISBN: "+this.ISBN+"\nAno de edição: "+this.ano_edicao;
+    public void formataLivroE(){
+        System.out.println("--------------- Livro ---------------");
+        System.out.println("Titulo: " + titulo);
+        System.out.println("Editora: " + editora);
+        System.out.println("Autor: " + autor);
+        System.out.println("Categoria: " + categoria);
+        System.out.println("ISBN: " + ISBN);
+        System.out.println("Ano edicao: " + ano_edicao);
+    }
+
+    public boolean isEmpty(){
+        return titulo.isEmpty();
     }
 
     /** Retorna uma string apropriada à escrita no ficheiro*/
@@ -72,10 +88,6 @@ public class Livro {
 
     public String getISBN() {
         return ISBN;
-    }
-
-    public int getAno_edicao() {
-        return ano_edicao;
     }
 
     public void setTitulo(String titulo) {
