@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Emprestimos {
         private ArrayList<Emprestimo> emprestimos;
@@ -28,6 +29,16 @@ public class Emprestimos {
             for (Emprestimo emp : emprestimos) {
                 System.out.println(emp.getNum() + " " + emp.getnLivro() + " " + emp.getNif());
             }
+        }
+
+        public void registarEmprestimos() {
+            Scanner sc = new Scanner(System.in);
+            Emprestimo novo = new Emprestimo();
+            System.out.println("Registo de Emprestimos \n");
+            novo.setNum(emprestimos.size() + 1);
+            System.out.println("Numero:" + novo.getNum());
+            System.out.print("nif: " );
+            sc.nextInt();
         }
 
         //função para eliminar um emprestimo guardado no array

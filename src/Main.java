@@ -10,7 +10,7 @@ public class Main {
             System.out.println("2 - Adicionar");
             System.out.println("3 - Pesquisar");
             System.out.println("4 - Atualizar");
-            System.out.println("5 - Eliminar / Devolver");
+            System.out.println("5 - Devolver");
             System.out.println("6 - Sair");
             System.out.print("Selecione uma opção: ");
             opc = ler.nextInt();
