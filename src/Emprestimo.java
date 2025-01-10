@@ -1,34 +1,35 @@
-import java.util.Scanner;
 import java.util.Date;
 
 public class Emprestimo {
     private int num;
-    private long nUtente;
-    private long nLivro;
+    private int nif;
+    private String nLivro;
     private Date dataInicio;
     private Date dataFimPrev;
     private Date dataFim;
 
 
-
-    public Emprestimo(int num, int nUtente, long nLivros, Date dataInicio, Date dataFim, Date dataFimPrev) {
+    //Construtor do emprestimo
+    public Emprestimo(int num, int nif, String nLivro, Date dataInicio, Date dataFim, Date dataFimPrev) {
         this.num = num;
-        this.nUtente = nUtente;
-        this.nLivro = nLivros;
+        this.nif = nif;
+        this.nLivro = nLivro;
         this.dataInicio = dataInicio;
         this.dataFim = dataFim;
         this.dataFimPrev = dataFimPrev;
     }
 
+    //Construtor do emprestimo 2
     public Emprestimo() {
         this.num = 0;
-        this.nUtente = 0;
-        this.nLivro = 0;
+        this.nif = 0;
+        this.nLivro = null;
         this.dataInicio = null;
         this.dataFim = null;
         this.dataFimPrev = null;
     }
 
+    //metodos getters e setters
     public int getNum() {
         return num;
     }
@@ -37,19 +38,19 @@ public class Emprestimo {
         this.num = num;
     }
 
-    public long getnUtente() {
-        return nUtente;
+    public int getNif() {
+        return nif;
     }
 
-    public void setnUtente(long nUtente) {
-        this.nUtente = nUtente;
+    public void setnUtente(int nif) {
+        this.nif = nif;
     }
 
-    public long getnLivro() {
+    public String getnLivro() {
         return nLivro;
     }
 
-    public void setnLivro(long nLivro) {
+    public void setnLivro(String nLivro) {
         this.nLivro = nLivro;
     }
 
@@ -76,5 +77,5 @@ public class Emprestimo {
     public void setDataFimPrev(Date dataFimPrev) {
         this.dataFimPrev = dataFimPrev;
     }
-
+    //Fim dos setters e getters
 }
