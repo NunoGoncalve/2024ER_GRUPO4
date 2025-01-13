@@ -10,12 +10,12 @@ public class Emprestimo {
 
 
     //Construtor do emprestimo
-    public Emprestimo(int num, int nif, String nLivro, Date dataInicio, Date dataFim, Date dataFimPrev) {
+    public Emprestimo(int num, int nif, String nLivro, Date dataInicio, Date dataFimPrev) {
         this.num = num;
         this.nif = nif;
         this.nLivro = nLivro;
         this.dataInicio = dataInicio;
-        this.dataFim = dataFim;
+        this.dataFim = null;
         this.dataFimPrev = dataFimPrev;
     }
 
@@ -42,7 +42,7 @@ public class Emprestimo {
         return nif;
     }
 
-    public void setnUtente(int nif) {
+    public void setNif(int nif) {
         this.nif = nif;
     }
 

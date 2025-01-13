@@ -9,9 +9,8 @@ public class Main {
             System.out.println("1 - Listar");
             System.out.println("2 - Adicionar");
             System.out.println("3 - Pesquisar");
-            System.out.println("4 - Atualizar");
-            System.out.println("5 - Devolver");
-            System.out.println("6 - Sair");
+            System.out.println("4- Devolver");
+            System.out.println("5 - Sair");
             System.out.print("Selecione uma opção: ");
             opc = ler.nextInt();
             switch (opc) {
@@ -32,17 +31,13 @@ public class Main {
                     break;
 
                 case 5:
-                    System.out.println(5);
-                    break;
-
-                case 6:
                     System.out.println("A sair ...");
                     break;
                 default:
                     System.out.println("Opção incorreta! Tente novamente");
                     break;
             }
-        } while (opc != 6);
+        } while (opc != 5);
     }
 
     public static void menuLivros(){
