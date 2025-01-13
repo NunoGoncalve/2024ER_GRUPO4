@@ -54,25 +54,39 @@ public class Emprestimos {
             emprestimos.add(novo); // insere novo emprestimo na lista de emprestimos
         }
 
-    public void registarEmprestimosv2() throws ParseException {
-        Scanner sca = new Scanner(System.in);
-        //define o formato para a data
-        SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy");
-        System.out.println("Registo de Emprestimos \n");
-        int numemp = emprestimos.size() + 1;
-        System.out.println("Numero:" + numemp);
-        System.out.println("nif: " ); // necessario verificar nif
-        int nifUtente = sca.nextInt();
-        System.out.println("nLivro: " ); // necessario verificar nLivro
-        String nLivro = sca.next();
-        Date dataInicio = new Date();
-        System.out.println("Data Inicio: " + formatDate.format(dataInicio));
-        System.out.print("Data prevista de entrega: ");
-        String dataFimPrev = sca.next();
+        public int pesquisarEmprestimo(int cod) {
+            for (int i = 0; i < emprestimos.size(); i++) {
+                if (emprestimos.get(i).getNum() == cod) {
+                    return i;
+                }
+            }
+            return -1;
+        }
 
-        Emprestimo novo = new Emprestimo(numemp, nifUtente, nLivro, dataInicio, formatDate.parse(dataFimPrev) );
+        public void devolverEmprestimo() throws java. text. ParseException {
+            Scanner sc = new Scanner(System.in);
+            System.out.println("Registo do emprestimo: ");
+            SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy");
+            System.out.println("Numero do emprestimo: ");
+            int numEmprestimo = sc.nextInt();
+            int i = pesquisarEmprestimo(numEmprestimo);
+            if (i == -1) {
+                System.out.println("Emprestimo inexistente");
+                return;
+            }
+            System.out.println("Emprestimo encontrado, insira a data de devolução (dd/MM/yyyy): ");
+            this.emprestimos.get(i).setDataFim(formatDate.parse(sc.next()));
+            //FALTA atualizar o campo disponibilidade do livro
+        }
 
-        emprestimos.add(novo); // insere novo emprestimo na lista de emprestimos
-    }
+        public int totalEmprestimos (Date dataInicio, Date dataFim) {
+            int total = 0;
+            for (int i = 0; i < emprestimos.size(); i++) {
+                if (emprestimos.get(i).getDataInicio().compareTo(dataInicio) >= 0 && emprestimos.get(i).getDataInicio().compareTo(dataFim) <= 0) {
+                    total += 1;
+                }
+            }
+            return total;
+        }
 }
 
