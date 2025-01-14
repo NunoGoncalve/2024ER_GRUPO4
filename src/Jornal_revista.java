@@ -61,7 +61,7 @@ public class Jornal_revista {
     /**
      * Construtor que inicializa os atributos a partir de uma string formatada.
      *
-     * @param jornalRevista String contendo os dados do jornal ou revista separados por delimitadores.
+     * @param jornalRevista String que contem os dados do jornal ou revista separados por delimitadores.
      */
     public Jornal_revista(String jornalRevista) {
         String reg = "[|;]";

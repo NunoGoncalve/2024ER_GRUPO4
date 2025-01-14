@@ -221,7 +221,7 @@ public class JornaisRevistas {
      * Lê os dados do ficheiro e os armazena num array.
      *
      * @param n_linhas O número de linhas no ficheiro.
-     * @return Um array contendo os dados lidos.
+     * @return Um array que contem os dados lidos.
      */
     private String[] lerFicheiro(int n_linhas) {
         int i = 0;
@@ -242,7 +242,7 @@ public class JornaisRevistas {
     }
 
     /**
-     * Cria os objetos de jornais e revistas a partir de dados lidos e os adiciona à coleção.
+     * Cria os objetos de jornais e revistas a partir de dados lidos e adiciona-os à coleção.
      *
      * @param jornaisRevistas Um array com os dados lidos do ficheiro.
      */
