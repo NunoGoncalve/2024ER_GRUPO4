@@ -84,6 +84,7 @@ public class Main {
         int escolha;
         Utentes uts = new Utentes();
         uts.lerUtentes();
+        if(uts.isEmpty()){}
         do {
 
             System.out.println("--------------- Bem vindo à secção Utente ---------------");

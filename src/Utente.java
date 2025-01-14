@@ -2,10 +2,15 @@ import java.util.Scanner;
 
 public class Utente {
 
-    // Atributos - Caracteristicas
+/**Atributos do Utente
+ * @param nome do Utente
+ * @param genero do Utente
+ * @param Nif do Utente
+ * @param telemovel do Utente. */
     private String nome, genero;
     private int Nif, telemovel;
 
+    /**Construtor da classe Utente; Inicializa os atributos a zero/vazio. */
     public Utente(){
         this.nome = "";
         this.genero = "";
@@ -13,8 +18,9 @@ public class Utente {
         this.telemovel = 0;
     }
 
-    //adicionar utente
-    // Metodo - Função
+/**Metodo criarUtente
+ *Pede ao utilizador os dados (atributos) e faz a validação dos mesmos;
+ *@return retorna o Utente criado. */
     public Utente criarUtente() {
         Scanner ler = new Scanner(System.in);
 
@@ -72,7 +78,8 @@ public class Utente {
         return this;
     }
 
-    // Para a função MOSTRAR
+    /**Metodo formataUtenteE
+     *@return das informações (atributos) do Utente*/
     public String formataUtenteE() {
         return "Nome: "+this.nome
                 +"\nGénero: "+this.genero
@@ -80,18 +87,22 @@ public class Utente {
                 +"\nContacto: "+this.telemovel;
     }
 
+    /**Metodo formataUtenteF
+     *@return das informações (atributos) do Utente*/
     public String formataUtenteF() {
         return nome+"|" +genero +"|"+Nif +"|"+telemovel+";";
     }
 
-    // Redefinir o Nome na função ATUALIZAR
+    /**Metodo setNome
+     *Pede o nome ao utilizador
+     *E verifica se o nome contém apenas letras e espaços. */
     public void setNome() {
         Scanner ler = new Scanner(System.in);
         do {
             System.out.print("Insira o novo nome do Utente:  ");
             this.nome = ler.nextLine();
 
-            if (this.nome.matches("[a-zA-ZáéíóúÁÉÍÓÚçÇãõÃÕ\\\\s]+")){  // Apenas letras e espaços
+            if (this.nome.matches("[a-zA-ZáéíóúÁÉÍÓÚçÇãõÃÕ\\\\s]+")){
                 break;
             }
             else {
@@ -100,7 +111,10 @@ public class Utente {
         } while (true);
     }
 
-    // Redefinir o Genero na função ATUALIZAR
+    /**Metodo setGenero
+     *Pede o genero ao utilizador
+     *E verifica se o genero é uma das palavras propostas.
+     *Se não for emite uma mensagem de erro. */
     public void setGenero() {
         Scanner ler = new Scanner(System.in);
         do {  //validação de Género
@@ -114,7 +128,10 @@ public class Utente {
         } while (true);
     }
 
-    // Redefinir o NIF na função ATUALIZAR
+    /**Metodo setNif
+     *Pede o NIF ao utilizador
+     *E verifica se o Nif tem 9 digitos; sendo apenas inteiros.
+     *Se não, emite uma mensagem de erro.*/
     public void setNif() {
         Scanner ler = new Scanner(System.in);
         String NIF;
@@ -132,7 +149,10 @@ public class Utente {
             }
         }while (true);
     }
-    // Redefinir o Telemovel na função ATUALIZAR
+
+    /**Metodo setTelemovel
+     *Pede o telemovel ao utilizador
+     *E verifica se o telemovel tem 9 digitos; sendo apenas inteiros.*/
     public void setTelemovel() {
         Scanner ler = new Scanner(System.in);
         String tel;
@@ -149,13 +169,18 @@ public class Utente {
         }while (true);
     }
 
-
+    /**Metodo getNif
+    @return o NIF do Utente*/
     public int getNif(){
         return this.Nif;
     }
+
+    /**Contrutor Utente
+     *@param utente é separado segundo a regra definida.
+     *Define os atributos conforme o paramêtro.*/
     public Utente (String utente) {
-        String reg="[|;]";
-        String[] campos = utente.split(reg);
+        String regra="[|;]";
+        String[] campos = utente.split(regra);
 
         this.nome = campos[0];
         this.genero = campos[1];
