@@ -72,7 +72,8 @@ public class Utente {
         return this;
     }
 
-    // Para a função MOSTRAR
+    /** Metodo formataUtenteE
+     * Para a função MOSTRAR*/
     public String formataUtenteE() {
         return "Nome: "+this.nome
                 +"\nGénero: "+this.genero

@@ -2,25 +2,33 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-/** Class Jornais_Revistas guarda um array de jornais e revistas */
+/**
+ * Class JornaisRevistas guarda um array de jornais e revistas
+ */
 public class JornaisRevistas {
     private ArrayList<Jornal_revista> jornaisRevistas = new ArrayList<>();
 
-    /** Chama a função ler_ficheiro e guarda as linhas lidas num array e envia-as para a função setJornaisRevistas */
+    /**
+     * Chama a função ler_ficheiro e guarda as linhas lidas num array e envia-as para a função setJornaisRevistas
+     */
     public void ler_jornaisRevistas() {
         int n_linhas = contLinhas();
-        if(n_linhas != 0) setJornaisRevistas(lerFicheiro(n_linhas));
+        if (n_linhas != 0) setJornaisRevistas(lerFicheiro(n_linhas));
     }
 
-    /** Cria um jornal/revista adiciona-o ao array e chama a função write_jornalRevista */
+    /**
+     * Cria um jornal/revista, adiciona-o ao array e chama a função write_jornalRevista
+     */
     public void adicionarJornalRevista() {
         Jornal_revista jr = new Jornal_revista();
         this.jornaisRevistas.add(jr.criarJornalRevista());
     }
 
-    /** Verifica se o ficheiro está vazio, se não estiver imprime os jornais/revistas que estão no array */
+    /**
+     * Verifica se o ficheiro está vazio, se não estiver imprime os jornais/revistas que estão no array
+     */
     public void listarJornaisRevistas() {
-        if(this.jornaisRevistas.isEmpty()){
+        if (this.jornaisRevistas.isEmpty()) {
             System.out.println("Ficheiro vazio! Adicione um jornal ou revista");
         } else {
             for (Jornal_revista jr : this.jornaisRevistas) {
@@ -29,6 +37,32 @@ public class JornaisRevistas {
             }
             System.out.println("--------------- Fim ---------------");
         }
+    }
+
+    /**
+     * Lista apenas os jornais/revistas não emprestados
+     */
+    public void listarJornaisRevistasLivres() {
+        for (Jornal_revista jr : this.jornaisRevistas) {
+            if (!jr.getEmprestado()) {
+                System.out.println("--------------- Jornal/Revista Livre ---------------");
+                System.out.println(jr.formataJornalRevistaE());
+            }
+        }
+        System.out.println("--------------- Fim ---------------");
+    }
+
+    /**
+     * Lista apenas os jornais/revistas emprestados
+     */
+    public void listarJornaisRevistasEmprestados() {
+        for (Jornal_revista jr : this.jornaisRevistas) {
+            if (jr.getEmprestado()) {
+                System.out.println("--------------- Jornal/Revista Emprestado ---------------");
+                System.out.println(jr.formataJornalRevistaE());
+            }
+        }
+        System.out.println("--------------- Fim ---------------");
     }
 
     private void menuAtualizar(Jornal_revista jr) {
@@ -44,6 +78,7 @@ public class JornaisRevistas {
         System.out.println("7) Cancelar");
         System.out.print("Selecione uma opção: ");
         op = ler.nextInt();
+        ler.nextLine(); // Consumir o newline
         switch (op) {
             case 1:
                 System.out.print("Insira o título do jornal/revista: ");
@@ -62,8 +97,17 @@ public class JornaisRevistas {
                 jr.setISSN(ler.nextLine());
                 break;
             case 5:
-                System.out.print("Insira o ano de publicação do jornal/revista: ");
-                jr.setAno_publicacao(ler.nextInt());
+                System.out.print("Insira a nova data de publicação (dd-MM-yyyy): ");
+                while (true) {
+                    String data = ler.nextLine();
+                    if (jr.validarData(data)) {
+                        String[] partes = data.split("-");
+                        jr.setAno_publicacao(Integer.parseInt(partes[2])); // Extrai o ano
+                        break;
+                    } else {
+                        System.out.print("Data inválida. Insira no formato dd-MM-yyyy: ");
+                    }
+                }
                 break;
             case 6:
                 this.jornaisRevistas.set(this.jornaisRevistas.indexOf(jr), jr.criarJornalRevista());
@@ -83,13 +127,17 @@ public class JornaisRevistas {
         return ler.nextLine();
     }
 
-    /** Verifica se o jornal/revista retornado tem valores, caso tenha chama o menu atualizar */
+    /**
+     * Verifica se o jornal/revista retornado tem valores, caso tenha chama o menu atualizar
+     */
     public void atualizarJornalRevista() {
         Jornal_revista jr = procuraJornalRevista(pedeISSN());
         if (jr.getAno_publicacao() != -1) menuAtualizar(jr);
     }
 
-    /** Verifica se o jornal/revista retornado tem valores, caso tenha imprime-o no ecrã */
+    /**
+     * Verifica se o jornal/revista retornado tem valores, caso tenha imprime-o no ecrã
+     */
     public void listaJornalRevista() {
         Jornal_revista jr = procuraJornalRevista(pedeISSN());
         if (jr.getAno_publicacao() != -1) {
@@ -99,7 +147,9 @@ public class JornaisRevistas {
         }
     }
 
-    /** Procura o jornal/revista no array, caso não encontre retorna um jornal/revista vazio, caso encontre retorna o jornal/revista que encontrou */
+    /**
+     * Procura o jornal/revista no array, caso não encontre retorna um jornal/revista vazio, caso encontre retorna o jornal/revista que encontrou
+     */
     public Jornal_revista procuraJornalRevista(String issn) {
         Jornal_revista jr_flag = new Jornal_revista(-1);
         if (this.jornaisRevistas.isEmpty()) {
@@ -113,7 +163,9 @@ public class JornaisRevistas {
         return jr_flag;
     }
 
-    /** Verifica se o ficheiro está vazio, se não estiver procura o ISSN no array elimina-o, e chama a função reescrever_jornaisRevistas */
+    /**
+     * Verifica se o ficheiro está vazio, se não estiver procura o ISSN no array, elimina-o, e chama a função reescrever_jornaisRevistas
+     */
     public void eliminarJornalRevista() {
         if (this.jornaisRevistas.isEmpty()) {
             System.out.println("Ficheiro vazio! Adicione um jornal ou revista");
@@ -126,7 +178,9 @@ public class JornaisRevistas {
         }
     }
 
-    /** Escreve no ficheiro */
+    /**
+     * Escreve no ficheiro
+     */
     public void guardarJornaisRevistas() {
         try {
             FileWriter writer = new FileWriter("jornais_revistas.txt");
@@ -144,7 +198,9 @@ public class JornaisRevistas {
         this.jornaisRevistas.clear();
     }
 
-    /** Lê as linhas do ficheiro e guarda-as num array */
+    /**
+     * Lê as linhas do ficheiro e guarda-as num array
+     */
     private String[] lerFicheiro(int n_linhas) {
         int i = 0;
         String[] jornaisRevistas = new String[n_linhas];
@@ -163,7 +219,9 @@ public class JornaisRevistas {
         return jornaisRevistas;
     }
 
-    /** Cria os jornais e revistas e adiciona-os ao array conforme a informação no ficheiro */
+    /**
+     * Cria os jornais e revistas e adiciona-os ao array conforme a informação no ficheiro
+     */
     private void setJornaisRevistas(String[] jornaisRevistas) {
         for (String s : jornaisRevistas) {
             Jornal_revista jr = new Jornal_revista(s);
@@ -171,7 +229,9 @@ public class JornaisRevistas {
         }
     }
 
-    /** Conta as linhas presentes no ficheiro */
+    /**
+     * Conta as linhas presentes no ficheiro
+     */
     private int contLinhas() {
         int i = 0;
         File myfile = new File("jornais_revistas.txt");
