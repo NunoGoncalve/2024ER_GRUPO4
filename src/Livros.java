@@ -6,23 +6,29 @@ import java.util.Scanner;
 public class Livros {
     private ArrayList<Livro> livros = new ArrayList<>();
 
-    /** Chama a função ler_ficheiro e guarda as linhas lidas num array e envia-as para a função setLivros*/
+    /** Metodo lerLivros
+     * Define a variável n_linhas com o resultado da função contLinhas;
+     * Se o n_linhas for diferente de 0 chama a função setLivros com o resultado da função lerFicheiro como parametro*/
     public void lerLivros() {
         int n_linhas = contLinhas();
         if(n_linhas!=0) setLivros(lerFicheiro(n_linhas));
     }
 
-    /** Cria um livro adiciona-o ao array livros e chama a função write_livro*/
+    /** Metodo adicionarLivro
+     * Cria uma variável livro chama a função criarLivro() e adiciona o resultado da mesma ao arraylist */
     public void adicionarLivro(){
         Livro liv = new Livro();
         this.livros.add(liv.criarLivro());
     }
 
+    /** Metodo adicionarLivro
+     * @param liv adiciona o parametro recebido ao arraylist */
     public void adicionarLivro(Livro liv){
         this.livros.add(liv);
     }
 
-    /** Imprime os livros encontrados no array */
+    /** Metodo listarLivros
+     * Para cada livro dentro do arraylist é chamada a função formataLivroE*/
     public void listarLivros(){
         for (Livro liv : this.livros) {
             liv.formataLivroE();
@@ -30,6 +36,8 @@ public class Livros {
         System.out.println("--------------- Fim ---------------");
     }
 
+    /** Metodo listarLivrosLivres
+     * Para cada livro marcado como livre dentro do arraylist é chamada a função formataLivroE */
     public void listarLivrosLivres(){
         for (Livro liv : this.livros) {
             if(liv.getLivre())liv.formataLivroE();
@@ -37,6 +45,8 @@ public class Livros {
         System.out.println("--------------- Fim ---------------");
     }
 
+    /** Metodo listarLivrosUsado
+     * Para cada livro marcado como usado dentro do arraylist é chamada a função formataLivroE */
     public void listarLivrosUsado(){
         for (Livro liv : this.livros) {
             if(!liv.getLivre())liv.formataLivroE();
@@ -44,7 +54,8 @@ public class Livros {
         System.out.println("--------------- Fim ---------------");
     }
 
-    /** Recebe uma variável Livro e apresenta o menu de atualização da mesma, chamando a função associada á escolha do utilizador*/
+    /** Metodo menuAtualizar
+     * @param liv e apresenta o menu de atualização da mesma, chamando a função associada á escolha do utilizador*/
     private void menuAtualizar(Livro liv){
         Scanner ler = new Scanner(System.in);
         int op;
@@ -86,7 +97,7 @@ public class Livros {
                     System.out.print("Insira o ano de edição do livro: ");
                     ano = ler.next();
                     if (ano.matches("\\d{4}")) {
-                        liv.setAno_edicao(Integer.parseInt(ano));
+                        liv.setAnoEdicao(Integer.parseInt(ano));
                         break;
                     }
                     else System.out.println("Erro insira um ano válido!");
@@ -105,7 +116,8 @@ public class Livros {
         }
     }
 
-    /** Pede o ISBN ao utilizador, verifica se este encontra-se com o formato correto e retorna-o */
+    /** Metodo pedeIsbn
+     * Pede o ISBN ao utilizador, verifica se este encontra-se com o formato correto e retorna-o */
     public String pedeIsbn(){
         String isbn;
         Scanner ler = new Scanner(System.in);
@@ -138,7 +150,9 @@ public class Livros {
         }
     }
 
-    /** Procura o livro no array, caso não encontre retorna um livro vazio, caso encontre retorna o livro que encontrou */
+    /** Metodo procuraLivro
+     * @param isbn procura um livro com o parametro recebido
+     * @return de um livro vazio caso não encontre o ISBN inserido pelo utilizador*/
     public Livro procuraLivro(String isbn){
         Livro liv_flag = new Livro();
         for (Livro liv : this.livros) {
@@ -148,7 +162,8 @@ public class Livros {
         return liv_flag;
     }
 
-    /** Recebe a String isbn e procura o livro correspondente, se o livro encontrado não estiver vazio elimina-o do array */
+    /** Metodo eliminarLivro
+     * @param isbn chama a função procura enviando como parametro o isbn recebido, se o livro for encontrado elimina-o do array */
     public void eliminarLivro(String isbn){
         Livro liv = procuraLivro(isbn);
         if(!liv.isEmpty()) {
@@ -159,7 +174,8 @@ public class Livros {
         }
     }
 
-    /** Guarda o conteúdo do array no ficheiro verificando se é a primeira linha ou as seguintes */
+    /** Metodo guardarLivros
+     * Guarda o conteúdo do array no ficheiro verificando se é a primeira linha ou as seguintes */
     public void guardarLivros(){
         try {
             FileWriter writer = new FileWriter("livros.txt");
@@ -173,12 +189,14 @@ public class Livros {
         }
     }
 
-    /** Limpa o array livros para que este seja detetado pelo sistema de recolha de "lixo" do java */
+    /** Metodo limparLivros
+     *  Limpa o array livros para que este seja detetado pelo sistema de recolha de "lixo" do java */
     public void limparLivros(){
         this.livros.clear();
     }
 
-    /** Recebe o número de linhas que o ficheiro têm e cria um array de strings desse tamanho, a seguir
+    /** Metodo lerFicheiro
+     * Recebe o número de linhas que o ficheiro têm e cria um array de strings desse tamanho, a seguir
      * lê as linhas do ficheiro e guarda-as num array retornando o mesmo */
     private String[] lerFicheiro(int n_linhas){
         int i=0;
@@ -198,7 +216,8 @@ public class Livros {
         return livros;
     }
 
-    /** Cria os livros e adiciona-os ao array conforme a informação encontrada no array de strings livros */
+    /** Metodo setLivros
+     * Para cada string no array livros cria um livro e adiciona-o ao array conforme a informação encontrada no array */
     private void setLivros(String[] livros) {
         for (String s : livros) {
             Livro livro = new Livro(s);
@@ -206,8 +225,10 @@ public class Livros {
         }
     }
 
-    /** Cria o ficheiro caso este não exista e retorna o número de linhas a 0.
-     * Caso o ficheiro exista conta as linhas presentes no ficheiro */
+    /** Metodo contLinhas
+     * Cria o ficheiro caso este não exista e retorna o número de linhas a 0.
+     * Caso o ficheiro exista conta as linhas presentes no ficheiro
+     * @return i número de linhas*/
     private int contLinhas(){
         int i=0;
         File myfile = new File("livros.txt");

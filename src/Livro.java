@@ -10,20 +10,23 @@ import java.util.Scanner;
  */
 public class Livro {
     private String titulo, editora, autor, categoria, ISBN;
-    private int ano_edicao;
+    private int anoEdicao;
     private boolean livre;
 
+    /** Construtor da classe Livro
+     * Define as propriedades do Livro a vazio */
     public Livro() {
         titulo = "";
         editora = "";
         autor = "";
         categoria = "";
         ISBN = "";
-        ano_edicao = 0;
+        anoEdicao = 0;
         livre = true;
     }
 
-    /** Cria um livro de acordo com ad informações obtidas do ficheiro */
+    /** Construtor da classe Livro
+     * @param livro é usado para definir as propriedades do Livro, através da separação seguindo a regra definida. */
     public Livro(String livro) {
         String regra="[|;]";
         String[] campos = livro.split(regra);
@@ -33,11 +36,13 @@ public class Livro {
         this.autor = campos[2];
         this.categoria = campos[3];
         this.ISBN = campos[4];
-        this.ano_edicao = Integer.parseInt(campos[5]);
+        this.anoEdicao = Integer.parseInt(campos[5]);
         this.livre = Boolean.parseBoolean(campos[6]);
     }
 
-    /** Pede ao utilizador as informações sobre o livro a adicionar*/
+    /** Metodo criarLivro
+     *  Pede ao utilizador as informações sobre o livro e verifica-as
+     *  @return this (próprio objeto)*/
     public Livro criarLivro(){
         Scanner ler = new Scanner(System.in);
         System.out.print("Insira o titulo do livro: ");
@@ -57,7 +62,7 @@ public class Livro {
             System.out.print("Insira o ano de edição do livro: ");
             ano = ler.next();
             if(ano.matches("\\d{4}")){
-                ano_edicao = Integer.parseInt(ano);
+                anoEdicao = Integer.parseInt(ano);
                 break;
             }
             else  System.out.println("Erro insira um ano válido!");
@@ -66,6 +71,9 @@ public class Livro {
         return this;
     }
 
+    /** Metodo verificaIsbn
+     * Verifica o isbn através de uma regra.
+     * @return true se o isbn estiver de acordo com a regra e false se o isbn não estiver de acordo com a regra*/
     public boolean verificaIsbn(String isbn){
         if(isbn.matches("\\d{9}(\\d|[Xx])") || isbn.matches("\\d-\\d{2}-\\d{6}-(\\d|[Xx])")
                 || isbn.matches("\\d{13}") || isbn.matches("\\d{3}-\\d-\\d{3}-\\d{5}-\\d")){
@@ -77,7 +85,8 @@ public class Livro {
         }
     }
 
-    /** Retorna uma string apropriada à visualização*/
+    /** Metodo formataLivroE
+     * Imprime as propriadades do livro para o ecrã*/
     public void formataLivroE(){
         System.out.println("--------------- Livro ---------------");
         System.out.println("Titulo: " + titulo);
@@ -85,51 +94,71 @@ public class Livro {
         System.out.println("Autor: " + autor);
         System.out.println("Categoria: " + categoria);
         System.out.println("ISBN: " + ISBN);
-        System.out.println("Ano edicao: " + ano_edicao);
+        System.out.println("Ano edicao: " + anoEdicao);
     }
 
+    /** Metodo isEmpty()
+     * @return de true ou false conforme o titulo estar vazio ou não ou seja se o livro está vazio */
     public boolean isEmpty(){
         return titulo.isEmpty();
     }
 
-    /** Retorna uma string apropriada à escrita no ficheiro*/
+    /** Metodo formataLivroF
+     * @return das propriedades do livro formatado para inserir no ficheiro*/
     public String formataLivroF(){
-        return titulo+"|"+editora+"|"+autor+"|"+categoria+"|"+ISBN+"|"+ano_edicao+"|"+livre+";";
+        return titulo+"|"+editora+"|"+autor+"|"+categoria+"|"+ISBN+"|"+anoEdicao+"|"+livre+";";
     }
 
+    /** Metodo getISBN
+     * @return do isbn*/
     public String getISBN() {
         return ISBN;
     }
 
+    /** Metodo getLivre
+     * @return da propriedade livre*/
     public boolean getLivre() {
         return livre;
     }
 
+    /** Metodo setTitulo
+     * @param titulo define o titulo do livro com o titulo recebido*/
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
 
+    /** Metodo setEditora
+     * @param editora define a categoria do livro com a editora recebida*/
     public void setEditora(String editora) {
         this.editora = editora;
     }
 
+    /** Metodo setAutor
+     * @param autor define o autor do livro com o autor recebido*/
     public void setAutor(String autor) {
-
         this.autor = autor;
     }
 
+    /** Metodo setCategoria
+     * @param categoria define a categoria do livro com o parametro recebida*/
     public void setCategoria(String categoria) {
         this.categoria = categoria;
     }
 
+    /** Metodo setISBN
+    * @param ISBN define o ISBN do livro com o parametro recebido*/
     public void setISBN(String ISBN) {
         this.ISBN = ISBN;
     }
 
-    public void setAno_edicao(int ano_edicao) {
-        this.ano_edicao = ano_edicao;
+    /** Metodo setAnoEdicao
+     * @param anoEdicao define o ano_edicao do livro com o parametro recebido*/
+    public void setAnoEdicao(int anoEdicao) {
+        this.anoEdicao = anoEdicao;
     }
 
+    /** Metodo setLivre
+     * @param livre define a propriedade Livre do livro com o parametro recebido*/
     public void setLivre(boolean livre) {
         this.livre = livre;
     }
