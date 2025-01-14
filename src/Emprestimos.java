@@ -1,4 +1,3 @@
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,11 +29,12 @@ public class Emprestimos {
         //função para listar os emprestimos guardados no array
         public void listarEmprestimos() {
             for (Emprestimo emp : emprestimos) {
-                System.out.println(emp.getNum() + " " + emp.getnLivro() + " " + emp.getNif());
+                System.out.println(emp.getNum() + " " + emp.getEmprestados() + " " + emp.getNif());
             }
         }
 
-        public void registarEmprestimos() {
+
+    public void registarEmprestimos(Livros livros) {
             Scanner sc = new Scanner(System.in);
             //define o formato para a data
             SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy");
@@ -44,8 +44,29 @@ public class Emprestimos {
             System.out.println("Numero:" + novo.getNum());
             System.out.println("nif: " ); // necessario verificar nif
             novo.setNif(sc.nextInt());
-            System.out.println("nLivro: " ); // necessario verificar nLivro
-            novo.setnLivro(sc.nextLine());
+
+            novo.getEmprestados().clear();
+            System.out.println("Emprestar livros:");
+            String codigo;
+            while(true) {
+                System.out.print("  Proximo livro: "); // necessario verificar nLivro
+                codigo = sc.nextLine(); //
+                // VERIFICAR SE LIVRO EXISTE NA LISTA DE LIVROS - FUNCAO FOI DESENVOLVIDA?
+                Livro liv = livros.procuraLivro(codigo);
+                if (pos != -1) {
+                    if (liv.getLivre() == 0)  // se livro 'Disponivel' {
+                        novo.getEmprestados().add(codigo);
+                    }
+                    else {
+                        if (livros.getLivro()[pos].getEstado() == 1)  // se livro 'Emprestado'
+                            System.out.println("  Livro Emprestado!");
+                        else
+                            System.out.println("  Livro Reservado!");
+                    }
+                else{
+                    System.out.println("  Livro nao existe!");
+                }
+            }
             novo.setDataInicio(new Date());
             System.out.println("Data Inicio: " + formatDate.format(novo.getDataInicio()));
             System.out.print("Data prevista de entrega: ");
@@ -83,10 +104,10 @@ public class Emprestimos {
             int total = 0;
             for (int i = 0; i < emprestimos.size(); i++) {
                 if (emprestimos.get(i).getDataInicio().compareTo(dataInicio) >= 0 && emprestimos.get(i).getDataInicio().compareTo(dataFim) <= 0) {
-                    total += 1;
+                    return total += 1;
                 }
             }
-            return total;
+            return -1;
         }
 }
 

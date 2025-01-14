@@ -1,19 +1,21 @@
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Emprestimo {
     private int num;
     private int nif;
-    private String nLivro;
+    private ArrayList <String> emprestados;
     private Date dataInicio;
     private Date dataFimPrev;
     private Date dataFim;
 
 
     //Construtor do emprestimo
-    public Emprestimo(int num, int nif, String nLivro, Date dataInicio, Date dataFimPrev) {
+    public Emprestimo(int num, int nif, ArrayList <String> emprestados, Date dataInicio, Date dataFimPrev) {
         this.num = num;
         this.nif = nif;
-        this.nLivro = nLivro;
+        this.emprestados = new ArrayList<>();
+        this.emprestados = emprestados;
         this.dataInicio = dataInicio;
         this.dataFim = null;
         this.dataFimPrev = dataFimPrev;
@@ -23,7 +25,7 @@ public class Emprestimo {
     public Emprestimo() {
         this.num = 0;
         this.nif = 0;
-        this.nLivro = null;
+        this.emprestados = new ArrayList<>();
         this.dataInicio = null;
         this.dataFim = null;
         this.dataFimPrev = null;
@@ -46,12 +48,12 @@ public class Emprestimo {
         this.nif = nif;
     }
 
-    public String getnLivro() {
-        return nLivro;
+    public ArrayList <String> getEmprestados() {
+        return this.emprestados;
     }
 
-    public void setnLivro(String nLivro) {
-        this.nLivro = nLivro;
+    public void setnEmprestados(ArrayList <String> emprestados) {
+        this.emprestados = emprestados;
     }
 
     public Date getDataInicio() {
