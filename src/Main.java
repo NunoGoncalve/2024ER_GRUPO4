@@ -2,6 +2,53 @@ import java.util.Scanner;
 
 public class Main {
 
+    public static void menuJornaisRevistas(){
+        int op;
+        Scanner ler = new Scanner(System.in);
+        JornaisRevistas jornaisRevistas =new JornaisRevistas();
+        jornaisRevistas.ler_jornaisRevistas();
+        do {
+
+            System.out.println("- Jornais/Revistas -");
+            System.out.println("1) - Listar");
+            System.out.println("2) - Adicionar");
+            System.out.println("3) - Pesquisar");
+            System.out.println("4) - Atualizar");
+            System.out.println("5) - Eliminar");
+            System.out.println("6) - Sair");
+            System.out.print("Selecione uma opção: ");
+            op = ler.nextInt();
+            switch (op) {
+                case 1:
+                    jornaisRevistas.listarJornaisRevistas();
+                    break;
+                case 2:
+                    jornaisRevistas.adicionarJornalRevista();
+                    break;
+
+                case 3:
+                    jornaisRevistas.listaJornalRevista();
+                    break;
+                case 4:
+                    jornaisRevistas.atualizarJornalRevista();
+                    break;
+
+                case 5:
+                    jornaisRevistas.eliminarJornalRevista();
+                    break;
+
+                case 6:
+                    jornaisRevistas.guardarJornaisRevistas();
+                    jornaisRevistas.limparJornaisRevistas();
+                    System.out.println("A sair do menu livro...");
+                    break;
+                default:
+                    System.out.println("Opção incorreta! Tente novamente");
+                    break;
+            }
+        }while (op != 6);
+    }
+
     public static void menuEmprestimos() {
         Scanner ler = new Scanner(System.in);
         int opc;
@@ -50,7 +97,7 @@ public class Main {
                 System.out.println("- Livros -");
                 System.out.println("1) - Adicionar");
                 System.out.println("2) - Sair");
-                System.out.print("Selecione uma opção: ");
+                System.out.print("Biblioteca vazia! Selecione uma opção: ");
                 op = ler.nextInt();
                 switch (op) {
                     case 1:
@@ -117,50 +164,101 @@ public class Main {
         }
     }
 
-    public static void menu(){
-        Scanner ler = new Scanner(System.in);
-        int op;
-        do{
-            System.out.println("1 - Livros");
-            System.out.println("2 - Jornais / Revistas");
-            System.out.println("3 - Utentes");
-            System.out.println("4 - Reservas");
-            System.out.println("5 - Empréstimos");
-            System.out.println("6 - Sair");
-            System.out.print("Selecione uma opção: ");
-            op=ler.nextInt();
-            switch(op){
+
+    public static void menuUtente(){
+        int escolha;
+        Utentes uts = new Utentes();
+        uts.lerUtentes();
+        do {
+
+            System.out.println("--------------- Bem vindo à secção Utente ---------------");
+            System.out.println("1) Listar");
+            System.out.println("2) Adicionar");
+            System.out.println("3) Pesquisar");
+            System.out.println("4) Atualizar");
+            System.out.println("5) Eliminar");
+            System.out.println("6) Sair");
+            System.out.print("Como deseja prosseguir?  ");
+            Scanner ler = new Scanner(System.in);
+            escolha = ler.nextInt();
+
+            switch (escolha) {
                 case 1:
-                    menuLivros();
+                    uts.listarUtentes();
                     break;
 
                 case 2:
-                    /**/
+                    uts.adicionarUtente();
                     break;
 
                 case 3:
-                    /**/
+                    uts.pesquisarUtente();
                     break;
 
                 case 4:
+                    uts.atualizarUtente();
+                    break;
+
+                case 5:
+                    uts.eliminarUtente();
+                    break;
+
+                case 6:
+                    System.out.println("A sair do menu Utente....\n");
+                    uts.guardarUtentes();
+                    break;
+                default:
+                    System.out.println("ERRO!!  Escolha uma das opções");
+                    break;
+                }
+        }while (escolha != 6);
+    }
+
+
+    public static void menu(){
+        Scanner ler = new Scanner(System.in);
+        String op;
+        do{
+            System.out.println("1) - Livros");
+            System.out.println("2) - Jornais / Revistas");
+            System.out.println("3) - Utentes");
+            System.out.println("4) - Reservas");
+            System.out.println("5) - Empréstimos");
+            System.out.println("6) - Sair");
+            System.out.print("Selecione uma opção: ");
+            op=ler.next();
+
+            switch(op){
+                case "1":
+                    menuLivros();
+                    break;
+
+                case "2":
+                    menuJornaisRevistas();
+                    break;
+
+                case "3":
+                    menuUtente();
+                    break;
+
+                case "4":
                     /**/
                     break;
 
                 case 5:
                     menuEmprestimos();
                     break;
-                case 6:
+                case "6":
                     System.out.println("A sair ...");
                     break;
                 default:
                     System.out.println("Opção inválida! Tente novamente");
                     break;
             }
-        }while(op!=6);
+        }while(!op.equals("6"));
     }
 
     public static void main(String[] args) {
-
-        System.out.println("Hello, World!");
+        menu();
     }
 }
