@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 
 public class Main {
@@ -49,37 +51,46 @@ public class Main {
         }while (op != 6);
     }
 
-    public static void menuEmprestimos() {
+    public static void menuEmprestimos() throws java.text.ParseException {
         Scanner ler = new Scanner(System.in);
+        Emprestimos emprestimos = new Emprestimos();
         int opc;
         do {
             System.out.println("1 - Listar");
             System.out.println("2 - Adicionar");
-            System.out.println("3 - Pesquisar");
-            System.out.println("4- Devolver");
+            System.out.println("3 - Devolver");
+            System.out.println("4 - Quantidade de livros numa data");
             System.out.println("5 - Sair");
             System.out.print("Selecione uma opção: ");
             opc = ler.nextInt();
             switch (opc) {
                 case 1:
-                    System.out.println(1);
+                    emprestimos.listarEmprestimos();
                     break;
 
                 case 2:
-                    System.out.println(2);
+                    emprestimos.registarEmprestimos();
                     break;
 
                 case 3:
-                    System.out.println(3);
+                    emprestimos.devolverEmprestimo();
                     break;
 
-                case 4:
-                    System.out.println(4);
-                    break;
+               case 4:
+                   SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy");
+                   System.out.println("Data de inicio: ");
+                   String strDataInicio = ler.next();
+                   System.out.println("Data de fim: ");
+                   String strdataFim = ler.next();
+                   Date dataInicio = formatDate.parse(strDataInicio);
+                   Date dataFim = formatDate.parse(strdataFim);
+                   emprestimos.totalEmprestimos(dataInicio, dataFim);
+                   break;
 
                 case 5:
                     System.out.println("A sair ...");
                     break;
+
                 default:
                     System.out.println("Opção incorreta! Tente novamente");
                     break;
@@ -245,7 +256,7 @@ public class Main {
                     /**/
                     break;
 
-                case 5:
+                case "5":
                     menuEmprestimos();
                     break;
                 case "6":

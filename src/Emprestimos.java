@@ -1,3 +1,4 @@
+import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,13 +29,38 @@ public class Emprestimos {
 
         //função para listar os emprestimos guardados no array
         public void listarEmprestimos() {
+
+            SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy");
             for (Emprestimo emp : emprestimos) {
-                System.out.println(emp.getNum() + " " + emp.getEmprestados() + " " + emp.getNif());
+                String aux = String.format("%05d    %d    %s    %s    %s    %s \n", (emp.getNum()  + " " + emp.getNif() + " " + formatDate.format(emp.getDataInicio()) + " "
+                        + formatDate.format(emp.getDataFimPrev()) + " " + formatDate.format(emp.getDataFim()) + " " + formatDate.format(emp.getEmprestados().get(0))));
+                System.out.println(aux);
+                for(int i = 1; i < emp.getEmprestados().size(); i++) {
+                    System.out.println(String.format("%64s%s", " ", emp.getEmprestados().get(i)));
+                }
             }
         }
 
+        public String maisLivros() {
+            Scanner sc = new Scanner(System.in);
+            String resp = "";
+            while (!resp.equals("S") && !resp.equals("N")) {
+                System.out.println("mais livrios? [S/N]");
+                resp = sc.nextLine();
+            }
+            return resp;
+        }
 
-    public void registarEmprestimos(Livros livros) {
+        public int pesquisaUtente(Utentes utentes, int nif) {
+            for (int i = 0; i < utentes.getUts().size(); i++) {
+                if (utentes.getUts().get(i).getNif() == nif) {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+    public void registarEmprestimos(Livros livros, Utentes utentes) {
             Scanner sc = new Scanner(System.in);
             //define o formato para a data
             SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy");
@@ -42,29 +68,36 @@ public class Emprestimos {
             System.out.println("Registo de Emprestimos \n");
             novo.setNum(emprestimos.size() + 1);
             System.out.println("Numero:" + novo.getNum());
-            System.out.println("nif: " ); // necessario verificar nif
-            novo.setNif(sc.nextInt());
+
+            while (true) {
+                System.out.println("nif: " );
+                novo.setNif(sc.nextInt());
+                if (pesquisaUtente(utentes, novo.getNif()) != -1) {
+                    break;
+                } else {
+                    System.out.println("nif errado");
+                }
+            }
+
 
             novo.getEmprestados().clear();
             System.out.println("Emprestar livros:");
+            System.out.println("insira 1 para livros 2 para revistas/jornais:");
             String codigo;
-            while(true) {
-                System.out.print("  Proximo livro: "); // necessario verificar nLivro
-                codigo = sc.nextLine(); //
-                // VERIFICAR SE LIVRO EXISTE NA LISTA DE LIVROS - FUNCAO FOI DESENVOLVIDA?
+            while (true) {
+                System.out.println("Proximo livro: ");// necessario verificar nLIVRO
+                codigo = sc.nextLine(); // verificar se livro existe na lista de livros
                 Livro liv = livros.procuraLivro(codigo);
-                if (pos != -1) {
-                    if (liv.getLivre() == 0)  // se livro 'Disponivel' {
+                if(liv.getISBN().equals("")) {
+                    if(liv.getLivre()) { //se livro disponivel
                         novo.getEmprestados().add(codigo);
                     }
                     else {
-                        if (livros.getLivro()[pos].getEstado() == 1)  // se livro 'Emprestado'
-                            System.out.println("  Livro Emprestado!");
-                        else
-                            System.out.println("  Livro Reservado!");
+                        System.out.println("Livro não disponivel");
                     }
-                else{
-                    System.out.println("  Livro nao existe!");
+                }
+                if(maisLivros().equals("N")) {
+                    break;
                 }
             }
             novo.setDataInicio(new Date());
@@ -97,7 +130,13 @@ public class Emprestimos {
             }
             System.out.println("Emprestimo encontrado, insira a data de devolução (dd/MM/yyyy): ");
             this.emprestimos.get(i).setDataFim(formatDate.parse(sc.next()));
+
             //FALTA atualizar o campo disponibilidade do livro
+            for (String emp : this.emprestimos.get(i).getEmprestados()){
+
+
+
+            }
         }
 
         public int totalEmprestimos (Date dataInicio, Date dataFim) {
