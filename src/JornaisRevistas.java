@@ -24,6 +24,10 @@ public class JornaisRevistas {
         this.jornaisRevistas.add(jr.criarJornalRevista());
     }
 
+    public void adicionarJornalRevista(Jornal_revista jr) {
+        this.jornaisRevistas.add(jr);
+    }
+
     /**
      * Verifica se o ficheiro está vazio, se não estiver imprime os jornais/revistas que estão no array
      */
@@ -44,7 +48,7 @@ public class JornaisRevistas {
      */
     public void listarJornaisRevistasLivres() {
         for (Jornal_revista jr : this.jornaisRevistas) {
-            if (!jr.getEmprestado()) {
+            if (jr.getlivre()) {
                 System.out.println("--------------- Jornal/Revista Livre ---------------");
                 System.out.println(jr.formataJornalRevistaE());
             }
@@ -55,16 +59,19 @@ public class JornaisRevistas {
     /**
      * Lista apenas os jornais/revistas emprestados
      */
-    public void listarJornaisRevistasEmprestados() {
+    public void listarJornaisRevistasOcupados() {
         for (Jornal_revista jr : this.jornaisRevistas) {
-            if (jr.getEmprestado()) {
-                System.out.println("--------------- Jornal/Revista Emprestado ---------------");
+            if (!jr.getlivre()) {
+                System.out.println("--------------- Jornal/Revista Ocupado ---------------");
                 System.out.println(jr.formataJornalRevistaE());
             }
         }
         System.out.println("--------------- Fim ---------------");
     }
 
+    public boolean isEmpty(){
+        return this.jornaisRevistas.isEmpty();
+    }
     private void menuAtualizar(Jornal_revista jr) {
         Scanner ler = new Scanner(System.in);
         int op;

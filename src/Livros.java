@@ -6,10 +6,18 @@
     public class Livros {
         private ArrayList<Livro> livros = new ArrayList<>();
 
+        public ArrayList<Livro> getLivros() {
+            return livros;
+        }
+
         /** Chama a função ler_ficheiro e guarda as linhas lidas num array e envia-as para a função setLivros*/
         public void lerLivros() {
             int n_linhas = contLinhas();
             if(n_linhas!=0) setLivros(lerFicheiro(n_linhas));
+        }
+
+        public int size(){
+            return livros.size();
         }
 
         /** Cria um livro adiciona-o ao array livros e chama a função write_livro*/
@@ -110,9 +118,12 @@
             String isbn;
             Scanner ler = new Scanner(System.in);
             Livro liv = new Livro();
+            boolean flag=false;
             do{
                 System.out.print("Insira o ISBN do livro: ");
                 isbn=ler.nextLine();
+                if(liv.verificaIsbn(isbn)) flag=true;
+                else System.out.println("Formatação errada! Por favor insira um ISBN válido");
             }while(!liv.verificaIsbn(isbn));
             return isbn;
         }

@@ -1,3 +1,4 @@
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
@@ -51,16 +52,18 @@ public class Main {
         }while (op != 6);
     }
 
-    public static void menuEmprestimos() throws java.text.ParseException {
+    public static void menuEmprestimos() {
         Scanner ler = new Scanner(System.in);
         Emprestimos emprestimos = new Emprestimos();
+        emprestimos.lerEmprestimos();
         int opc;
         do {
             System.out.println("1 - Listar");
             System.out.println("2 - Adicionar");
             System.out.println("3 - Devolver");
             System.out.println("4 - Quantidade de livros numa data");
-            System.out.println("5 - Sair");
+            System.out.println("5 - Mostrar empréstimos com atraso");
+            System.out.println("6 - Sair");
             System.out.print("Selecione uma opção: ");
             opc = ler.nextInt();
             switch (opc) {
@@ -69,7 +72,7 @@ public class Main {
                     break;
 
                 case 2:
-                    emprestimos.registarEmprestimos();
+                    emprestimos.registarEmprestimo();
                     break;
 
                 case 3:
@@ -82,12 +85,27 @@ public class Main {
                    String strDataInicio = ler.next();
                    System.out.println("Data de fim: ");
                    String strdataFim = ler.next();
-                   Date dataInicio = formatDate.parse(strDataInicio);
-                   Date dataFim = formatDate.parse(strdataFim);
-                   emprestimos.totalEmprestimos(dataInicio, dataFim);
+                   Date dataInicio = null;
+                   try {
+                       dataInicio = formatDate.parse(strDataInicio);
+
+                   } catch (ParseException e) {
+                       throw new RuntimeException(e);
+                   }
+                   Date dataFim = null;
+                   try {
+                       dataFim = formatDate.parse(strdataFim);
+                   } catch (ParseException e) {
+                       throw new RuntimeException(e);
+                   }
+                   System.out.println(emprestimos.intervaloData(dataInicio, dataFim));
                    break;
 
                 case 5:
+                    emprestimos.diasAtraso();
+                    break;
+                case 6:
+                    emprestimos.guardarEmprestimos();
                     System.out.println("A sair ...");
                     break;
 
@@ -95,7 +113,7 @@ public class Main {
                     System.out.println("Opção incorreta! Tente novamente");
                     break;
             }
-        } while (opc != 5);
+        } while (opc != 6);
     }
 
     public static void menuLivros(){
@@ -203,7 +221,10 @@ public class Main {
                     break;
 
                 case 3:
-                    uts.pesquisarUtente();
+                    int Nif;
+                    System.out.print("Insira o NIF do Utente:  ");
+                    Nif = ler.nextInt();
+                    uts.pesquisarUtente(Nif);
                     break;
 
                 case 4:

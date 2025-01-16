@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class Jornal_revista {
     private String titulo, editora, categoria, ISSN;
     private int ano_publicacao;
-    private boolean emprestado; // Indica se o jornal/revista está emprestado
+    private boolean livre; // Indica se o jornal/revista está livre
 
     // Construtor padrão
     public Jornal_revista() {
@@ -12,7 +12,7 @@ public class Jornal_revista {
         categoria = "";
         ISSN = "";
         ano_publicacao = 0;
-        emprestado = false; // Inicialmente, não está emprestado
+        livre = true; // Inicialmente, está livre
     }
 
     // Construtor com ano_publicacao apenas
@@ -22,17 +22,17 @@ public class Jornal_revista {
         categoria = "";
         ISSN = "";
         ano_publicacao = ano;
-        emprestado = false; // Inicialmente, não está emprestado
+        livre = true; // Inicialmente, está livre
     }
 
     // Construtor com todos os atributos
-    public Jornal_revista(String titulo, String editora, String categoria, String ISSN, int ano_publicacao, boolean emprestado) {
+    public Jornal_revista(String titulo, String editora, String categoria, String ISSN, int ano_publicacao, boolean livre) {
         this.titulo = titulo;
         this.editora = editora;
         this.categoria = categoria;
         this.ISSN = ISSN;
         this.ano_publicacao = ano_publicacao;
-        this.emprestado = emprestado;
+        this.livre = livre;
     }
 
     // Construtor para leitura do ficheiro
@@ -45,7 +45,7 @@ public class Jornal_revista {
         this.categoria = campos[2];
         this.ISSN = campos[3];
         this.ano_publicacao = Integer.parseInt(campos[4]);
-        this.emprestado = false; // Inicialmente, não está emprestado
+        this.livre = true; // Inicialmente, está livre
     }
 
     // Função de validação para o ISSNor
@@ -101,43 +101,47 @@ public class Jornal_revista {
             }
         }
 
-        this.emprestado = false; // Inicialmente, não está emprestado
+        this.livre = false; // Inicialmente, não está livre
         return this;
     }
 
     public String formataJornalRevistaE() {
-        return "Título: " + this.titulo + "\nEditora: " + this.editora + "\nCategoria: " + this.categoria + "\nISSN: " + this.ISSN + "\nAno de publicação: " + this.ano_publicacao + "\nEmprestado: " + (this.emprestado ? "Sim" : "Não");
+        return "Título: " + this.titulo + "\nEditora: " + this.editora + "\nCategoria: " + this.categoria + "\nISSN: " + this.ISSN + "\nAno de publicação: " + this.ano_publicacao + "\nlivre: " + (this.livre ? "Sim" : "Não");
     }
 
     public String formataJornalRevistaF() {
         return titulo + "|" + editora + "|" + categoria + "|" + ISSN + "|" + ano_publicacao + ";";
     }
 
-    public boolean getEmprestado() {
-        return emprestado;
+    public boolean getlivre() {
+        return livre;
     }
 
-    public void setEmprestado(boolean emprestado) {
-        this.emprestado = emprestado;
+    public void setlivre(boolean livre) {
+        this.livre = livre;
     }
 
-    // Métodos para visualizar se estão emprestados ou não
+    // Métodos para visualizar se estão livres ou não
     public static void listarJornaisRevistasLivres(Jornal_revista[] jornaisRevistas) {
         for (Jornal_revista jr : jornaisRevistas) {
-            if (!jr.getEmprestado()) {
+            if (!jr.getlivre()) {
                 System.out.println(jr.formataJornalRevistaE());
             }
         }
         System.out.println("--------------- Fim ---------------");
     }
 
-    public static void listarJornaisRevistasEmprestados(Jornal_revista[] jornaisRevistas) {
+    public static void listarJornaisRevistaslivres(Jornal_revista[] jornaisRevistas) {
         for (Jornal_revista jr : jornaisRevistas) {
-            if (jr.getEmprestado()) {
+            if (jr.getlivre()) {
                 System.out.println(jr.formataJornalRevistaE());
             }
         }
         System.out.println("--------------- Fim ---------------");
+    }
+
+    public boolean isEmpty(){
+        return this.titulo.isEmpty();
     }
 
     // Getters e Setters

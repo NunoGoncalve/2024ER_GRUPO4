@@ -67,23 +67,20 @@ public class Utentes {
  * A busca é feita através do NIF; após o usúario inserir o NIF  a função 'For' vai comparar com os NIF's registrados
  * e guardados no ficheiro ".txt"; após o encontar, imprime no ecrã. */
 
-    public void pesquisarUtente(){
+    public Utente pesquisarUtente(int nif){
+        Utente utFlag = new Utente();
         if (this.uts.isEmpty()) {
             System.out.println("O Ficheiro está vázio...");
         }
         else {
-            int Nif;
-            Scanner ler = new Scanner(System.in);
-            System.out.print("Insira o NIF do Utente:  ");
-            Nif = ler.nextInt();
-
             boolean encontrado = false;
 
             for (Utente ut : this.uts) { //definição do ut
-                if (ut.getNif() == Nif) {
+                if (ut.getNif() == nif) {
                     System.out.println("--------------- Utente encontrado com sucesso! ---------------");
                     System.out.println(ut.formataUtenteE());
                     encontrado = true;
+                    return ut;
                 }
             }
             if (!encontrado) {  // Só será alterado para satisfazer a condição de true se não achar no loop for.
@@ -93,7 +90,9 @@ public class Utentes {
             }
 
             System.out.println("--------------- Fim ---------------\n");
+
         }
+        return utFlag;
     }
 
     /** A função abaixo Pesquisa os Utentes que estão no ArrayList (uts) e Salvos no doc. ".txt"

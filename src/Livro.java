@@ -48,10 +48,14 @@ public class Livro {
         autor= ler.nextLine();
         System.out.print("Insira a categoria do livro: ");
         categoria = ler.nextLine();
+        boolean flag=false;
         do{
+
             System.out.print("Insira o ISBN do livro: ");
             ISBN = ler.nextLine();
-        }while(!verificaIsbn(ISBN));
+            if(verificaIsbn(ISBN)) flag=true;
+            else System.out.println("Formatação errada! Por favor insira um ISBN válido");
+        }while(!flag);
         String ano;
         do{
             System.out.print("Insira o ano de edição do livro: ");
@@ -72,7 +76,6 @@ public class Livro {
             return true;
         }
         else{
-            System.out.println("Formatação errada! Por favor insira um ISBN válido");
             return false;
         }
     }
