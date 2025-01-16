@@ -1,27 +1,26 @@
 import java.util.Scanner;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class Main {
-
     static Reservas reservas = new Reservas();  // Lista global de reservas
 
     public static void menuReserva() {
         Scanner ler = new Scanner(System.in);
-
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
         System.out.println("1 - Adicionar Reserva");
         System.out.println("2 - Exibir Reservas");
         System.out.println("3 - Exibir Reservas com NIF");
         System.out.println("4 - Remover Reserva");
-        System.out.println("5 - Pesquisar Reservas por Data");
+        System.out.println("5 - Pesquisar por Data");
         System.out.println("6 - Sair");
-        System.out.print("Escolha uma opção: ");
+
         int opcaoReserva = ler.nextInt();
+        ler.nextLine();  // Consumir a quebra de linha após o inteiro
 
         switch (opcaoReserva) {
             case 1:
-                reservas.adicionarReserva();  // Passando o SimpleDateFormat para o metodo, tive que diminuir aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                reservas.criarReserva(sdf);  // Chama o método de criar reserva
                 break;
             case 2:
                 reservas.exibirReservas();  // Exibe todas as reservas anonimamente
@@ -35,26 +34,25 @@ public class Main {
                 reservas.removerReserva(numeroRemover);  // Remove a reserva
                 break;
             case 5:
-                /*System.out.print("Digite o NIF do utente: ");
+                System.out.print("Digite o NIF do utente: ");
                 String nifPesquisa = ler.next();
                 System.out.print("Digite a data de início (dd/MM/yyyy): ");
                 String inicioPesquisa = ler.next();
                 System.out.print("Digite a data de fim (dd/MM/yyyy): ");
                 String fimPesquisa = ler.next();
                 try {
-                    Date dataInicioPesquisa = sdf.parse(inicioPesquisa);
-                    Date dataFimPesquisa = sdf.parse(fimPesquisa);
-                    // Pesquisa reservas por intervalo de datas
-                    reservas.pesquisarReservasPorData(nifPesquisa, dataInicioPesquisa, dataFimPesquisa);
+                    sdf.setLenient(false);  // Desativa o modo leniente para evitar datas inválidas
+                    reservas.pesquisarReservasPorData(nifPesquisa, sdf.parse(inicioPesquisa), sdf.parse(fimPesquisa));
                 } catch (Exception e) {
                     System.out.println("Formato de data inválido.");
-                }*/
+                }
                 break;
             case 6:
                 System.out.println("A sair ...");
                 break;
             default:
-                System.out.println("Opção inválida!");
+                System.out.println("Opção incorreta!");
+                break;
         }
     }
 
@@ -72,7 +70,7 @@ public class Main {
             op = ler.nextInt();
             switch (op) {
                 case 1:
-                    
+                    // Funções para livros
                     break;
                 case 2:
                     // Funções para jornais/revistas
