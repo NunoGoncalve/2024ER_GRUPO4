@@ -9,9 +9,9 @@ public class Livros {
     /** Metodo lerLivros
      * Define a variável n_linhas com o resultado da função contLinhas;
      * Se o n_linhas for diferente de 0 chama a função setLivros com o resultado da função lerFicheiro como parametro*/
-    public void lerLivros() {
-        int n_linhas = contLinhas();
-        if(n_linhas!=0) setLivros(lerFicheiro(n_linhas));
+    public void lerLivros(String biblioteca) {
+        int n_linhas = contLinhas(biblioteca);
+        if(n_linhas!=0) setLivros(lerFicheiro(n_linhas, biblioteca));
     }
 
     /** Metodo adicionarLivro
@@ -176,9 +176,9 @@ public class Livros {
 
     /** Metodo guardarLivros
      * Guarda o conteúdo do array no ficheiro verificando se é a primeira linha ou as seguintes */
-    public void guardarLivros(){
+    public void guardarLivros(String biblioteca){
         try {
-            FileWriter writer = new FileWriter("livros.txt");
+            FileWriter writer = new FileWriter(biblioteca+"/livros.txt");
             for (Livro livro : this.livros) {
                 if(this.livros.getFirst()==livro) writer.write(livro.formataLivroF());
                 else writer.write("\n"+livro.formataLivroF());
@@ -198,11 +198,11 @@ public class Livros {
     /** Metodo lerFicheiro
      * Recebe o número de linhas que o ficheiro têm e cria um array de strings desse tamanho, a seguir
      * lê as linhas do ficheiro e guarda-as num array retornando o mesmo */
-    private String[] lerFicheiro(int n_linhas){
+    private String[] lerFicheiro(int n_linhas, String biblioteca){
         int i=0;
         String[] livros = new String[n_linhas];
 
-        File myfile = new File("livros.txt");
+        File myfile = new File(biblioteca+"/livros.txt");
         try {
             Scanner myReader = new Scanner(myfile);
             while (myReader.hasNextLine()) {
@@ -229,13 +229,13 @@ public class Livros {
      * Cria o ficheiro caso este não exista e retorna o número de linhas a 0.
      * Caso o ficheiro exista conta as linhas presentes no ficheiro
      * @return i número de linhas*/
-    private int contLinhas(){
+    private int contLinhas(String biblioteca){
         int i=0;
-        File myfile = new File("livros.txt");
+        File myfile = new File(biblioteca+"/livros.txt");
         try {
             if (myfile.createNewFile()) return i;
             else {
-                try (BufferedReader reader = new BufferedReader(new FileReader("livros.txt"))) {
+                try (BufferedReader reader = new BufferedReader(new FileReader(biblioteca+"/livros.txt"))) {
                     while (reader.readLine() != null) i++;
                 } catch (IOException e) {
                     e.printStackTrace();

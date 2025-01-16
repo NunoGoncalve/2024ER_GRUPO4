@@ -95,6 +95,7 @@ public class Livro {
         System.out.println("Categoria: " + categoria);
         System.out.println("ISBN: " + ISBN);
         System.out.println("Ano edicao: " + anoEdicao);
+        System.out.println("Livre: " + (this.livre ? "Sim" : "Não"));
     }
 
     /** Metodo isEmpty()

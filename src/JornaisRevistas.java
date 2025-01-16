@@ -13,9 +13,9 @@ public class JornaisRevistas {
      * Chama a função "lerFicheiro" e guarda as linhas lidas num array,
      * enviando-as para a função "setJornaisRevistas".
      */
-    public void ler_jornaisRevistas() {
-        int n_linhas = contLinhas();
-        if (n_linhas != 0) setJornaisRevistas(lerFicheiro(n_linhas));
+    public void ler_jornaisRevistas(String biblioteca) {
+        int n_linhas = contLinhas(biblioteca);
+        if (n_linhas != 0) setJornaisRevistas(lerFicheiro(n_linhas, biblioteca));
     }
 
     /**
@@ -197,9 +197,9 @@ public class JornaisRevistas {
     /**
      * Escreve os dados da coleção no ficheiro.
      */
-    public void guardarJornaisRevistas() {
+    public void guardarJornaisRevistas(String biblioteca) {
         try {
-            FileWriter writer = new FileWriter("jornais_revistas.txt");
+            FileWriter writer = new FileWriter(biblioteca+"/jornais_revistas.txt");
             for (Jornal_revista jr : this.jornaisRevistas) {
                 if (this.jornaisRevistas.getFirst() == jr) writer.write(jr.formataJornalRevistaF());
                 else writer.write("\n" + jr.formataJornalRevistaF());
@@ -223,11 +223,11 @@ public class JornaisRevistas {
      * @param n_linhas O número de linhas no ficheiro.
      * @return Um array que contem os dados lidos.
      */
-    private String[] lerFicheiro(int n_linhas) {
+    private String[] lerFicheiro(int n_linhas, String biblioteca) {
         int i = 0;
         String[] jornaisRevistas = new String[n_linhas];
 
-        File myfile = new File("jornais_revistas.txt");
+        File myfile = new File(biblioteca+"/jornais_revistas.txt");
         try {
             Scanner myReader = new Scanner(myfile);
             while (myReader.hasNextLine()) {
@@ -258,13 +258,13 @@ public class JornaisRevistas {
      *
      * @return O número de linhas no ficheiro.
      */
-    private int contLinhas() {
+    private int contLinhas(String biblioteca) {
         int i = 0;
-        File myfile = new File("jornais_revistas.txt");
+        File myfile = new File(biblioteca+"/jornais_revistas.txt");
         try {
             if (myfile.createNewFile()) return i;
             else {
-                try (BufferedReader reader = new BufferedReader(new FileReader("jornais_revistas.txt"))) {
+                try (BufferedReader reader = new BufferedReader(new FileReader(biblioteca+"jornais_revistas.txt"))) {
                     while (reader.readLine() != null) i++;
                 } catch (IOException e) {
                     e.printStackTrace();

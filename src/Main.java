@@ -2,11 +2,11 @@ import java.util.Scanner;
 
 public class Main {
 
-    public static void menuJornaisRevistas(){
+    public static void menuJornaisRevistas(String bib){
         int op;
         Scanner ler = new Scanner(System.in);
         JornaisRevistas jornaisRevistas =new JornaisRevistas();
-        jornaisRevistas.ler_jornaisRevistas();
+        jornaisRevistas.ler_jornaisRevistas(bib);
         do {
 
             System.out.println("- Jornais/Revistas -");
@@ -38,7 +38,7 @@ public class Main {
                     break;
 
                 case 6:
-                    jornaisRevistas.guardarJornaisRevistas();
+                    jornaisRevistas.guardarJornaisRevistas(bib);
                     jornaisRevistas.limparJornaisRevistas();
                     System.out.println("A sair do menu livro...");
                     break;
@@ -49,11 +49,11 @@ public class Main {
         }while (op != 6);
     }
 
-    public static void menuLivros(){
+    public static boolean menuLivros(String bib){
         int op;
         Scanner ler = new Scanner(System.in);
         Livros livros=new Livros();
-        livros.lerLivros();
+        livros.lerLivros(bib);
         if(livros.isEmpty()){
             do {
                 System.out.println("- Livros -");
@@ -64,7 +64,7 @@ public class Main {
                 switch (op) {
                     case 1:
                         livros.adicionarLivro();
-                        livros.guardarLivros();
+                        livros.guardarLivros(bib);
                         op = 2;
                         break;
                     case 2:
@@ -106,15 +106,14 @@ public class Main {
                     case 5:
                         livros.eliminarLivro(livros.pedeIsbn());
                         if(livros.isEmpty()){
-                            livros.guardarLivros();
+                            livros.guardarLivros(bib);
                             livros.limparLivros();
-                            System.out.println("A sair do menu livro...");
-                            op =6;
+                            return true;
                         }
                         break;
 
                     case 6:
-                        livros.guardarLivros();
+                        livros.guardarLivros(bib);
                         livros.limparLivros();
                         System.out.println("A sair do menu livro...");
                         break;
@@ -124,13 +123,13 @@ public class Main {
                 }
             }while (op != 6);
         }
+        return false;
     }
 
-
-    public static void menuUtente(){
+    public static void menuUtente(String bib){
         int escolha;
         Utentes uts = new Utentes();
-        uts.lerUtentes();
+        uts.lerUtentes(bib);
         if(uts.isEmpty()){}
         do {
 
@@ -168,7 +167,7 @@ public class Main {
 
                 case 6:
                     System.out.println("A sair do menu Utente....\n");
-                    uts.guardarUtentes();
+                    uts.guardarUtentes(bib);
                     break;
                 default:
                     System.out.println("ERRO!!  Escolha uma das opções");
@@ -178,10 +177,11 @@ public class Main {
     }
 
 
-    public static void menu(){
+    public static void menu(String bib){
         Scanner ler = new Scanner(System.in);
         String op;
         do{
+            System.out.println("--------------- Bem vindo à biblioteca "+bib.substring(bib.indexOf("/") + 1)+" ---------------");
             System.out.println("1) - Livros");
             System.out.println("2) - Jornais / Revistas");
             System.out.println("3) - Utentes");
@@ -193,15 +193,15 @@ public class Main {
 
             switch(op){
                 case "1":
-                    menuLivros();
+                    do{}while(menuLivros(bib));
                     break;
 
                 case "2":
-                    menuJornaisRevistas();
+                    menuJornaisRevistas(bib);
                     break;
 
                 case "3":
-                    menuUtente();
+                    menuUtente(bib);
                     break;
 
                 case "4":
@@ -221,7 +221,73 @@ public class Main {
         }while(!op.equals("6"));
     }
 
+    public static boolean menuBibliotecas(){
+        Scanner ler = new Scanner(System.in);
+        Bibliotecas bib = new Bibliotecas();
+        String op;
+
+        if(bib.isEmpty()){
+            do{
+                System.out.println("--------------- Bem vindo à secção Bibliotecas ---------------");
+                System.out.println("1) - Adicionar");
+                System.out.println("2) - Sair");
+                System.out.print("Sem bibliotecas! Selecione uma opção: ");
+                op=ler.next();
+                switch(op){
+                    case "1":
+                        bib.adicionarBiblioteca();
+                        op="2";
+                        break;
+                    case "2":
+                        System.out.println("A sair ...");
+                        break;
+                    default:
+                        System.out.println("Opção inválida! Tente novamente");
+                        break;
+                }
+            }while(!op.equals("2"));
+        }
+        if(!bib.isEmpty()){
+            do{
+                System.out.println("--------------- Bem vindo à secção Bibliotecas ---------------");
+                System.out.println("1) - Selecionar");
+                System.out.println("2) - Adicionar");
+                System.out.println("3) - Eliminar");
+                System.out.println("4) - Sair");
+                System.out.print("Selecione uma opção: ");
+                op=ler.next();
+
+                switch(op){
+                    case "1":
+                        String biblioteca = bib.escolherBibliotecas();
+                        if(!biblioteca.equals("")) menu(biblioteca);
+                        break;
+
+                    case "2":
+                        bib.adicionarBiblioteca();
+                        break;
+
+                    case "3":
+                        String biblioteca = bib.escolherBibliotecas();
+                        if(!biblioteca.equals("")) bib.eliminarBiblioteca(biblioteca);
+                        if(bib.isEmpty()){
+                            return true;
+                        }
+                        break;
+
+                    case "4":
+                        System.out.println("A sair ...");
+                        break;
+                    default:
+                        System.out.println("Opção inválida! Tente novamente");
+                        break;
+                }
+            }while(!op.equals("4"));
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
-        menu();
+         do{}while(menuBibliotecas());
     }
 }
