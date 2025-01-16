@@ -1,12 +1,12 @@
 import java.util.Scanner;
 
 /** Class livro usada para criar objetos livro com as propriedades:
- * Titulo
- * Editora
- * Categoria
- * ISBN
- * Ano de edição
- * Todas as propriedades são Strings
+ * Titulo -> propriedade string
+ * Editora -> propriedade string
+ * Categoria -> propriedade string
+ * ISBN -> propriedade string, formatos aceites -> 123456789(0 ou X); 1-23-456789-(0 ou X); 1234567890123; 123-4-567-89012-3;
+ * Ano de edição -> propriedade inteira, ano de edição (yyyy)
+ * Livre -> propriedade booliana se o livro está reservado ou emprestado
  */
 public class Livro {
     private String titulo, editora, autor, categoria, ISBN;

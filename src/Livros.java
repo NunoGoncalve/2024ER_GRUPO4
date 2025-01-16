@@ -7,11 +7,11 @@ public class Livros {
     private ArrayList<Livro> livros = new ArrayList<>();
 
     /** Metodo lerLivros
-     * Define a variável n_linhas com o resultado da função contLinhas;
-     * Se o n_linhas for diferente de 0 chama a função setLivros com o resultado da função lerFicheiro como parametro*/
+     * Define a variável nLinhas com o resultado da função contLinhas;
+     * Se o nLinhas for diferente de 0 chama a função setLivros com o resultado da função lerFicheiro como parametro*/
     public void lerLivros(String biblioteca) {
-        int n_linhas = contLinhas(biblioteca);
-        if(n_linhas!=0) setLivros(lerFicheiro(n_linhas, biblioteca));
+        int nLinhas = contLinhas(biblioteca);
+        if(nLinhas!=0) setLivros(lerFicheiro(nLinhas, biblioteca));
     }
 
     /** Metodo adicionarLivro
@@ -198,9 +198,9 @@ public class Livros {
     /** Metodo lerFicheiro
      * Recebe o número de linhas que o ficheiro têm e cria um array de strings desse tamanho, a seguir
      * lê as linhas do ficheiro e guarda-as num array retornando o mesmo */
-    private String[] lerFicheiro(int n_linhas, String biblioteca){
+    private String[] lerFicheiro(int nLinhas, String biblioteca){
         int i=0;
-        String[] livros = new String[n_linhas];
+        String[] livros = new String[nLinhas];
 
         File myfile = new File(biblioteca+"/livros.txt");
         try {
