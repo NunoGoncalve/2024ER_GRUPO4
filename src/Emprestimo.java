@@ -7,18 +7,18 @@ import java.util.Scanner;
 public class Emprestimo {
     private int num;
     private Utente utente;
-    private Livros emprestadosLivros;
-    private JornaisRevistas emprestadosJornaisRevistas;
+    private Livros livrosReservados;
+    private JornaisRevistas jornaisRevistasReservados;
     private Date dataInicio;
     private Date dataFimPrev;
     private Date dataFim;
 
     public Livros getEmprestadosLivros() {
-        return emprestadosLivros;
+        return livrosReservados;
     }
 
     public JornaisRevistas getEmprestadosJornaisRevistas() {
-        return emprestadosJornaisRevistas;
+        return jornaisRevistasReservados;
     }
 
     //Construtor do empréstimo 2
@@ -27,12 +27,9 @@ public class Emprestimo {
         this.dataInicio = null;
         this.dataFim = null;
         this.dataFimPrev = null;
-        Livros liv = new Livros();
-        Utente ut = new Utente();
-        JornaisRevistas rev = new JornaisRevistas();
-        this.utente = ut;
-        this.emprestadosJornaisRevistas = rev;
-        this.emprestadosLivros = liv;
+        this.utente = new Utente();
+        this.livrosReservados = new Livros();
+        this.jornaisRevistasReservados = new JornaisRevistas();
     }
 
     /** Cria um emprestimo de acordo com ad informações obtidas do ficheiro */
@@ -40,7 +37,7 @@ public class Emprestimo {
         String regra="[|;]", regraLivros="[*]";
         String[] campos = emprestimo.split(regra);
         String[] livrosJornaisRevistas = campos[4].split(regraLivros);
-        Date dataInicio, dataFimPrev, dataFim = null;
+        Date dataFim = null;
         Livros livs = new Livros();
         JornaisRevistas jr = new JornaisRevistas();
         Utentes uts = new Utentes();
@@ -52,23 +49,22 @@ public class Emprestimo {
         this.num = Integer.parseInt(campos[0]);
 
         try {
-            dataInicio = formatter.parse(campos[1]);
-            dataFimPrev = formatter.parse(campos[2]);
+            this.dataInicio = formatter.parse(campos[1]);
+            this.dataFimPrev = formatter.parse(campos[2]);
             if(!campos[3].equals("00/00/0000")) dataFim = formatter.parse(campos[3]);
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
 
-        this.dataInicio = dataInicio;
         this.dataFim = dataFim;
-        this.dataFimPrev= dataFimPrev;
-        this.emprestadosLivros = new Livros();
-        this.emprestadosJornaisRevistas = new JornaisRevistas();
+
+        this.livrosReservados = new Livros();
+        this.jornaisRevistasReservados = new JornaisRevistas();
         for (String livJorRev : livrosJornaisRevistas) {
             if (!livs.procuraLivro(livJorRev).isEmpty()) {
-                this.emprestadosLivros.adicionarLivro(livs.procuraLivro(livJorRev));
+                this.livrosReservados.adicionarLivro(livs.procuraLivro(livJorRev));
             } else if (!jr.procuraJornalRevista(livJorRev).isEmpty()) {
-                this.emprestadosJornaisRevistas.adicionarJornalRevista(jr.procuraJornalRevista(livJorRev));
+                this.jornaisRevistasReservados.adicionarJornalRevista(jr.procuraJornalRevista(livJorRev));
             }
         }
 
@@ -77,33 +73,33 @@ public class Emprestimo {
 
     public String formataEmprestimoF () {
         String pattern = "dd/MM/yyyy";
-        DateFormat df = new SimpleDateFormat(pattern);
-        String dataFimPrev = df.format(this.dataFimPrev);
+        DateFormat formato = new SimpleDateFormat(pattern);
+        String dataFimPrev = formato.format(this.dataFimPrev);
         String dataFim;
         boolean flag=false;
 
-        if(this.dataFim!=null) dataFim = df.format(this.dataFim);
+        if(this.dataFim!=null) dataFim = formato.format(this.dataFim);
         else dataFim = "00/00/0000";
-        String dataInicio = df.format(this.dataInicio);
+        String dataInicio = formato.format(this.dataInicio);
         String format= this.num+"|"+dataInicio+"|"+dataFimPrev+"|"+dataFim+"|";
 
-        if(!this.emprestadosLivros.isEmpty()) {
+        if(!this.livrosReservados.isEmpty()) {
             flag=true;
-            for(Livro liv: this.emprestadosLivros.getLivros()){
-                if(liv == this.emprestadosLivros.getLivros().getLast()) format+=liv.getISBN();
+            for(Livro liv: this.livrosReservados.getLivros()){
+                if(liv == this.livrosReservados.getLivros().getLast()) format+=liv.getISBN();
                 else format+=liv.getISBN()+"*";
             }
         }
-        if(!this.emprestadosJornaisRevistas.isEmpty()){
+        if(!this.jornaisRevistasReservados.isEmpty()){
             if(flag){
-                for(Jornal_revista jr: this.emprestadosJornaisRevistas.getJornalRevistas()){
-                    if (jr == this.emprestadosJornaisRevistas.getJornalRevistas().getFirst()) format+="*"+jr.getISSN();
-                    else if (jr == this.emprestadosJornaisRevistas.getJornalRevistas().getLast()) format+=jr.getISSN();
+                for(Jornal_revista jr: this.jornaisRevistasReservados.getJornalRevistas()){
+                    if (jr == this.jornaisRevistasReservados.getJornalRevistas().getFirst()) format+="*"+jr.getISSN();
+                    else if (jr == this.jornaisRevistasReservados.getJornalRevistas().getLast()) format+=jr.getISSN();
                     else format+=jr.getISSN()+"*";
                 }
             }else{
-                for(Jornal_revista jr: this.emprestadosJornaisRevistas.getJornalRevistas()){
-                    if (jr == this.emprestadosJornaisRevistas.getJornalRevistas().getLast()) format+=jr.getISSN();
+                for(Jornal_revista jr: this.jornaisRevistasReservados.getJornalRevistas()){
+                    if (jr == this.jornaisRevistasReservados.getJornalRevistas().getLast()) format+=jr.getISSN();
                     else format+=jr.getISSN()+"*";
                 }
             }
@@ -119,8 +115,8 @@ public class Emprestimo {
 
     /** Metodo criarEmprestimo
      Pede ao utilizador as informações do empréstimo e faz as verificações necessárias
-     @param num utilizado para definir o número do empréstimo */
-    public Emprestimo criarEmprestimo(int num) {
+     @param numEmprestimo utilizado para definir o número do empréstimo */
+    public Emprestimo criarEmprestimo(int numEmprestimo) {
         Scanner ler = new Scanner(System.in);
         Utentes uts = new Utentes();
         Livro liv = new Livro();
@@ -133,8 +129,8 @@ public class Emprestimo {
         //define o formato para a data
         SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy");
         System.out.println("Registo de Empréstimos \n");
-        this.num = num;
-        System.out.println("Numero:" + this.num);
+        this.num = numEmprestimo;
+        System.out.println("Número do empréstimo:" + this.num);
         uts.listarUtentes();
         String nif;
         do{
@@ -147,16 +143,21 @@ public class Emprestimo {
         System.out.print("Quantos livros/jornais/revistas deseja emprestar: ");
         int numljr = ler.nextInt();
         ler.skip("\n");
-        boolean flag;
+        boolean flag=false;
         for (int i = 0; i < numljr; i++) {
             flag=false;
             do{
+                if(livs.contLivrosLivres()==0) System.out.println("Todos os livros estão ocupados");
+                else livs.listarLivros();
+                if(jors.contJornaisRevistasLivres()==0) System.out.println("Todos os jornais/revistas estão ocupados");
+                else jors.listarJornaisRevistasLivres();
+                System.out.println();
                 System.out.print("Insira o ISBN ou ISSN do livro/jornal/revista desejado: ");
                 codigo = ler.nextLine();
                 if(liv.verificaIsbn(codigo)){
                     liv= livs.procuraLivro(codigo);
                     if(!liv.isEmpty() && liv.getLivre()){
-                        this.emprestadosLivros.adicionarLivro(liv);
+                        this.livrosReservados.adicionarLivro(liv);
                         liv.setLivre(false);
                         livs.guardarLivros();
                         flag=true;
@@ -175,26 +176,24 @@ public class Emprestimo {
             }while(!flag);
         }
 
+        flag=false;
         this.dataInicio= new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         String data;
-        Date date;
-        System.out.println("Data Inicio: " + formatDate.format(this.dataInicio));
-        flag=false;
+        System.out.println("Data de inicio: " + formatDate.format(this.dataInicio));
         do{
             System.out.print("Data prevista de entrega: ");
-            data=ler.nextLine();
+            data=ler.next();
             if(verificarDatas(data)) flag=true;
-            else System.out.println("Data invválida! Tente novamente");
+            else System.out.println("Data inválida! Tente novamente");
         }while(!flag);
 
-
         try {
-            date = formatter.parse(data);
+            this.dataFimPrev = formatter.parse(data);
         } catch (ParseException e) {
             throw new RuntimeException(e);
         }
-        this.dataFimPrev = date;
+
         this.dataFim=null;
         return this;
     }
@@ -203,22 +202,18 @@ public class Emprestimo {
         return this.num==0;
     }
 
-    /**
-     Formata os dados relativos a um empréstimo
-     */
+    /** Metodo formataEmprestimoE
+     * Formata os dados relativos a um empréstimo */
     public void formataEmprestimoE(){
         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
         System.out.println();
-        System.out.println("----- Empréstimo ----");
+        System.out.println("--------------- Empréstimo ---------------");
         System.out.println("Número do empréstimo: "+this.num);
         System.out.println("Nif associado: "+this.utente.getNif());
 
-        if (this.emprestadosLivros!=null) {
-            System.out.println("Livros emprestados: ");
-            this.emprestadosLivros.listarLivros();
-        }
-
-        if (!this.emprestadosJornaisRevistas.isEmpty()) this.emprestadosJornaisRevistas.listarJornaisRevistas();
+        System.out.println("--------------- Livros/Jornais/Revistas ---------------");
+        if (!this.livrosReservados.isEmpty()) this.livrosReservados.listarLivros();
+        if (!this.jornaisRevistasReservados.isEmpty()) this.jornaisRevistasReservados.listarJornaisRevistas();
 
         System.out.println("Data de inicio: "+format.format(this.dataInicio));
         System.out.println("Data de fim previsto: "+format.format(this.dataFimPrev));

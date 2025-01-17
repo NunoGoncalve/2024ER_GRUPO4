@@ -48,9 +48,21 @@ public class Livros {
      * Para cada livro marcado como livre dentro do arraylist é chamada a função formataLivroE */
     public void listarLivrosLivres(){
         for (Livro liv : this.livros) {
-            if(liv.getLivre())liv.formataLivroE();
+            if(liv.getLivre()){
+                liv.formataLivroE();
+            }
         }
         System.out.println("--------------- Fim ---------------");
+    }
+
+    public int contLivrosLivres(){
+        int numLivres = 0;
+        for (Livro liv : this.livros) {
+            if(liv.getLivre()){
+                numLivres++;
+            }
+        }
+        return numLivres;
     }
 
     /** Metodo listarLivrosUsado
@@ -67,7 +79,8 @@ public class Livros {
     private void menuAtualizar(Livro liv){
         Scanner ler = new Scanner(System.in);
         int op;
-        System.out.println("--------------- Atualizar Livro ---------------");
+        System.out.println();
+        System.out.println("--------------- Atualizar livro ---------------");
         System.out.println("1)  Titulo");
         System.out.println("2)  Editora");
         System.out.println("3)  Autor");

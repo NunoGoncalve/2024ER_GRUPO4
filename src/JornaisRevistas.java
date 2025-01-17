@@ -43,7 +43,6 @@ public class JornaisRevistas {
             System.out.println("Ficheiro vazio! Adicione um jornal ou revista");
         } else {
             for (Jornal_revista jr : this.jornaisRevistas) {
-                System.out.println("--------------- Jornal/Revista ---------------");
                 System.out.println(jr.formataJornalRevistaE());
             }
             System.out.println("--------------- Fim ---------------");
@@ -60,7 +59,17 @@ public class JornaisRevistas {
                 System.out.println(jr.formataJornalRevistaE());
             }
         }
-        System.out.println("--------------- Fim ---------------");
+
+    }
+
+    public int contJornaisRevistasLivres(){
+        int numLivres = 0;
+        for (Jornal_revista jr : this.jornaisRevistas) {
+            if(jr.getLivre()){
+                numLivres++;
+            }
+        }
+        return numLivres;
     }
 
     /**

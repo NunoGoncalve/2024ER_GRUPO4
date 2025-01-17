@@ -180,7 +180,7 @@ public class Emprestimos {
 
     public void registarEmprestimo(){
         Emprestimo emp = new Emprestimo();
-        emprestimos.add(emp.criarEmprestimo(emprestimos.size()+1));
+        this.emprestimos.add(emp.criarEmprestimo(emprestimos.size()+1));
     }
 
 
@@ -192,6 +192,38 @@ public class Emprestimos {
             }
         }
         return empFlag;
+    }
+
+    /** Metodo pedeDatas
+     * Pede ao utilizador duas datas, faz as verificações necessárias
+     * @return das duas datas inseridas */
+    public Date[] pedeDatas(){
+        Scanner ler = new Scanner(System.in);
+        SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy");
+        String strDataInicio, strDataFim="";
+        Date dataInicio, dataFim;
+        Emprestimo emp = new Emprestimo();
+        boolean flag = false;
+        do{
+            System.out.print("Data de inicio: ");
+            strDataInicio = ler.next();
+            if(emp.verificarDatas(strDataInicio)){
+                System.out.print("Data de fim: ");
+                strDataFim = ler.next();
+                if(emp.verificarDatas(strDataFim)) {
+                    flag = true;
+                }
+            }
+            if (!flag) System.out.println("Formato incorreto!");
+        }while(!flag);
+        try {
+            dataInicio = formatDate.parse(strDataInicio);
+            dataFim = formatDate.parse(strDataFim);
+
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        return new Date[]{dataInicio, dataFim};
     }
 
     public void menuPesquisaEmprestimo() {
@@ -335,37 +367,7 @@ public class Emprestimos {
 
     }
 
-    /** Metodo pedeDatas
-     * Pede ao utilizador duas datas, faz as verificações necessárias
-     * @return das duas datas inseridas */
-    public Date[] pedeDatas(){
-        Scanner ler = new Scanner(System.in);
-        SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy");
-        String strDataInicio, strDataFim="";
-        Date dataInicio, dataFim;
-        Emprestimo emp = new Emprestimo();
-        boolean flag = false;
-        do{
-            System.out.print("Data de inicio: ");
-            strDataInicio = ler.next();
-            if(emp.verificarDatas(strDataInicio)){
-                System.out.print("Data de fim: ");
-                strDataFim = ler.next();
-                 if(emp.verificarDatas(strDataFim)) {
-                     flag = true;
-                 }
-            }
-            if (!flag) System.out.println("Formato incorreto!");
-        }while(!flag);
-        try {
-            dataInicio = formatDate.parse(strDataInicio);
-            dataFim = formatDate.parse(strDataFim);
 
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-        return new Date[]{dataInicio, dataFim};
-    }
 
     /** Metodo totalEmprestimos
      * Apresenta duas opções ao utilizador
@@ -429,7 +431,7 @@ public class Emprestimos {
 
     /** Metodo lerEmprestimos
      * Define a variável nLinhas com o resultado da função contLinhas;
-     * Se o nLinhas for diferente de 0 chama a função setEmprestimos com o resultado da função lerFicheiro como parametro*/
+     * Se o nLinhas for diferente de 0 chama a função setEmpréstimos com o resultado da função lerFicheiro como parametro*/
     public void lerEmprestimos() {
         int nLinhas = contLinhas();
         if(nLinhas!=0) setEmprestimos(lerFicheiro(nLinhas));
@@ -440,20 +442,20 @@ public class Emprestimos {
      * de seguida lê as linhas do ficheiro e guarda-as num array retornando o mesmo */
     private String[] lerFicheiro(int nLinhas){
         int i=0;
-        String[] livros = new String[nLinhas];
+        String[] emprestimos = new String[nLinhas];
 
         File myfile = new File("emprestimos.txt");
         try {
             Scanner myReader = new Scanner(myfile);
             while (myReader.hasNextLine()) {
-                livros[i] = myReader.nextLine();
+                emprestimos[i] = myReader.nextLine();
                 i++;
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
-        return livros;
+        return emprestimos;
     }
 
     /*public void maisRequisitado(Date[] datas){
@@ -493,7 +495,7 @@ public class Emprestimos {
         }
     }
 
-    /** Metodo guardarLivros
+    /** Metodo guardarEmprestimos
      * Guarda o conteúdo do array no ficheiro verificando se é a primeira linha ou as seguintes */
     public void guardarEmprestimos(){
         try {
