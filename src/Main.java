@@ -1,3 +1,4 @@
+import java.util.Date;
 import java.util.Scanner;
 
 public class Main {
@@ -49,7 +50,7 @@ public class Main {
         }while (op != 6);
     }
 
-    public static void menuEmprestimos() {
+    public static boolean menuEmprestimos() {
         Scanner ler = new Scanner(System.in);
         Emprestimos emprestimos = new Emprestimos();
         emprestimos.lerEmprestimos();
@@ -130,6 +131,8 @@ public class Main {
             } while (!opc.equals("7"));
         }
         if(emprestimos.empAtivos()){
+
+            emprestimos.maisRequisitado(emprestimos.pedeDatas());
             do {
                 System.out.println();
                 System.out.println("--------------- Bem vindo à secção Empréstimos ---------------");
@@ -158,16 +161,15 @@ public class Main {
                         break;
 
                     case "4":
-                        System.out.print("Insira o código do empréstimo: ");
-                        emprestimos.atualizarEmprestimo(emprestimos.procurarEmprestimo(ler.nextInt()));
+                        emprestimos.menuAtualizarEmprestimo();
                         break;
 
                     case "5":
                         emprestimos.devolverEmprestimo();
                         if(!emprestimos.empAtivos()){
                             emprestimos.guardarEmprestimos();
-                            System.out.println("A sair ...");
-                            opc="9";
+                            return true;
+
                         }
 
                         break;
@@ -194,6 +196,7 @@ public class Main {
                 }
             } while (!opc.equals("9"));
         }
+        return false;
     }
 
     public static void menuLivros(){
@@ -362,7 +365,7 @@ public class Main {
                     break;
 
                 case "5":
-                    menuEmprestimos();
+                    do{}while(menuEmprestimos());
                     break;
                 case "6":
                     System.out.println("A sair ...");

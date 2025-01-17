@@ -1,4 +1,5 @@
 import java.io.*;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -35,9 +36,8 @@ public class Emprestimos {
     }
 
 
-    public void atualizarEmprestimo(Emprestimo emp) {
+    public void adicionarAEmprestimo(Emprestimo emp){
         Scanner ler = new Scanner(System.in);
-        int resp;
         String codigo;
         Livro liv = new Livro();
         Livros livs = new Livros();
@@ -47,63 +47,134 @@ public class Emprestimos {
         livs.lerLivros();
         jrs.ler_jornaisRevistas();
 
-        if(!emp.getEmprestadosLivros().isEmpty()) emp.getEmprestadosLivros().listarLivros();
-        if(!emp.getEmprestadosJornaisRevistas().isEmpty()) emp.getEmprestadosJornaisRevistas().listarJornaisRevistas();
-        System.out.println("1) - Adicionar Livro/Jornal/Revista");
-        System.out.println("2) - Remover Livro/Jornal/Revista");
-        System.out.println("3) - Cancelar");
-        System.out.println("Escolha uma opção: ");
-        resp = ler.nextInt();
+        boolean flag = false;
+        do{
+            System.out.print("Insira o ISBN ou ISSN desejado: ");
+            codigo = ler.next();
+            if(liv.verificaIsbn(codigo)){
+                liv=livs.procuraLivro(codigo);
+                if(!liv.isEmpty() && liv.getLivre()){
+                    emp.getEmprestadosLivros().adicionarLivro(liv);
+                    liv.setLivre(false);
+                    livs.guardarLivros();
+                    flag=true;
+                }else System.out.println("Livro não disponível");
+            }else if (jr.validarISSN(codigo)){
+                jr=jrs.procuraJornalRevista(codigo);
+                if(!jr.isEmpty() && jr.getLivre()){
+                    emp.getEmprestadosJornaisRevistas().adicionarJornalRevista(jr);
+                    jr.setLivre(false);
+                    jrs.guardarJornaisRevistas();
+                    flag=true;
+                }else System.out.println("Jornal/Revista não disponível");
+            }else{
+                System.out.println("ISBN/ISSN inválido");
+            }
+        }while(!flag);
 
+    }
+
+    public void removerDeEmprestimo(Emprestimo emp){
+        Scanner ler = new Scanner(System.in);
+        String codigo;
+        Livro liv = new Livro();
+        Livros livs = new Livros();
+        Jornal_revista jr = new Jornal_revista();
+        JornaisRevistas jrs = new JornaisRevistas();
+
+        livs.lerLivros();
+        jrs.ler_jornaisRevistas();
 
         boolean flag = false;
-        if(resp==1) {
-            do{
-                System.out.print("Insira o ISBN ou ISSN desejado: ");
-                codigo = ler.next();
-                if(liv.verificaIsbn(codigo)){
-                    liv=livs.procuraLivro(codigo);
-                    if(!liv.isEmpty() && liv.getLivre()){
-                        emp.getEmprestadosLivros().adicionarLivro(liv);
-                        liv.setLivre(false);
-                        livs.guardarLivros();
-                        flag=true;
-                    }else System.out.println("Livro não disponível");
-                }else if (jr.validarISSN(codigo)){
-                    jr=jrs.procuraJornalRevista(codigo);
-                    if(!jr.isEmpty() && jr.getLivre()){
-                        emp.getEmprestadosJornaisRevistas().adicionarJornalRevista(jr);
-                        jr.setLivre(false);
-                        jrs.guardarJornaisRevistas();
-                        flag=true;
-                    }else System.out.println("Jornal/Revista não disponível");
-                }else{
-                    System.out.println("ISBN/ISSN inválido");
-                }
-            }while(!flag);
-        }else if(resp==2) {
-            do{
-                System.out.print("Insira o ISBN ou ISSN desejado: ");
-                codigo = ler.next();
-                if(liv.verificaIsbn(codigo)){
-                    if(emp.getEmprestadosLivros().eliminarLivro(codigo)){
+        do{
+            System.out.print("Insira o ISBN ou ISSN desejado: ");
+            codigo = ler.next();
+            if(liv.verificaIsbn(codigo)){
+                liv=livs.procuraLivro(codigo);
+                if(!liv.isEmpty()){
+                    if(emp.getEmprestadosLivros().getLivros().indexOf(liv)!=0){
+                        emp.getEmprestadosLivros().eliminarLivro(codigo);
                         liv.setLivre(true);
                         livs.guardarLivros();
                         flag=true;
+                    }else{
+                        System.out.println("Não é possível eliminar o último livro do empréstimo");
                     }
-                }else if (jr.validarISSN(codigo)){
-                    if(emp.getEmprestadosJornaisRevistas().eliminarJornalRevista(codigo)){
+
+                }
+            }else if (jr.validarISSN(codigo)){
+                jr=jrs.procuraJornalRevista(codigo);
+                if(!jr.isEmpty()){
+                    if(emp.getEmprestadosJornaisRevistas().getJornalRevistas().indexOf(jr)!=0) {
+                        emp.getEmprestadosJornaisRevistas().eliminarJornalRevista(codigo);
                         jr.setLivre(true);
                         jrs.guardarJornaisRevistas();
-                        flag=true;
+                        flag = true;
+                    }else{
+                        System.out.println("Não é possível eliminar o último jornal/revista do empréstimo");
                     }
-                }else{
-                    System.out.println("ISBN/ISSN inválido");
                 }
-            }while(!flag);
-        }else {
-            System.out.println("A cancelar... ");
+            }else{
+                System.out.println("ISBN/ISSN inválido");
+            }
+        }while(!flag);
+
+    }
+
+    public void menuAtualizarEmprestimo() {
+        Scanner ler = new Scanner(System.in);
+        String cod;
+        int intCod=0;
+        Emprestimo emp = new Emprestimo();
+
+        System.out.println();
+        this.listarEmprestimosAtivos();
+        do{
+            System.out.print("Insira o código do empréstimo: ");
+            cod=ler.next();
+            if(!cod.matches("\\b")){
+                System.out.println("Insira um número!");
+            }
+            else intCod=Integer.parseInt(cod);
+        }while(intCod!=0);
+        if(procurarEmprestimo(intCod).getDataFim()==null){
+            intCod=Integer.parseInt(cod);
+            emp = procurarEmprestimo(intCod);
+        }else{
+            System.out.println("Empréstimo devolvido! Não é possível alterar");
         }
+
+        Livros livs = new Livros();
+        JornaisRevistas jrs = new JornaisRevistas();
+
+        livs.lerLivros();
+        jrs.ler_jornaisRevistas();
+
+        if(!emp.getEmprestadosLivros().isEmpty()) emp.getEmprestadosLivros().listarLivros();
+        if(!emp.getEmprestadosJornaisRevistas().isEmpty()) emp.getEmprestadosJornaisRevistas().listarJornaisRevistas();
+
+        do{
+            System.out.println("1) - Adicionar Livro/Jornal/Revista");
+            System.out.println("2) - Remover Livro/Jornal/Revista");
+            System.out.println("3) - Cancelar");
+            System.out.print("Escolha uma opção: ");
+            cod = ler.next();
+            switch (cod){
+                case "1":
+                    adicionarAEmprestimo(emp);
+                    break;
+                case "2":
+                    removerDeEmprestimo(emp);
+                    break;
+                case "3":
+                    System.out.println("A cancelar...");
+                    break;
+                default:
+                    System.out.println("Opção inválida! Tente novamente");
+                    break;
+            }
+        }while(!cod.equals("3"));
+
     }
     //função para verificar se o utente existe
 
@@ -193,8 +264,8 @@ public class Emprestimos {
     }
 
     public void tempoMedio(Date[] datas) {
-        double tempoMedio=0;
-        int i=0;
+        double tempoMedio=0, i=0;
+        DecimalFormat format = new DecimalFormat("0.00");
         for (Emprestimo emp : emprestimos) {
             if(emp.getDataInicio().compareTo(datas[0])>=0 && emp.getDataFimPrev().compareTo(datas[1])<=0){
                 Calendar calendar = Calendar.getInstance();
@@ -202,14 +273,14 @@ public class Emprestimos {
                 calendar.setTime(emp.getDataInicio());
                 dataInicio = calendar.get(Calendar.DAY_OF_MONTH);
 
-                calendar.setTime(emp.getDataFim());
+                calendar.setTime(emp.getDataFimPrev());
                 dataFim = calendar.get(Calendar.DAY_OF_MONTH);
                 tempoMedio+=dataFim-dataInicio;
                 i++;
             }
         }
         tempoMedio/=i;
-        System.out.println("O tempo médio é "+tempoMedio);
+        System.out.println("O tempo médio é "+format.format(tempoMedio));
     }
 
     /** Metodo devolverEmprestimo
@@ -225,6 +296,8 @@ public class Emprestimos {
         Emprestimo emp = procurarEmprestimo(numEmprestimo);
         if(emp.isEmpty()) {
             System.out.println("Empréstimo não encontrado");
+        }else if(emp.getDataFim()!=null){
+            System.out.println("Empréstimo já devolvido!");
         }else {
             boolean flag = false;
             do{
@@ -383,6 +456,33 @@ public class Emprestimos {
         return livros;
     }
 
+    /*public void maisRequisitado(Date[] datas){
+        Livros livros = new Livros();
+        livros.lerLivros();
+        int[] item = new int[livros.size()];
+        Livros livrosValidos = new Livros();
+        ArrayList<Livros> emps = new ArrayList<>();
+
+        int max = 0;
+        Livro aux= null;
+        for(Emprestimo emp: this.emprestimos){
+            if(emp.getDataInicio().compareTo(datas[0]) >= 0 && emp.getDataInicio().compareTo(datas[1]) <= 0) {
+                emps.set(this.emprestimos.indexOf(emp),emp.getEmprestadosLivros());
+                for(Livros livs : emps){
+                    for(Livro liv : livs.getLivros()){
+                        item[emp.getEmprestadosLivros().getLivros().indexOf(liv)] = item[emp.getEmprestadosLivros().getLivros().indexOf(liv)]+1;
+                        if(item[emp.getEmprestadosLivros().getLivros().indexOf(liv)]>max){
+                            max = item[emp.getEmprestadosLivros().getLivros().indexOf(liv)];
+                            aux = liv;
+                        }
+                    }
+                }
+            }
+        }
+
+        System.out.println("O item mais requisitado foi "+aux);
+    }*/
+    
     /** Metodo setEmprestimos
      * @param emprestimos recebe como parametro um array de strings
      * Para cada string no array emprestimos cria um emprestimo e adiciona-o ao array conforme a informação encontrada no array */

@@ -135,7 +135,7 @@ public class Livros {
             System.out.print("Insira o ISBN do livro: ");
             isbn=ler.nextLine();
             if(liv.verificaIsbn(isbn)) flag=true;
-            else System.out.println("Formatação errada! Por favor insira um ISBN válido");
+            else System.out.println("Formatação errada! Por favor insira um ISBN válido (ex:)");
         }while(!flag);
         return isbn;
     }
@@ -145,6 +145,7 @@ public class Livros {
     public void atualizarLivro(){
         Livro liv = procuraLivro(pedeIsbn());
         if(!liv.isEmpty()){ listaLivro(liv); menuAtualizar(liv);}
+        else System.out.println("ISBN não encontrado! Tente novamente!");
     }
 
     /** Verifica se o array está vazio retorna verdadeiro ou falso conforme */
@@ -169,7 +170,6 @@ public class Livros {
         for (Livro liv : this.livros) {
             if(liv.getISBN().equals(isbn)) return liv;
         }
-        System.out.println("ISBN não encontrado! Tente novamente!");
         return liv_flag;
     }
 
@@ -183,8 +183,10 @@ public class Livros {
                 System.out.println();
                 System.out.println("O livro foi removido com sucesso!");
                 return true;
+            }else{
+                System.out.println("ISBN não encontrado! Tente novamente!");
+                return false;
             }
-            return false;
         }
 
 
