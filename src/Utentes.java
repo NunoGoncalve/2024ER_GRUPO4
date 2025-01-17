@@ -67,32 +67,28 @@ public class Utentes {
  * A busca é feita através do NIF; após o usúario inserir o NIF  a função 'For' vai comparar com os NIF's registrados
  * e guardados no ficheiro ".txt"; após o encontar, imprime no ecrã. */
 
-    public Utente pesquisarUtente(int nif){
-        Utente utFlag = new Utente();
-        if (this.uts.isEmpty()) {
-            System.out.println("O Ficheiro está vázio...");
-        }
-        else {
-            boolean encontrado = false;
-
-            for (Utente ut : this.uts) { //definição do ut
-                if (ut.getNif() == nif) {
-                    System.out.println("--------------- Utente encontrado com sucesso! ---------------");
-                    System.out.println(ut.formataUtenteE());
-                    encontrado = true;
-                    return ut;
-                }
-            }
-            if (!encontrado) {  // Só será alterado para satisfazer a condição de true se não achar no loop for.
-                System.out.println("--------------- Utente não encontrado! ---------------");
-                System.out.println("Por favor verifique o NIF introduzido");
-                System.out.println("A retornar ao Menu...\n");
-            }
-
-            System.out.println("--------------- Fim ---------------\n");
-
+    public Utente procurarUtente(int nif){
+        Utente utFlag = null;
+        for (Utente ut : this.uts) {
+            if (ut.getNif() == nif)  return ut;
         }
         return utFlag;
+    }
+
+    public void pesquisarUtente(Utente ut){
+
+        //definição do ut
+        if (ut!=null) {
+            System.out.println("--------------- Utente encontrado com sucesso! ---------------");
+            System.out.println(ut.formataUtenteE());
+        } else {
+            System.out.println("--------------- Utente não encontrado! ---------------");
+            System.out.println("Por favor verifique o NIF introduzido");
+            System.out.println("A retornar ao Menu...\n");
+        }
+
+        System.out.println("--------------- Fim ---------------\n");
+
     }
 
     /** A função abaixo Pesquisa os Utentes que estão no ArrayList (uts) e Salvos no doc. ".txt"

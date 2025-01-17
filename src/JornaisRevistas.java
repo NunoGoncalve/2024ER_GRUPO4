@@ -48,7 +48,7 @@ public class JornaisRevistas {
      */
     public void listarJornaisRevistasLivres() {
         for (Jornal_revista jr : this.jornaisRevistas) {
-            if (jr.getlivre()) {
+            if (jr.getLivre()) {
                 System.out.println("--------------- Jornal/Revista Livre ---------------");
                 System.out.println(jr.formataJornalRevistaE());
             }
@@ -61,7 +61,7 @@ public class JornaisRevistas {
      */
     public void listarJornaisRevistasOcupados() {
         for (Jornal_revista jr : this.jornaisRevistas) {
-            if (!jr.getlivre()) {
+            if (!jr.getLivre()) {
                 System.out.println("--------------- Jornal/Revista Ocupado ---------------");
                 System.out.println(jr.formataJornalRevistaE());
             }
@@ -72,6 +72,7 @@ public class JornaisRevistas {
     public boolean isEmpty(){
         return this.jornaisRevistas.isEmpty();
     }
+
     private void menuAtualizar(Jornal_revista jr) {
         Scanner ler = new Scanner(System.in);
         int op;
@@ -173,16 +174,32 @@ public class JornaisRevistas {
     /**
      * Verifica se o ficheiro está vazio, se não estiver procura o ISSN no array, elimina-o, e chama a função reescrever_jornaisRevistas
      */
-    public void eliminarJornalRevista() {
+    public boolean eliminarJornalRevista(String issn) {
         if (this.jornaisRevistas.isEmpty()) {
             System.out.println("Ficheiro vazio! Adicione um jornal ou revista");
         } else {
-            String issn = pedeISSN();
-            if (this.jornaisRevistas.removeIf(jr -> jr.getISSN().equals(issn)))
+            if (this.jornaisRevistas.removeIf(jr -> jr.getISSN().equals(issn))){
                 System.out.println("O jornal/revista foi removido com sucesso!");
-            else
-                System.out.println("Jornal/Revista não encontrado!");
+                return true;
+            }
+            System.out.println("Jornal/Revista não encontrado!");
         }
+        return false;
+    }
+
+    /** Pede o ISSN ao utilizador, verifica se este encontra-se com o formato correto e retorna-o */
+    public String pedeIssn(){
+        String issn;
+        Scanner ler = new Scanner(System.in);
+        Jornal_revista  jr = new Jornal_revista();
+        boolean flag=false;
+        do{
+            System.out.print("Insira o ISBN do livro: ");
+            issn=ler.nextLine();
+            if(jr.validarISSN(issn)) flag=true;
+            else System.out.println("Formatação errada! Por favor insira um ISBN válido");
+        }while(!flag);
+        return issn;
     }
 
     /**

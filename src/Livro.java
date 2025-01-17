@@ -71,13 +71,8 @@ public class Livro {
     }
 
     public boolean verificaIsbn(String isbn){
-        if(isbn.matches("\\d{9}(\\d|[Xx])") || isbn.matches("\\d-\\d{2}-\\d{6}-(\\d|[Xx])")
-                || isbn.matches("\\d{13}") || isbn.matches("\\d{3}-\\d-\\d{3}-\\d{5}-\\d")){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return isbn.matches("\\d{9}(\\d|[Xx])") || isbn.matches("\\d-\\d{2}-\\d{6}-(\\d|[Xx])")
+                || isbn.matches("\\d{13}") || isbn.matches("\\d{3}-\\d-\\d{3}-\\d{5}-\\d");
     }
 
     /** Retorna uma string apropriada à visualização*/
@@ -89,6 +84,7 @@ public class Livro {
         System.out.println("Categoria: " + categoria);
         System.out.println("ISBN: " + ISBN);
         System.out.println("Ano edicao: " + ano_edicao);
+        System.out.println("Livre: " + (this.livre ? "Sim" : "Não"));
     }
 
     public boolean isEmpty(){

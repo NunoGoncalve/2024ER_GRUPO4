@@ -1,6 +1,3 @@
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Scanner;
 
 public class Main {
@@ -37,7 +34,7 @@ public class Main {
                     break;
 
                 case 5:
-                    jornaisRevistas.eliminarJornalRevista();
+                    jornaisRevistas.eliminarJornalRevista(jornaisRevistas.pedeIssn());
                     break;
 
                 case 6:
@@ -56,64 +53,139 @@ public class Main {
         Scanner ler = new Scanner(System.in);
         Emprestimos emprestimos = new Emprestimos();
         emprestimos.lerEmprestimos();
-        int opc;
-        do {
-            System.out.println("1 - Listar");
-            System.out.println("2 - Adicionar");
-            System.out.println("3 - Devolver");
-            System.out.println("4 - Quantidade de livros numa data");
-            System.out.println("5 - Mostrar empréstimos com atraso");
-            System.out.println("6 - Sair");
-            System.out.print("Selecione uma opção: ");
-            opc = ler.nextInt();
-            switch (opc) {
-                case 1:
-                    emprestimos.listarEmprestimos();
-                    break;
+        String opc;
+        if(emprestimos.isEmpty()){
+            do {
+                System.out.println("1 - Adicionar");
+                System.out.println("2 - Sair");
+                System.out.print("Selecione uma opção: ");
+                opc = ler.next();
+                switch (opc) {
+                    case "1":
+                        emprestimos.registarEmprestimo();
+                        break;
 
-                case 2:
-                    emprestimos.registarEmprestimo();
-                    break;
+                    case "2":
+                        emprestimos.guardarEmprestimos();
+                        System.out.println("A sair ...");
+                        break;
+                    default:
+                        System.out.println("Opção incorreta! Tente novamente");
+                        break;
+                }
+            } while (!opc.equals("2"));
+        }
+        if(!emprestimos.empAtivos()){
+            do {
+                System.out.println("1 - Listar");
+                System.out.println("2 - Registar ");
+                System.out.println("3 - Pesquisar ");
+                System.out.println("4 - Total de empréstimos");
+                System.out.println("5 - Tempo médio");
+                System.out.println("6 - Mostrar empréstimos com atraso");
+                System.out.println("7 - Sair");
+                System.out.print("Selecione uma opção: ");
+                opc = ler.next();
+                switch (opc) {
+                    case "1":
+                        emprestimos.listarEmprestimos();
+                        break;
 
-                case 3:
-                    emprestimos.devolverEmprestimo();
-                    break;
+                    case "2":
+                        emprestimos.registarEmprestimo();
+                        emprestimos.guardarEmprestimos();
+                        opc="7";
+                        break;
 
-               case 4:
-                   SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy");
-                   System.out.println("Data de inicio: ");
-                   String strDataInicio = ler.next();
-                   System.out.println("Data de fim: ");
-                   String strdataFim = ler.next();
-                   Date dataInicio = null;
-                   try {
-                       dataInicio = formatDate.parse(strDataInicio);
+                    case "3":
+                        emprestimos.menuPesquisaEmprestimo();
+                        break;
 
-                   } catch (ParseException e) {
-                       throw new RuntimeException(e);
-                   }
-                   Date dataFim = null;
-                   try {
-                       dataFim = formatDate.parse(strdataFim);
-                   } catch (ParseException e) {
-                       throw new RuntimeException(e);
-                   }
-                   System.out.println(emprestimos.intervaloData(dataInicio, dataFim));
-                   break;
+                    case "4":
+                        emprestimos.totalEmprestimos();
+                        break;
 
-                case 5:
-                    emprestimos.diasAtraso();
-                    break;
-                case 6:
-                    emprestimos.guardarEmprestimos();
-                    System.out.println("A sair ...");
-                    break;
+                    case "5":
+                        emprestimos.tempoMedio(emprestimos.pedeDatas());
+                        break;
 
-                default:
-                    System.out.println("Opção incorreta! Tente novamente");
-                    break;
-            }
-        } while (opc != 6);
+                    case "6":
+                        emprestimos.diasAtraso();
+                        break;
+                    case "7":
+                        emprestimos.guardarEmprestimos();
+                        System.out.println("A sair ...");
+                        break;
+
+                    default:
+                        System.out.println("Opção incorreta! Tente novamente");
+                        break;
+                }
+            } while (!opc.equals("7"));
+        }
+        if(emprestimos.empAtivos()){
+            do {
+                System.out.println("1 - Listar");
+                System.out.println("2 - Registar");
+                System.out.println("3 - Pesquisar ");
+                System.out.println("4 - Atualizar");
+                System.out.println("5 - Devolver");
+                System.out.println("6 - Total de empréstimos");
+                System.out.println("7 - Tempo médio");
+                System.out.println("8 - Mostrar empréstimos com atraso");
+                System.out.println("9 - Sair");
+                System.out.print("Selecione uma opção: ");
+                opc = ler.next();
+                switch (opc) {
+                    case "1":
+                        emprestimos.listarEmprestimos();
+                        break;
+
+                    case "2":
+                        emprestimos.registarEmprestimo();
+                        break;
+
+                    case "3":
+                        emprestimos.menuPesquisaEmprestimo();
+                        break;
+
+                    case "4":
+                        System.out.print("Insira o código do empréstimo: ");
+                        emprestimos.atualizarEmprestimo(emprestimos.procurarEmprestimo(ler.nextInt()));
+                        break;
+
+                    case "5":
+                        emprestimos.devolverEmprestimo();
+                        if(!emprestimos.empAtivos()){
+                            emprestimos.guardarEmprestimos();
+                            System.out.println("A sair ...");
+                            opc="9";
+                        }
+
+                        break;
+
+                    case "6":
+                        emprestimos.totalEmprestimos();
+                        break;
+
+                    case "7":
+                        emprestimos.tempoMedio(emprestimos.pedeDatas());
+                        break;
+
+                    case "8":
+                        emprestimos.diasAtraso();
+                        break;
+                    case "9":
+                        emprestimos.guardarEmprestimos();
+                        System.out.println("A sair ...");
+                        break;
+
+                    default:
+                        System.out.println("Opção incorreta! Tente novamente");
+                        break;
+                }
+            } while (!opc.equals("9"));
+        }
     }
 
     public static void menuLivros(){
@@ -224,7 +296,7 @@ public class Main {
                     int Nif;
                     System.out.print("Insira o NIF do Utente:  ");
                     Nif = ler.nextInt();
-                    uts.pesquisarUtente(Nif);
+                    uts.pesquisarUtente(uts.procurarUtente(Nif));
                     break;
 
                 case 4:

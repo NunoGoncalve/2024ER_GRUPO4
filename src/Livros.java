@@ -36,6 +36,7 @@
                 liv.formataLivroE();
             }
             System.out.println("--------------- Fim ---------------");
+            System.out.println();
         }
 
         public void listarLivrosLivres(){
@@ -124,7 +125,7 @@
                 isbn=ler.nextLine();
                 if(liv.verificaIsbn(isbn)) flag=true;
                 else System.out.println("Formatação errada! Por favor insira um ISBN válido");
-            }while(!liv.verificaIsbn(isbn));
+            }while(!flag);
             return isbn;
         }
 
@@ -160,14 +161,16 @@
         }
 
         /** Recebe a String isbn e procura o livro correspondente, se o livro encontrado não estiver vazio elimina-o do array */
-        public void eliminarLivro(String isbn){
+        public boolean eliminarLivro(String isbn){
             Livro liv = procuraLivro(isbn);
             if(!liv.isEmpty()) {
                 liv.formataLivroE();
                 this.livros.remove(liv);
                 System.out.println();
                 System.out.println("O livro foi removido com sucesso!");
+                return true;
             }
+            return false;
         }
 
         /** Guarda o conteúdo do array no ficheiro verificando se é a primeira linha ou as seguintes */

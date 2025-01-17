@@ -45,7 +45,7 @@ public class Jornal_revista {
         this.categoria = campos[2];
         this.ISSN = campos[3];
         this.ano_publicacao = Integer.parseInt(campos[4]);
-        this.livre = true; // Inicialmente, está livre
+        this.livre = Boolean.parseBoolean(campos[5]); // Inicialmente, está livre
     }
 
     // Função de validação para o ISSNor
@@ -101,7 +101,7 @@ public class Jornal_revista {
             }
         }
 
-        this.livre = false; // Inicialmente, não está livre
+        this.livre = true; // Inicialmente, está livre
         return this;
     }
 
@@ -110,21 +110,21 @@ public class Jornal_revista {
     }
 
     public String formataJornalRevistaF() {
-        return titulo + "|" + editora + "|" + categoria + "|" + ISSN + "|" + ano_publicacao + ";";
+        return titulo + "|" + editora + "|" + categoria + "|" + ISSN + "|" + ano_publicacao + "|"+ livre +";";
     }
 
-    public boolean getlivre() {
+    public boolean getLivre() {
         return livre;
     }
 
-    public void setlivre(boolean livre) {
+    public void setLivre(boolean livre) {
         this.livre = livre;
     }
 
     // Métodos para visualizar se estão livres ou não
-    public static void listarJornaisRevistasLivres(Jornal_revista[] jornaisRevistas) {
+    public static void listarJornaisRevistasOcupadas(Jornal_revista[] jornaisRevistas) {
         for (Jornal_revista jr : jornaisRevistas) {
-            if (!jr.getlivre()) {
+            if (!jr.getLivre()) {
                 System.out.println(jr.formataJornalRevistaE());
             }
         }
@@ -133,7 +133,7 @@ public class Jornal_revista {
 
     public static void listarJornaisRevistaslivres(Jornal_revista[] jornaisRevistas) {
         for (Jornal_revista jr : jornaisRevistas) {
-            if (jr.getlivre()) {
+            if (jr.getLivre()) {
                 System.out.println(jr.formataJornalRevistaE());
             }
         }
