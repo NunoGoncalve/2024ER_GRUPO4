@@ -1,0 +1,3 @@
+Nuno|Masculino|123456789|911524948;
+Tiago|Masculino|987654321|911524948;
+Frank|Masculino|0|911524948;
