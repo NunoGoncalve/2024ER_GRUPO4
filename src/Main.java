@@ -59,7 +59,7 @@ public class Main {
                         reservas.exibirReservas();
                         System.out.print("Digite o número da reserva para remover: ");
                         int numeroRemover = ler.nextInt();
-                        reservas.removerReserva(numeroRemover);  // Remove a reserva
+                        reservas.removerReserva(numeroRemover, biblioteca);  // Remove a reserva
                         if(reservas.isEmpty()){
                             reservas.guardarReservas(biblioteca);
                             op="4";
@@ -100,7 +100,7 @@ public class Main {
                         reservas.exibirReservas();
                         System.out.print("Digite o número da reserva para remover: ");
                         int numeroRemover = ler.nextInt();
-                        reservas.removerReserva(numeroRemover);
+                        reservas.removerReserva(numeroRemover, biblioteca);
                         if(reservas.isEmpty()){
                             reservas.guardarReservas(biblioteca);
                             return true;

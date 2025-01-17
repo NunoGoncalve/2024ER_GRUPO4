@@ -30,9 +30,6 @@ public class Reservas {
         }
     }
 
-
-
-    // Método para exibir todas as reservas
     public void exibirReservas() {
 
         for (Reserva reserva : reservas) {
@@ -165,9 +162,25 @@ public class Reservas {
     }
 
 
-    public void removerReserva(int numero) {
+    public void removerReserva(int numero, String biblioteca) {
         Reserva res = procurarReserva(numero);
         if (!res.isEmpty()) {
+            Livros livsEmp = res.getLivrosReservados();
+            Livros livs = new Livros();
+            livs.lerLivros(biblioteca);
+
+            JornaisRevistas jrEmp = res.getJornaisRevistasReservados();
+            JornaisRevistas jrs = new JornaisRevistas();
+            jrs.ler_jornaisRevistas(biblioteca);
+
+            for(int i=0; i< livsEmp.size();i++){
+                livs.procuraLivro(livsEmp.getLivros().get(i).getISBN()).setLivre(true);
+            }
+            for(int i=0; i< jrEmp.size();i++){
+                jrs.procuraJornalRevista(jrEmp.getJornalRevistas().get(i).getISSN()).setLivre(true);
+            }
+            livs.guardarLivros(biblioteca);
+            jrs.guardarJornaisRevistas(biblioteca);
             this.reservas.remove(res);
             System.out.println("Reserva #" + String.format("%03d", numero) + " removida com sucesso.");
         } else {

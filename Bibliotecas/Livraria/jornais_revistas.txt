@@ -1,3 +1,3 @@
-Jornal Noticias|Jornais|Noticias|1234-567X|2006|true;
+Jornal Noticias|Jornais|Noticias|1234-567X|2006|false;
 Sic Noticias|Jornais|Noticias|3456-789X|2000|true;
 BBC Noticias|Jornais|Noticias|1021-753X|2010|true;
