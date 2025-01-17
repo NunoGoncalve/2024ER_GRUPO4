@@ -1,3 +1,3 @@
 Berserk|Dark Horse|Kentaro Miura|Manga|9781506711997|2019|true;
-Vagabond|Viz Media|Takehiko Inoue|Manga|9781421529158|2011|true;
+Vagabond|Viz Media|Takehiko Inoue|Manga|9781421529158|2011|false;
 Soul Eater|Viz Media|Atsushi Okubo|Manga|9781646090013|2020|false;

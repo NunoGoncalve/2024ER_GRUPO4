@@ -21,7 +21,8 @@ public class Emprestimo {
         return jornaisRevistasReservados;
     }
 
-    //Construtor do empréstimo 2
+    /** Construtor
+     * permite a passagem de reserva->empréstimo */
     public Emprestimo() {
         this.num = 0;
         this.dataInicio = null;
@@ -30,6 +31,16 @@ public class Emprestimo {
         this.utente = new Utente();
         this.livrosReservados = new Livros();
         this.jornaisRevistasReservados = new JornaisRevistas();
+    }
+
+    public Emprestimo(int num,Reserva res) {
+        this.num = num;
+        this.dataInicio = res.getDataInicio();
+        this.dataFim = null;
+        this.dataFimPrev = res.getDataFim();
+        this.utente = res.getUtente();
+        this.livrosReservados = res.getLivrosReservados();
+        this.jornaisRevistasReservados = res.getJornaisRevistasReservados();
     }
 
     /** Cria um emprestimo de acordo com ad informações obtidas do ficheiro */
@@ -129,6 +140,7 @@ public class Emprestimo {
         livs.lerLivros(biblioteca);
         uts.lerUtentes(biblioteca);
         jors.lerJornaisRevistas(biblioteca);
+
         //define o formato para a data
         SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy");
         System.out.println("Registo de Empréstimos \n");

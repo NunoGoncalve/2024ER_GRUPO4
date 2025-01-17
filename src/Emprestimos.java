@@ -24,6 +24,10 @@ public class Emprestimos {
         return emprestimos.isEmpty();
     }
 
+    public ArrayList<Emprestimo> getEmprestimos() {
+        return emprestimos;
+    }
+
     /** empAtivos
      * @return -> se existem emprestimos ativos*/
     public boolean empAtivos(){
@@ -147,11 +151,11 @@ public class Emprestimos {
         do{
             System.out.print("Insira o código do empréstimo: ");
             cod=ler.next();
-            if(!cod.matches("\\b")){
+            if(!cod.matches("\\d")){
                 System.out.println("Insira um número!");
             }
             else intCod=Integer.parseInt(cod);
-        }while(intCod!=0);
+        }while(intCod==0);
         if(procurarEmprestimo(intCod).getDataFim()==null){
             intCod=Integer.parseInt(cod);
             emp = procurarEmprestimo(intCod);
@@ -189,7 +193,6 @@ public class Emprestimos {
                     break;
             }
         }while(!cod.equals("3"));
-
     }
 
     /** registarEmprestimo
@@ -199,6 +202,8 @@ public class Emprestimos {
         Emprestimo emp = new Emprestimo();
         this.emprestimos.add(emp.criarEmprestimo(this.emprestimos.size()+1, biblioteca));
     }
+
+
 
     /** procurarEmprestimo
      * procura um empréstimo atraves do número
@@ -409,7 +414,13 @@ public class Emprestimos {
 
     }
 
+    public void adicionarEmprestimo(Emprestimo emp) {
+        this.emprestimos.add(emp);
+    }
 
+    public int size(){
+        return emprestimos.size();
+    }
 
     /** Metodo totalEmprestimos
      * Apresenta duas opções ao utilizador

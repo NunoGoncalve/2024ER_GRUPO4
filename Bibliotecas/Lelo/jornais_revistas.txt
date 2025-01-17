@@ -1,1 +1,1 @@
-Moda|Fashion|Moda|1234-567X|2000;
+Moda|Fashion|Moda|1234-567X|2000|true;

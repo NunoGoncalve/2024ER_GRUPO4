@@ -188,20 +188,38 @@ public class Livros {
 
     /** Metodo eliminarLivro
      * @param isbn chama a função procura enviando como parametro o isbn recebido, se o livro for encontrado elimina-o do array */
-        public boolean eliminarLivro(String isbn){
-            Livro liv = procuraLivro(isbn);
-            if(!liv.isEmpty()) {
-                liv.formataLivroE();
-                this.livros.remove(liv);
-                System.out.println();
-                System.out.println("O livro foi removido com sucesso!");
-                return true;
-            }else{
-                System.out.println("ISBN não encontrado! Tente novamente!");
-                return false;
-            }
+    public boolean eliminarLivro(String isbn){
+        Livro liv = procuraLivro(isbn);
+        if(!liv.isEmpty()) {
+            liv.formataLivroE();
+            this.livros.remove(liv);
+            System.out.println();
+            System.out.println("O livro foi removido com sucesso!");
+            return true;
+        }else{
+            System.out.println("ISBN não encontrado! Tente novamente!");
+            return false;
         }
+    }
 
+    /** Metodo eliminarLivro
+     * chama a função procura enviando como parametro o resultado da função pede isbn recebido,
+     * se o livro for encontrado elimina-o do array */
+    public boolean eliminarLivro(){
+        Livro liv = procuraLivro(pedeIsbn());
+        if(!liv.isEmpty() && liv.getLivre()) {
+            liv.formataLivroE();
+            this.livros.remove(liv);
+            System.out.println();
+            System.out.println("O livro foi removido com sucesso!");
+            return true;
+        }else if(!liv.getLivre()){
+            System.out.println("O livro está ocupado! Tente novamente!");
+        }else {
+            System.out.println("ISBN não encontrado! Tente novamente!");
+        }
+        return false;
+    }
 
 
     /** Metodo guardarLivros

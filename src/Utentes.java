@@ -40,23 +40,54 @@ public class Utentes {
      * A busca é feita através do NIF; após o usúario inserir o NIF  a função 'For' vai comparar com os NIF's registrados
      * e guardados no ficheiro ".txt"; após o encontar, imprime no ecrã e em seguida elimina o Utente do ArrayList e ficheiro ".txt"*/
 
-    public void eliminarUtente(){
+    public void eliminarUtente(String biblioteca){
         int Nif;
         Scanner ler = new Scanner(System.in);
+
+        Reservas res = new Reservas();
+        res.lerReservas(biblioteca);
+        Emprestimos emps = new Emprestimos();
+        emps.lerEmprestimos(biblioteca);
+
         System.out.print("Insira o NIF do Utente:  ");
         Nif = ler.nextInt();
-        for (Utente ut : this.utentes) { //definição do ut
-            if (ut.getNif() == Nif) {
-                System.out.println("--------------- Utente encontrado com sucesso! ---------------");
-                System.out.println("A eliminar...\n");
-                System.out.println(ut.formataUtenteE());
+        boolean dependencia = false;
+        if(!res.isEmpty()){
+            for(Reserva ra : res.getReservas()){
+                if(ra.getUtente().getNif() == Nif){
+                    dependencia = true;
+                }
             }
         }
-        if (this.utentes.removeIf(ute -> ute.getNif() == Nif)) {
-            System.out.println("Utente eliminado com sucesso!");
-        } else System.out.println("Utente não encontrado! Verifique o NIF introduzido");
-        System.out.println("A retornar ao Menu...");
-        System.out.println("--------------- Fim ---------------\n");
+
+        if(dependencia){
+            System.out.println("Não é possivel eliminar o Utente! Está associado a uma reserva ativa");
+        } else{
+            if(!emps.isEmpty()){
+                for(Emprestimo emp : emps.getEmprestimos()){
+                    if(emp.getUtente().getNif() == Nif){
+                        dependencia = true;
+                    }
+                }
+            }
+        }
+        if(dependencia){
+            System.out.println("Não é possivel eliminar o Utente! Está associado a um empréstimo ativo");
+        }else{
+            for (Utente ut : this.utentes) { //definição do ut
+                if (ut.getNif() == Nif) {
+                    System.out.println("--------------- Utente encontrado com sucesso! ---------------");
+                    System.out.println("A eliminar...\n");
+                    System.out.println(ut.formataUtenteE());
+                }
+            }
+            if (this.utentes.removeIf(ute -> ute.getNif() == Nif)) {
+                System.out.println("Utente eliminado com sucesso!");
+            } else System.out.println("Utente não encontrado! Verifique o NIF introduzido");
+            System.out.println("A retornar ao Menu...");
+            System.out.println("--------------- Fim ---------------\n");
+        }
+
    }
 
     /** A função abaixo Pesquisa os Utentes que estão no ArrayList (utentes) e Salvos no doc. ".txt"

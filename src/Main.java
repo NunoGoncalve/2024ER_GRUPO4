@@ -46,7 +46,9 @@ public class Main {
                 System.out.println("2)  Mostrar utentes");
                 System.out.println("3)  Pesquisar ");
                 System.out.println("4)  Remover Reserva");
-                System.out.println("5)  Sair");
+                System.out.println("5)  Alterar Reserva");
+                System.out.println("6)  Transformar Reserva em Empréstimo");
+                System.out.println("7)  Sair");
                 System.out.print("Todos os livros estão ocupados! Escolha uma opção: ");
                 op=ler.next();
                 switch (op) {
@@ -66,10 +68,16 @@ public class Main {
                         reservas.removerReserva(numeroRemover, biblioteca);  // Remove a reserva
                         if(reservas.isEmpty()){
                             reservas.guardarReservas(biblioteca);
-                            op="4";
+                            op="6";
                         }
                         break;
                     case "5":
+                        reservas.menuAtualizarReserva(1,biblioteca);
+                        break;
+                    case "6":
+                        reservas.transformaReservaEmprestimo(biblioteca);
+                        break;
+                    case "7":
                         reservas.guardarReservas(biblioteca);
                         System.out.println("A sair ...");
                         break;
@@ -77,7 +85,7 @@ public class Main {
                         System.out.println("Opção incorreta!");
                         break;
                 }
-            }while(!op.equals("5"));
+            }while(!op.equals("6"));
         }
         if(!reservas.isEmpty()){
             do{
@@ -85,10 +93,12 @@ public class Main {
                 System.out.println("--------------- Bem vindo à secção Reservas ---------------");
                 System.out.println("1)  Adicionar Reserva");
                 System.out.println("2)  Exibir Reservas");
-                System.out.println("3)  Mostrar utentes");
-                System.out.println("4)  Pesquisar ");
-                System.out.println("5)  Remover Reserva");
-                System.out.println("6)  Sair");
+                System.out.println("3)  Alterar Reserva");
+                System.out.println("4)  Mostrar utentes");
+                System.out.println("5)  Pesquisar ");
+                System.out.println("6)  Remover Reserva");
+                System.out.println("7)  Transformar Reserva em Empréstimo");
+                System.out.println("8)  Sair");
                 System.out.print("Todos os livros estão ocupados! Escolha uma opção: ");
                 op=ler.next();
                 switch (op) {
@@ -99,13 +109,17 @@ public class Main {
                     case "2":
                         reservas.exibirReservas();
                         break;
+
                     case "3":
-                        reservas.listarUtentes();
+                        reservas.menuAtualizarReserva(2, biblioteca);
                         break;
                     case "4":
-                        reservas.menuPesquisaReserva();
+                        reservas.listarUtentes();
                         break;
                     case "5":
+                        reservas.menuPesquisaReserva();
+                        break;
+                    case "6":
                         reservas.exibirReservas();
                         System.out.print("Digite o número da reserva para remover: ");
                         int numeroRemover = ler.nextInt();
@@ -115,7 +129,10 @@ public class Main {
                             return true;
                         }
                         break;
-                    case "6":
+                    case "7":
+                        reservas.transformaReservaEmprestimo(biblioteca);
+                        break;
+                    case "8":
                         reservas.guardarReservas(biblioteca);
                         System.out.println("A sair ...");
                         break;
@@ -123,7 +140,7 @@ public class Main {
                         System.out.println("Opção incorreta!");
                         break;
                 }
-            }while(!op.equals("6"));
+            }while(!op.equals("8"));
         }
         return false;
     }
@@ -386,7 +403,7 @@ public class Main {
                         break;
 
                     case 5:
-                        livros.eliminarLivro(livros.pedeIsbn());
+                        livros.eliminarLivro();
                         if(livros.isEmpty()){
                             livros.guardarLivros(biblioteca);
                             livros.limparLivros();
@@ -408,10 +425,10 @@ public class Main {
         return false;
     }
 
-    public static void menuUtente(String bib) {
+    public static void menuUtente(String biblioteca) {
         String escolha;
         Utentes uts = new Utentes();
-        uts.lerUtentes(bib);
+        uts.lerUtentes(biblioteca);
         if (uts.isEmpty()) {
             do {
                 System.out.println();
@@ -428,7 +445,7 @@ public class Main {
                         break;
                     case "2":
                         System.out.println("A sair do menu Utente....\n");
-                        uts.guardarUtentes(bib);
+                        uts.guardarUtentes(biblioteca);
                         break;
                     default:
                         System.out.println("ERRO!!  Escolha uma das opções");
@@ -469,12 +486,12 @@ public class Main {
                         break;
 
                     case "5":
-                        uts.eliminarUtente();
+                        uts.eliminarUtente(biblioteca);
                         break;
 
                     case "6":
                         System.out.println("A sair do menu Utente....\n");
-                        uts.guardarUtentes(bib);
+                        uts.guardarUtentes(biblioteca);
                         break;
                     default:
                         System.out.println("ERRO!!  Escolha uma das opções");

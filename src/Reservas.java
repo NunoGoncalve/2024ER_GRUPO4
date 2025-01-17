@@ -17,12 +17,203 @@ public class Reservas {
         this.reservas.add(res.criarReserva(this.reservas.size()+1, biblioteca));
     }
 
+    public void transformaReservaEmprestimo(String bilbioteca){
+        Scanner ler = new Scanner(System.in);
+        System.out.print("Insira o número da reserva desejada: ");
+        int num= ler.nextInt();
+        if(!procurarReserva(num).isEmpty()){
+            Emprestimos emps = new Emprestimos();
+            emps.lerEmprestimos(bilbioteca);
+            Emprestimo emp = new Emprestimo(emps.size()+1, procurarReserva(num));
+            emps.adicionarEmprestimo(emp);
+            emps.guardarEmprestimos(bilbioteca);
+            reservas.remove(procurarReserva(num));
+        }
+    }
+
     /** Metodo lerReservas
      * @param biblioteca -> biblioteca onde se encontram as reservas */
     public void lerReservas(String biblioteca) {
         int nLinhas = contLinhas(biblioteca);
         if(nLinhas!=0) setReservas(lerFicheiro(nLinhas, biblioteca), biblioteca);
     }
+
+    public List<Reserva> getReservas() {
+        return reservas;
+    }
+
+    /** adicionarAReserva
+     * @param res -> reserva á qual adicionar
+     * @param biblioteca -> biblioteca a adicionar o item
+     * Pede ao utilizador o isbn/issn do item a adiconar verifica-o e se válido adiciona-o */
+    public void adicionarAReserva(Reserva res, String biblioteca){
+        Scanner ler = new Scanner(System.in);
+        String codigo;
+        Livro liv = new Livro();
+        Livros livs = new Livros();
+        Jornal_revista jr = new Jornal_revista();
+        JornaisRevistas jrs = new JornaisRevistas();
+
+        livs.lerLivros(biblioteca);
+        jrs.lerJornaisRevistas(biblioteca);
+
+        boolean flag = false;
+        do{
+            System.out.print("Insira o ISBN ou ISSN desejado: ");
+            codigo = ler.next();
+            if(liv.verificaIsbn(codigo)){
+                liv=livs.procuraLivro(codigo);
+                if(!liv.isEmpty() && liv.getLivre()){
+                    res.getLivrosReservados().adicionarLivro(liv);
+                    liv.setLivre(false);
+                    livs.guardarLivros(biblioteca);
+                    flag=true;
+                }else System.out.println("Livro não disponível");
+            }else if (jr.validarISSN(codigo)){
+                jr=jrs.procuraJornalRevista(codigo);
+                if(!jr.isEmpty() && jr.getLivre()){
+                    res.getJornaisRevistasReservados().adicionarJornalRevista(jr);
+                    jr.setLivre(false);
+                    jrs.guardarJornaisRevistas(biblioteca);
+                    flag=true;
+                }else System.out.println("Jornal/Revista não disponível");
+            }else{
+                System.out.println("ISBN/ISSN inválido");
+            }
+        }while(!flag);
+    }
+
+    /** removerDeReserva
+     * @param res -> reserva do qual remover
+     * @param biblioteca -> biblioteca de onde remover
+     * Pede ao utilizador o isbn/issn do item a eliminar verifica-o e se válido apaga-o */
+    public void removerDeReserva(Reserva res, String biblioteca){
+        Scanner ler = new Scanner(System.in);
+        String codigo;
+        Livro liv = new Livro();
+        Livros livs = new Livros();
+        Jornal_revista jr = new Jornal_revista();
+        JornaisRevistas jrs = new JornaisRevistas();
+
+        livs.lerLivros(biblioteca);
+        jrs.lerJornaisRevistas(biblioteca);
+
+        boolean flag = false;
+        do{
+            System.out.print("Insira o ISBN ou ISSN desejado: ");
+            codigo = ler.next();
+            if(liv.verificaIsbn(codigo)){
+                liv=livs.procuraLivro(codigo);
+                if(!liv.isEmpty()){
+                    if(res.getLivrosReservados().getLivros().indexOf(liv)!=0){
+                        res.getLivrosReservados().eliminarLivro(codigo);
+                        liv.setLivre(true);
+                        livs.guardarLivros(biblioteca);
+                        flag=true;
+                    }else{
+                        System.out.println("Não é possível eliminar o último livro do empréstimo");
+                    }
+
+                }
+            }else if (jr.validarISSN(codigo)){
+                jr=jrs.procuraJornalRevista(codigo);
+                if(!jr.isEmpty()){
+                    if(res.getJornaisRevistasReservados().getJornalRevistas().indexOf(jr)!=0) {
+                        res.getJornaisRevistasReservados().eliminarJornalRevista(codigo);
+                        jr.setLivre(true);
+                        jrs.guardarJornaisRevistas(biblioteca);
+                        flag = true;
+                    }else{
+                        System.out.println("Não é possível eliminar o último jornal/revista do empréstimo");
+                    }
+                }
+            }else{
+                System.out.println("ISBN/ISSN inválido");
+            }
+        }while(!flag);
+
+    }
+
+    /** menuAtualizarReserva
+     * procura a reserva pelo código
+     * e apresenta o menu de atualização da mesma*/
+    public void menuAtualizarReserva(int opcao, String biblioteca) {
+        Scanner ler = new Scanner(System.in);
+        String cod;
+        int intCod=0;
+        Reserva res = new Reserva();
+
+        System.out.println();
+        exibirReservas();
+        do{
+            System.out.print("Insira o código da reserva desejada: ");
+            cod=ler.next();
+            if(!cod.matches("\\d")){
+                System.out.println("Insira um número!");
+            }
+            else intCod=Integer.parseInt(cod);
+        }while(intCod==0);
+        if(!procurarReserva(intCod).isEmpty()){
+            intCod=Integer.parseInt(cod);
+            res = procurarReserva(intCod);
+        }else{
+            System.out.println("Reserva não existente! Não é possível alterar");
+        }
+
+        Livros livs = new Livros();
+        JornaisRevistas jrs = new JornaisRevistas();
+
+        livs.lerLivros(biblioteca);
+        jrs.lerJornaisRevistas(biblioteca);
+
+        if(!res.getLivrosReservados().isEmpty()) res.getLivrosReservados().listarLivros();
+        if(!res.getJornaisRevistasReservados().isEmpty()) res.getJornaisRevistasReservados().listarJornaisRevistas();
+
+        if(opcao==2){
+            do{
+                System.out.println("1) - Adicionar Livro/Jornal/Revista");
+                System.out.println("2) - Remover Livro/Jornal/Revista");
+                System.out.println("3) - Cancelar");
+                System.out.print("Escolha uma opção: ");
+                cod = ler.next();
+                switch (cod){
+                    case "1":
+                        adicionarAReserva(res, biblioteca);
+                        break;
+                    case "2":
+                        removerDeReserva(res, biblioteca);
+                        break;
+                    case "3":
+                        System.out.println("A cancelar...");
+                        break;
+                    default:
+                        System.out.println("Opção inválida! Tente novamente");
+                        break;
+                }
+            }while(!cod.equals("3"));
+        }else{
+            do{
+                System.out.println("1) - Remover Livro/Jornal/Revista");
+                System.out.println("2) - Cancelar");
+                System.out.print("Escolha uma opção: ");
+                cod = ler.next();
+                switch (cod){
+                    case "1":
+                        removerDeReserva(res, biblioteca);
+                        break;
+                    case "2":
+                        System.out.println("A cancelar...");
+                        break;
+                    default:
+                        System.out.println("Opção inválida! Tente novamente");
+                        break;
+                }
+            }while(!cod.equals("2"));
+        }
+
+    }
+
+
 
     /** Metodo setReservas
      * @param biblioteca -> biblioteca onde se encontram as reservas

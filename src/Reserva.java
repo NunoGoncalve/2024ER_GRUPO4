@@ -24,7 +24,8 @@ public class Reserva {
         this.jornaisRevistasReservados = new JornaisRevistas();
     }
 
-    /** Cria uma reserva de acordo com ad informações obtidas do ficheiro */
+    /** Metodo
+     * Cria uma reserva de acordo com ad informações obtidas do ficheiro */
     public Reserva(String reserva, String biblioteca) {
         String regra="[|;]", regraLivros="[*]";
         String[] campos = reserva.split(regra);
