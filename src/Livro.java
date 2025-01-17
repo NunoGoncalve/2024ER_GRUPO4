@@ -53,10 +53,14 @@ public class Livro {
         autor= ler.nextLine();
         System.out.print("Insira a categoria do livro: ");
         categoria = ler.nextLine();
+        boolean flag=false;
         do{
+
             System.out.print("Insira o ISBN do livro: ");
             ISBN = ler.nextLine();
-        }while(!verificaIsbn(ISBN));
+            if(verificaIsbn(ISBN)) flag=true;
+            else System.out.println("Formatação errada! Por favor insira um ISBN válido");
+        }while(!flag);
         String ano;
         do{
             System.out.print("Insira o ano de edição do livro: ");
@@ -75,14 +79,8 @@ public class Livro {
      * Verifica o isbn através de uma regra.
      * @return true se o isbn estiver de acordo com a regra e false se o isbn não estiver de acordo com a regra*/
     public boolean verificaIsbn(String isbn){
-        if(isbn.matches("\\d{9}(\\d|[Xx])") || isbn.matches("\\d-\\d{2}-\\d{6}-(\\d|[Xx])")
-                || isbn.matches("\\d{13}") || isbn.matches("\\d{3}-\\d-\\d{3}-\\d{5}-\\d")){
-            return true;
-        }
-        else{
-            System.out.println("Formatação errada! Por favor insira um ISBN válido");
-            return false;
-        }
+        return isbn.matches("\\d{9}(\\d|[Xx])") || isbn.matches("\\d-\\d{2}-\\d{6}-(\\d|[Xx])")
+                || isbn.matches("\\d{13}") || isbn.matches("\\d{3}-\\d-\\d{3}-\\d{5}-\\d");
     }
 
     /** Metodo formataLivroE
@@ -95,6 +93,7 @@ public class Livro {
         System.out.println("Categoria: " + categoria);
         System.out.println("ISBN: " + ISBN);
         System.out.println("Ano edicao: " + anoEdicao);
+        System.out.println("Livre: " + (this.livre ? "Sim" : "Não"));
     }
 
     /** Metodo isEmpty()

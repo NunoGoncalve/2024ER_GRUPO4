@@ -11,7 +11,7 @@ public class Jornal_revista {
     private String categoria;
     private String ISSN;
     private int ano_publicacao;
-    private boolean emprestado;
+    private boolean livre; // Indica se o jornal/revista está livre
 
     /**
      * Construtor padrão que inicializa os atributos com valores padrão.
@@ -22,7 +22,7 @@ public class Jornal_revista {
         categoria = "";
         ISSN = "";
         ano_publicacao = 0;
-        emprestado = false;
+        livre = true; // Inicialmente, está livre
     }
 
     /**
@@ -36,8 +36,9 @@ public class Jornal_revista {
         categoria = "";
         ISSN = "";
         ano_publicacao = ano;
-        emprestado = false;
+        livre = true; // Inicialmente, está livre
     }
+
 
     /**
      * Construtor que inicializa todos os atributos.
@@ -47,15 +48,15 @@ public class Jornal_revista {
      * @param categoria      Categoria do jornal ou revista.
      * @param ISSN           Código ISSN do jornal ou revista.
      * @param ano_publicacao Ano de publicação do jornal ou revista.
-     * @param emprestado     Estado de empréstimo do jornal ou revista.
+     * @param livre         Estado do jornal ou revista.
      */
-    public Jornal_revista(String titulo, String editora, String categoria, String ISSN, int ano_publicacao, boolean emprestado) {
+    public Jornal_revista(String titulo, String editora, String categoria, String ISSN, int ano_publicacao, boolean livre) {
         this.titulo = titulo;
         this.editora = editora;
         this.categoria = categoria;
         this.ISSN = ISSN;
         this.ano_publicacao = ano_publicacao;
-        this.emprestado = emprestado;
+        this.livre = livre;
     }
 
     /**
@@ -72,7 +73,7 @@ public class Jornal_revista {
         this.categoria = campos[2];
         this.ISSN = campos[3];
         this.ano_publicacao = Integer.parseInt(campos[4]);
-        this.emprestado = false;
+        this.livre = Boolean.parseBoolean(campos[5]); // Inicialmente, está livre
     }
 
     /**
@@ -147,7 +148,7 @@ public class Jornal_revista {
             }
         }
 
-        this.emprestado = false;
+        this.livre = true; // Inicialmente, está livre
         return this;
     }
 
@@ -157,7 +158,7 @@ public class Jornal_revista {
      * @return String formatada.
      */
     public String formataJornalRevistaE() {
-        return "Título: " + this.titulo + "\nEditora: " + this.editora + "\nCategoria: " + this.categoria + "\nISSN: " + this.ISSN + "\nAno de publicação: " + this.ano_publicacao + "\nEmprestado: " + (this.emprestado ? "Sim" : "Não");
+        return "Título: " + this.titulo + "\nEditora: " + this.editora + "\nCategoria: " + this.categoria + "\nISSN: " + this.ISSN + "\nAno de publicação: " + this.ano_publicacao + "\nlivre: " + (this.livre ? "Sim" : "Não");
     }
 
     /**
@@ -166,35 +167,38 @@ public class Jornal_revista {
      * @return String formatada.
      */
     public String formataJornalRevistaF() {
-        return titulo + "|" + editora + "|" + categoria + "|" + ISSN + "|" + ano_publicacao + ";";
+        return titulo + "|" + editora + "|" + categoria + "|" + ISSN + "|" + ano_publicacao + "|"+ livre +";";
     }
 
     /**
-     * Retorna o estado de empréstimo do jornal ou revista.
+     * Retorna o estado do jornal ou revista.
      *
-     * @return true se o jornal/revista estiver emprestado, false caso contrário.
+     * @return true se o jornal/revista estiver livre, false caso contrário.
      */
-    public boolean getEmprestado() {
-        return emprestado;
+    public boolean getLivre() {
+        return livre;
     }
 
+    public void setLivre(boolean livre) {
+        this.livre = livre;
+    }
     /**
      * Define o estado de empréstimo do jornal ou revista.
      *
-     * @param emprestado Estado de empréstimo a ser definido.
+     * @param livre Estado a ser definido.
      */
-    public void setEmprestado(boolean emprestado) {
-        this.emprestado = emprestado;
+    public void setEmprestado(boolean livre) {
+        this.livre = livre;
     }
 
     /**
-     * Exibe todos os jornais e revistas disponíveis (não emprestados).
+     * Exibe todos os jornais e revistas disponíveis (não ocupados).
      *
      * @param jornaisRevistas Lista de jornais/revistas a ser verificada.
      */
     public static void listarJornaisRevistasLivres(Jornal_revista[] jornaisRevistas) {
         for (Jornal_revista jr : jornaisRevistas) {
-            if (!jr.getEmprestado()) {
+            if (!jr.getLivre()) {
                 System.out.println(jr.formataJornalRevistaE());
             }
         }
@@ -206,13 +210,17 @@ public class Jornal_revista {
      *
      * @param jornaisRevistas Lista de jornais/revistas a ser verificada.
      */
-    public static void listarJornaisRevistasEmprestados(Jornal_revista[] jornaisRevistas) {
+    public static void listarJornaisRevistasOcupados(Jornal_revista[] jornaisRevistas) {
         for (Jornal_revista jr : jornaisRevistas) {
-            if (jr.getEmprestado()) {
+            if (jr.getLivre()) {
                 System.out.println(jr.formataJornalRevistaE());
             }
         }
         System.out.println("--------------- Fim ---------------");
+    }
+
+    public boolean isEmpty(){
+        return this.titulo.isEmpty();
     }
 
     // Getters e Setters

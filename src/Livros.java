@@ -13,12 +13,24 @@ public class Livros {
         int n_linhas = contLinhas();
         if(n_linhas!=0) setLivros(lerFicheiro(n_linhas));
     }
+        public ArrayList<Livro> getLivros() {
+            return livros;
+        }
+
+        /** Chama a função ler_ficheiro e guarda as linhas lidas num array e envia-as para a função setLivros*/
+        public void lerLivros() {
+            int n_linhas = contLinhas();
+            if(n_linhas!=0) setLivros(lerFicheiro(n_linhas));
+        }
 
     /** Metodo adicionarLivro
      * Cria uma variável livro chama a função criarLivro() e adiciona o resultado da mesma ao arraylist */
     public void adicionarLivro(){
         Livro liv = new Livro();
         this.livros.add(liv.criarLivro());
+    }
+    public int size(){
+        return livros.size();
     }
 
     /** Metodo adicionarLivro
@@ -34,6 +46,7 @@ public class Livros {
             liv.formataLivroE();
         }
         System.out.println("--------------- Fim ---------------");
+        System.out.println();
     }
 
     /** Metodo listarLivrosLivres
@@ -122,10 +135,13 @@ public class Livros {
         String isbn;
         Scanner ler = new Scanner(System.in);
         Livro liv = new Livro();
+        boolean flag=false;
         do{
             System.out.print("Insira o ISBN do livro: ");
             isbn=ler.nextLine();
-        }while(!liv.verificaIsbn(isbn));
+            if(liv.verificaIsbn(isbn)) flag=true;
+            else System.out.println("Formatação errada! Por favor insira um ISBN válido");
+        }while(!flag);
         return isbn;
     }
 
@@ -164,15 +180,19 @@ public class Livros {
 
     /** Metodo eliminarLivro
      * @param isbn chama a função procura enviando como parametro o isbn recebido, se o livro for encontrado elimina-o do array */
-    public void eliminarLivro(String isbn){
-        Livro liv = procuraLivro(isbn);
-        if(!liv.isEmpty()) {
-            liv.formataLivroE();
-            this.livros.remove(liv);
-            System.out.println();
-            System.out.println("O livro foi removido com sucesso!");
+        public boolean eliminarLivro(String isbn){
+            Livro liv = procuraLivro(isbn);
+            if(!liv.isEmpty()) {
+                liv.formataLivroE();
+                this.livros.remove(liv);
+                System.out.println();
+                System.out.println("O livro foi removido com sucesso!");
+                return true;
+            }
+            return false;
         }
-    }
+
+
 
     /** Metodo guardarLivros
      * Guarda o conteúdo do array no ficheiro verificando se é a primeira linha ou as seguintes */

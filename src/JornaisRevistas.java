@@ -26,6 +26,10 @@ public class JornaisRevistas {
         this.jornaisRevistas.add(jr.criarJornalRevista());
     }
 
+    public void adicionarJornalRevista(Jornal_revista jr) {
+        this.jornaisRevistas.add(jr);
+    }
+
     /**
      * Lista todos os jornais e revistas disponíveis na coleção.
      * Caso o ficheiro esteja vazio, informa o utilizador.
@@ -47,7 +51,7 @@ public class JornaisRevistas {
      */
     public void listarJornaisRevistasLivres() {
         for (Jornal_revista jr : this.jornaisRevistas) {
-            if (!jr.getEmprestado()) {
+            if (jr.getLivre()) {
                 System.out.println("--------------- Jornal/Revista Livre ---------------");
                 System.out.println(jr.formataJornalRevistaE());
             }
@@ -58,14 +62,19 @@ public class JornaisRevistas {
     /**
      * Lista apenas os jornais e revistas que estão emprestados.
      */
-    public void listarJornaisRevistasEmprestados() {
+    public void listarJornaisRevistasOcupados() {
         for (Jornal_revista jr : this.jornaisRevistas) {
-            if (jr.getEmprestado()) {
-                System.out.println("--------------- Jornal/Revista Emprestado ---------------");
+            if (!jr.getLivre()) {
+                System.out.println("--------------- Jornal/Revista Ocupado ---------------");
                 System.out.println(jr.formataJornalRevistaE());
             }
         }
         System.out.println("--------------- Fim ---------------");
+    }
+
+
+    public boolean isEmpty(){
+        return this.jornaisRevistas.isEmpty();
     }
 
     /**
@@ -182,16 +191,32 @@ public class JornaisRevistas {
     /**
      * Remove um jornal ou revista pelo ISSN fornecido.
      */
-    public void eliminarJornalRevista() {
+    public boolean eliminarJornalRevista(String issn) {
         if (this.jornaisRevistas.isEmpty()) {
             System.out.println("Ficheiro vazio! Adicione um jornal ou revista");
         } else {
-            String issn = pedeISSN();
-            if (this.jornaisRevistas.removeIf(jr -> jr.getISSN().equals(issn)))
+            if (this.jornaisRevistas.removeIf(jr -> jr.getISSN().equals(issn))){
                 System.out.println("O jornal/revista foi removido com sucesso!");
-            else
-                System.out.println("Jornal/Revista não encontrado!");
+                return true;
+            }
+            System.out.println("Jornal/Revista não encontrado!");
         }
+        return false;
+    }
+
+    /** Pede o ISSN ao utilizador, verifica se este encontra-se com o formato correto e retorna-o */
+    public String pedeIssn(){
+        String issn;
+        Scanner ler = new Scanner(System.in);
+        Jornal_revista  jr = new Jornal_revista();
+        boolean flag=false;
+        do{
+            System.out.print("Insira o ISBN do livro: ");
+            issn=ler.nextLine();
+            if(jr.validarISSN(issn)) flag=true;
+            else System.out.println("Formatação errada! Por favor insira um ISBN válido");
+        }while(!flag);
+        return issn;
     }
 
     /**

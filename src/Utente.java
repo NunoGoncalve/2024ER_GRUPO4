@@ -51,15 +51,7 @@ public class Utente {
         do { // validaçãodo NIF com 9 digitos
             System.out.print("NIF (9 Dígitos):  ");
             NIF = ler.next();
-
-            if (NIF.matches("\\d{9}")){
-                Nif = Integer.parseInt(NIF);
-                break;
-            } else {
-                System.out.println("O NIF deve conter 9 dígitos!");
-                System.out.println("Caracteres são inválidos!");
-            }
-        }while (true);
+        }while (verificaNif(NIF));
 
 
         String tel;
@@ -67,7 +59,7 @@ public class Utente {
             System.out.print("Telemóvel:  ");
             tel = ler.next();
             if (tel.matches("\\d{9}")){
-                telemovel = Integer.valueOf(tel);
+                telemovel = Integer.parseInt(tel);
                 break;
             } else {
                 System.out.println("O número de Telemóvel deve conter 9 dígitos!");
@@ -76,6 +68,17 @@ public class Utente {
         }while (true);
 
         return this;
+    }
+
+    public boolean verificaNif(String nif) {
+        if (nif.matches("\\d{9}")){
+            Nif = Integer.parseInt(nif);
+            return true;
+        } else {
+            System.out.println("O NIF deve conter 9 dígitos!");
+            System.out.println("Caracteres são inválidos!");
+            return false;
+        }
     }
 
     /**Metodo formataUtenteE
@@ -160,7 +163,7 @@ public class Utente {
             System.out.print("Telemóvel:  ");
             tel = ler.next();
             if (tel.matches("\\d{9}")){
-                telemovel = Integer.valueOf(tel);
+                telemovel = Integer.parseInt(tel);
                 break;
             } else {
                 System.out.println("O número de Telemóvel deve conter 9 dígitos!");
