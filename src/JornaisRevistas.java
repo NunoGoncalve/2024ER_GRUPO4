@@ -307,7 +307,7 @@ public class JornaisRevistas {
         try {
             if (myfile.createNewFile()) return i;
             else {
-                try (BufferedReader reader = new BufferedReader(new FileReader(biblioteca+"jornais_revistas.txt"))) {
+                try (BufferedReader reader = new BufferedReader(new FileReader(biblioteca+"/jornais_revistas.txt"))) {
                     while (reader.readLine() != null) i++;
                 } catch (IOException e) {
                     e.printStackTrace();

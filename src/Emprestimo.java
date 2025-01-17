@@ -33,7 +33,7 @@ public class Emprestimo {
     }
 
     /** Cria um emprestimo de acordo com ad informações obtidas do ficheiro */
-    public Emprestimo(String emprestimo) {
+    public Emprestimo(String emprestimo, String biblioteca) {
         String regra="[|;]", regraLivros="[*]";
         String[] campos = emprestimo.split(regra);
         String[] livrosJornaisRevistas = campos[4].split(regraLivros);
@@ -42,9 +42,9 @@ public class Emprestimo {
         JornaisRevistas jr = new JornaisRevistas();
         Utentes uts = new Utentes();
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        livs.lerLivros();
-        jr.ler_jornaisRevistas();
-        uts.lerUtentes();
+        livs.lerLivros(biblioteca);
+        jr.ler_jornaisRevistas(biblioteca);
+        uts.lerUtentes(biblioteca);
 
         this.num = Integer.parseInt(campos[0]);
 
@@ -116,16 +116,16 @@ public class Emprestimo {
     /** Metodo criarEmprestimo
      Pede ao utilizador as informações do empréstimo e faz as verificações necessárias
      @param numEmprestimo utilizado para definir o número do empréstimo */
-    public Emprestimo criarEmprestimo(int numEmprestimo) {
+    public Emprestimo criarEmprestimo(int numEmprestimo, String biblioteca) {
         Scanner ler = new Scanner(System.in);
         Utentes uts = new Utentes();
         Livro liv = new Livro();
         Livros livs = new Livros();
         Jornal_revista jor = new Jornal_revista();
         JornaisRevistas jors = new JornaisRevistas();
-        livs.lerLivros();
-        uts.lerUtentes();
-        jors.ler_jornaisRevistas();
+        livs.lerLivros(biblioteca);
+        uts.lerUtentes(biblioteca);
+        jors.ler_jornaisRevistas(biblioteca);
         //define o formato para a data
         SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy");
         System.out.println("Registo de Empréstimos \n");
@@ -159,7 +159,7 @@ public class Emprestimo {
                     if(!liv.isEmpty() && liv.getLivre()){
                         this.livrosReservados.adicionarLivro(liv);
                         liv.setLivre(false);
-                        livs.guardarLivros();
+                        livs.guardarLivros(biblioteca);
                         flag=true;
                     }else System.out.println("Livro não disponível");
                 }else if (jor.validarISSN(codigo)){
@@ -167,7 +167,7 @@ public class Emprestimo {
                     if(!jor.isEmpty() && jor.getLivre()){
                         this.getEmprestadosJornaisRevistas().adicionarJornalRevista(jor);
                         jor.setLivre(false);
-                        jors.guardarJornaisRevistas();
+                        jors.guardarJornaisRevistas(biblioteca);
                         flag=true;
                     }else System.out.println("Jornal/Revista não disponível");
                 }else {

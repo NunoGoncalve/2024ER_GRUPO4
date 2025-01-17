@@ -25,7 +25,7 @@ public class Reserva {
     }
 
     /** Cria uma reserva de acordo com ad informações obtidas do ficheiro */
-    public Reserva(String reserva) {
+    public Reserva(String reserva, String biblioteca) {
         String regra="[|;]", regraLivros="[*]";
         String[] campos = reserva.split(regra);
         String[] livrosJornaisRevistas = campos[4].split(regraLivros);
@@ -33,9 +33,9 @@ public class Reserva {
         JornaisRevistas jr = new JornaisRevistas();
         Utentes uts = new Utentes();
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        livs.lerLivros();
-        jr.ler_jornaisRevistas();
-        uts.lerUtentes();
+        livs.lerLivros(biblioteca);
+        jr.ler_jornaisRevistas(biblioteca);
+        uts.lerUtentes(biblioteca);
 
         this.num = Integer.parseInt(campos[0]);
 
@@ -120,7 +120,7 @@ public class Reserva {
     /** Metodo criarReserva
      Pede ao utilizador as informações do empréstimo e faz as verificações necessárias
      @param numReserva utilizado para definir o número da reserva */
-    public Reserva criarReserva(int numReserva) {
+    public Reserva criarReserva(int numReserva, String biblioteca) {
         Scanner ler = new Scanner(System.in);
         Utentes uts = new Utentes();
         Livro liv = new Livro();
@@ -128,9 +128,9 @@ public class Reserva {
         Jornal_revista jor = new Jornal_revista();
         JornaisRevistas jors = new JornaisRevistas();
 
-        livs.lerLivros();
-        uts.lerUtentes();
-        jors.ler_jornaisRevistas();
+        livs.lerLivros(biblioteca);
+        uts.lerUtentes(biblioteca);
+        jors.ler_jornaisRevistas(biblioteca);
 
         //define o formato para a data
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
@@ -164,7 +164,7 @@ public class Reserva {
                     if(!liv.isEmpty() && liv.getLivre()){
                         this.livrosReservados.adicionarLivro(liv);
                         liv.setLivre(false);
-                        livs.guardarLivros();
+                        livs.guardarLivros(biblioteca);
                         flag=true;
                     }else System.out.println("Livro não disponível");
                 }else if (jor.validarISSN(codigo)){
@@ -172,7 +172,7 @@ public class Reserva {
                     if(!jor.isEmpty() && jor.getLivre()){
                         this.jornaisRevistasReservados.adicionarJornalRevista(jor);
                         jor.setLivre(false);
-                        jors.guardarJornaisRevistas();
+                        jors.guardarJornaisRevistas(biblioteca);
                         flag=true;
                     }else System.out.println("Jornal/Revista não disponível");
                 }else {

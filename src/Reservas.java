@@ -9,23 +9,23 @@ import java.util.Date;
 public class Reservas {
     private List<Reserva> reservas = new ArrayList<>();
 
-    // Método para adicionar uma nova reserva
-    public void adicionarReserva() {
+
+    public void adicionarReserva(String biblioteca) {
         Reserva res = new Reserva();
-        this.reservas.add(res.criarReserva(this.reservas.size()+1));
+        this.reservas.add(res.criarReserva(this.reservas.size()+1, biblioteca));
     }
 
-    public void lerReservas() {
-        int nLinhas = contLinhas();
-        if(nLinhas!=0) setReservas(lerFicheiro(nLinhas));
+    public void lerReservas(String biblioteca) {
+        int nLinhas = contLinhas(biblioteca);
+        if(nLinhas!=0) setReservas(lerFicheiro(nLinhas, biblioteca), biblioteca);
     }
 
     /** Metodo setReservas
      * @param reservas recebe como parametro um array de strings
      * Para cada string no array reservas cria um reservas e adiciona-o ao array conforme a informação encontrada no array */
-    private void setReservas(String[] reservas) {
+    private void setReservas(String[] reservas, String biblioteca) {
         for (String s : reservas) {
-            Reserva res = new Reserva(s);
+            Reserva res = new Reserva(s, biblioteca);
             this.reservas.add(res);
         }
     }
@@ -178,9 +178,9 @@ public class Reservas {
 
     /** Metodo guardarReservas
      * Guarda o conteúdo do array no ficheiro verificando se é a primeira linha ou as seguintes */
-    public void guardarReservas(){
+    public void guardarReservas(String biblioteca) {
         try {
-            FileWriter writer = new FileWriter("reservas.txt");
+            FileWriter writer = new FileWriter(biblioteca+"/reservas.txt");
             for (Reserva res : this.reservas) {
                 if(this.reservas.getFirst()==res) writer.write(res.formataReservaF());
                 else writer.write("\n"+res.formataReservaF());
@@ -194,11 +194,11 @@ public class Reservas {
     /** Metodo lerFicheiro
      * @param nLinhas  recebe como parametro o número de linhas que o ficheiro têm e cria um array de strings desse tamanho,
      * de seguida lê as linhas do ficheiro e guarda-as num array retornando o mesmo */
-    private String[] lerFicheiro(int nLinhas){
+    private String[] lerFicheiro(int nLinhas, String biblioteca){
         int i=0;
         String[] reservas = new String[nLinhas];
 
-        File myfile = new File("reservas.txt");
+        File myfile = new File(biblioteca+"/reservas.txt");
         try {
             Scanner myReader = new Scanner(myfile);
             while (myReader.hasNextLine()) {
@@ -216,13 +216,13 @@ public class Reservas {
      * Cria o ficheiro caso este não exista e retorna o número de linhas a 0.
      * Caso o ficheiro exista conta as linhas presentes no ficheiro
      * @return i número de linhas*/
-    private int contLinhas(){
+    private int contLinhas(String biblioteca){
         int i=0;
-        File myfile = new File("reservas.txt");
+        File myfile = new File(biblioteca+"/reservas.txt");
         try {
             if (myfile.createNewFile()) return i;
             else {
-                try (BufferedReader reader = new BufferedReader(new FileReader("reservas.txt"))) {
+                try (BufferedReader reader = new BufferedReader(new FileReader(biblioteca+"/reservas.txt"))) {
                     while (reader.readLine() != null) i++;
                 } catch (IOException e) {
                     e.printStackTrace();
