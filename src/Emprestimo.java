@@ -43,7 +43,7 @@ public class Emprestimo {
         Utentes uts = new Utentes();
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         livs.lerLivros(biblioteca);
-        jr.ler_jornaisRevistas(biblioteca);
+        jr.lerJornaisRevistas(biblioteca);
         uts.lerUtentes(biblioteca);
 
         this.num = Integer.parseInt(campos[0]);
@@ -109,7 +109,10 @@ public class Emprestimo {
         return format;
     }
 
-    public boolean verificarDatas(String data){
+    /** verificaData
+     * @param data -> data a verificar
+     * @return -> se a data é válida ou não*/
+    public boolean verificaData(String data){
         return data.matches("\\d{2}/\\d{2}/\\d{4}");
     }
 
@@ -125,7 +128,7 @@ public class Emprestimo {
         JornaisRevistas jors = new JornaisRevistas();
         livs.lerLivros(biblioteca);
         uts.lerUtentes(biblioteca);
-        jors.ler_jornaisRevistas(biblioteca);
+        jors.lerJornaisRevistas(biblioteca);
         //define o formato para a data
         SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy");
         System.out.println("Registo de Empréstimos \n");
@@ -184,7 +187,7 @@ public class Emprestimo {
         do{
             System.out.print("Data prevista de entrega: ");
             data=ler.next();
-            if(verificarDatas(data)) flag=true;
+            if(verificaData(data)) flag=true;
             else System.out.println("Data inválida! Tente novamente");
         }while(!flag);
 

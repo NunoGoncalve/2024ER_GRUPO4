@@ -34,7 +34,7 @@ public class Reserva {
         Utentes uts = new Utentes();
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         livs.lerLivros(biblioteca);
-        jr.ler_jornaisRevistas(biblioteca);
+        jr.lerJornaisRevistas(biblioteca);
         uts.lerUtentes(biblioteca);
 
         this.num = Integer.parseInt(campos[0]);
@@ -92,7 +92,6 @@ public class Reserva {
                     else format+=jr.getISSN()+"*";
                 }
             }
-
         }
         format+="|"+this.utente.getNif()+";";
         return format;
@@ -130,7 +129,7 @@ public class Reserva {
 
         livs.lerLivros(biblioteca);
         uts.lerUtentes(biblioteca);
-        jors.ler_jornaisRevistas(biblioteca);
+        jors.lerJornaisRevistas(biblioteca);
 
         //define o formato para a data
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
@@ -219,15 +218,15 @@ public class Reserva {
         SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy");
         String strDataInicio, strDataFim="";
         Date dataInicio, dataFim;
-        Emprestimo emp = new Emprestimo();
+        Reserva res = new Reserva();
         boolean flag = false;
         do{
             System.out.print("Data de inicio: ");
             strDataInicio = ler.next();
-            if(emp.verificarDatas(strDataInicio)){
+            if(res.verificaData(strDataInicio)){
                 System.out.print("Data de fim: ");
                 strDataFim = ler.next();
-                if(emp.verificarDatas(strDataFim)) {
+                if(res.verificaData(strDataFim)) {
                     flag = true;
                 }
             }
@@ -244,7 +243,7 @@ public class Reserva {
         return new Date[]{dataInicio, dataFim};
     }
 
-    public boolean verificarDatas(String data){
+    public boolean verificaData(String data){
         return data.matches("\\d{2}/\\d{2}/\\d{4}");
     }
 

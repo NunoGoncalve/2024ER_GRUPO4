@@ -10,18 +10,22 @@ import java.util.Scanner;
 public class Emprestimos {
     private ArrayList<Emprestimo> emprestimos = new ArrayList<>();
 
-    //função para listar os empréstimos guardados no array
-
+    /** listarEmprestimos
+     * mostra todos os emprestimos*/
     public void listarEmprestimos(){
         for (Emprestimo emp : emprestimos) {
             emp.formataEmprestimoE();
         }
     }
 
+    /** listarEmprestimos
+     * @return -> retorna se o arraylist está vazio*/
     public boolean isEmpty(){
         return emprestimos.isEmpty();
     }
 
+    /** empAtivos
+     * @return -> se existem emprestimos ativos*/
     public boolean empAtivos(){
         for (Emprestimo emp : emprestimos) {
             if(emp.getDataFim()==null) return true;
@@ -29,13 +33,18 @@ public class Emprestimos {
         return false;
     }
 
+    /** listarEmprestimosAtivos
+     * lista todos os emprestimos ativos*/
     public void listarEmprestimosAtivos(){
         for (Emprestimo emp : emprestimos) {
             if(emp.getDataFim()==null) emp.formataEmprestimoE();
         }
     }
 
-
+    /** adicionarAEmprestimo
+     * @param emp -> emprestimo do qual adicionar
+     * @param biblioteca -> biblioteca a adicionar o item
+     * Pede ao utilizador o isbn/issn do item a adiconar verifica-o e se válido adiciona-o */
     public void adicionarAEmprestimo(Emprestimo emp, String biblioteca){
         Scanner ler = new Scanner(System.in);
         String codigo;
@@ -45,7 +54,7 @@ public class Emprestimos {
         JornaisRevistas jrs = new JornaisRevistas();
 
         livs.lerLivros(biblioteca);
-        jrs.ler_jornaisRevistas(biblioteca);
+        jrs.lerJornaisRevistas(biblioteca);
 
         boolean flag = false;
         do{
@@ -71,9 +80,12 @@ public class Emprestimos {
                 System.out.println("ISBN/ISSN inválido");
             }
         }while(!flag);
-
     }
 
+    /** removerDeEmprestimo
+     * @param emp -> emprestimo do qual remover
+     * @param biblioteca -> biblioteca de onde remover
+     * Pede ao utilizador o isbn/issn do item a eliminar verifica-o e se válido apaga-o */
     public void removerDeEmprestimo(Emprestimo emp, String biblioteca){
         Scanner ler = new Scanner(System.in);
         String codigo;
@@ -83,7 +95,7 @@ public class Emprestimos {
         JornaisRevistas jrs = new JornaisRevistas();
 
         livs.lerLivros(biblioteca);
-        jrs.ler_jornaisRevistas(biblioteca);
+        jrs.lerJornaisRevistas(biblioteca);
 
         boolean flag = false;
         do{
@@ -121,6 +133,9 @@ public class Emprestimos {
 
     }
 
+    /** menuAtualizarEmprestimo
+     * procura o empréstimo pelo código
+     * e apresenta o menu de atualização do mesmo*/
     public void menuAtualizarEmprestimo(String biblioteca) {
         Scanner ler = new Scanner(System.in);
         String cod;
@@ -148,7 +163,7 @@ public class Emprestimos {
         JornaisRevistas jrs = new JornaisRevistas();
 
         livs.lerLivros(biblioteca);
-        jrs.ler_jornaisRevistas(biblioteca);
+        jrs.lerJornaisRevistas(biblioteca);
 
         if(!emp.getEmprestadosLivros().isEmpty()) emp.getEmprestadosLivros().listarLivros();
         if(!emp.getEmprestadosJornaisRevistas().isEmpty()) emp.getEmprestadosJornaisRevistas().listarJornaisRevistas();
@@ -176,14 +191,18 @@ public class Emprestimos {
         }while(!cod.equals("3"));
 
     }
-    //função para verificar se o utente existe
 
+    /** registarEmprestimo
+     * @param biblioteca -> biblioteca onde se encontra o ficheiro emprestimos
+     * Cria um novo emprestimo e adiciona-o ao arraylist*/
     public void registarEmprestimo(String biblioteca){
         Emprestimo emp = new Emprestimo();
         this.emprestimos.add(emp.criarEmprestimo(this.emprestimos.size()+1, biblioteca));
     }
 
-
+    /** procurarEmprestimo
+     * procura um empréstimo atraves do número
+     * @return -> do emprestimo encontrado ou um emprestimo vazio*/
     public Emprestimo procurarEmprestimo(int cod) {
         Emprestimo empFlag = new Emprestimo();
         for (Emprestimo emp : emprestimos) {
@@ -207,10 +226,10 @@ public class Emprestimos {
         do{
             System.out.print("Data de inicio: ");
             strDataInicio = ler.next();
-            if(emp.verificarDatas(strDataInicio)){
+            if(emp.verificaData(strDataInicio)){
                 System.out.print("Data de fim: ");
                 strDataFim = ler.next();
-                if(emp.verificarDatas(strDataFim)) {
+                if(emp.verificaData(strDataFim)) {
                     flag = true;
                 }
             }
@@ -226,6 +245,8 @@ public class Emprestimos {
         return new Date[]{dataInicio, dataFim};
     }
 
+    /** Metodo menuPesquisaEmprestimo
+     * menu de pesquisa de emprestimos*/
     public void menuPesquisaEmprestimo() {
         Scanner ler = new Scanner(System.in);
         String op;
@@ -237,22 +258,14 @@ public class Emprestimos {
         op=ler.next();
         switch (op) {
             case "1":
-                pesquisarEmprestimo(pedeDatas());
+                pesquisarEmprestimoDatas(pedeDatas());
                 break;
             case "2":
-                String nifString;
-                int nif;
-                Utente ut = new Utente();
-                do{
-                    System.out.print("Insira o NIF de um utente: ");
-                    nifString = ler.next();
-                }while(!ut.verificaNif(nifString));
-                nif=Integer.parseInt(nifString);
-                pesquisarEmprestimo(nif, pedeDatas());
+                pesquisarEmprestimoUtenteDatas(pedeDatas());
                 break;
 
             case "3":
-                pesquisarEmprestimo();
+                pesquisarEmprestimoUtente();
                 break;
             case "4":
                 System.out.println("A cancelar... ");
@@ -263,14 +276,30 @@ public class Emprestimos {
         }
     }
 
-    public void pesquisarEmprestimo(Date[] datas) {
+    /** pesquisarEmprestimoDatas
+     * @param datas -> intervalo de datas a pesquisar os emprestimos
+     * pesquisa os emprestimos entre o intervalo defenido e imprime-os no ecrã */
+    public void pesquisarEmprestimoDatas(Date[] datas) {
         for (Emprestimo emp : emprestimos) {
             if(emp.getDataInicio().compareTo(datas[0])>=0 && emp.getDataFimPrev().compareTo(datas[1])<=0){
                 emp.formataEmprestimoE();
             }
         }
     }
-    public void pesquisarEmprestimo(int nif, Date[] datas) {
+
+    /** pesquisarEmprestimoUtenteDatas
+     * @param datas -> intervalo de datas a pesquisar os emprestimos
+     * pesquisa os emprestimos de um utente e imprime-os no ecrã*/
+    public void pesquisarEmprestimoUtenteDatas(Date[] datas) {
+        Scanner ler = new Scanner(System.in);
+        String nifString;
+        int nif;
+        Utente ut = new Utente();
+        do{
+            System.out.print("Insira o NIF de um utente: ");
+            nifString = ler.next();
+        }while(!ut.verificaNif(nifString));
+        nif=Integer.parseInt(nifString);
         for (Emprestimo emp : emprestimos) {
             if(emp.getUtente().getNif() == nif && emp.getDataInicio().compareTo(datas[0])>=0 && emp.getDataFimPrev().compareTo(datas[1])<=0){
                 emp.formataEmprestimoE();
@@ -278,7 +307,9 @@ public class Emprestimos {
         }
     }
 
-    public void pesquisarEmprestimo() {
+    /** pesquisarEmprestimoUtente
+     * pesquisa os emprestimos de um utente e imprime-os no ecrã*/
+    public void pesquisarEmprestimoUtente() {
         Scanner ler = new Scanner(System.in);
         Utente ut = new Utente();
         int nif;
@@ -295,6 +326,9 @@ public class Emprestimos {
         }
     }
 
+    /** Metodo tempoMedio
+     * Calcula a media dos dias dos emprestimos
+     * @param datas -> datas a calcular o tempo médio*/
     public void tempoMedio(Date[] datas) {
         double tempoMedio=0, i=0;
         DecimalFormat format = new DecimalFormat("0.00");
@@ -313,6 +347,14 @@ public class Emprestimos {
         }
         tempoMedio/=i;
         System.out.println("O tempo médio é "+format.format(tempoMedio));
+    }
+
+    /** Metodo listarUtentes
+     * lista os utentes com emprestimos*/
+    public void listarUtentes(){
+        for (Emprestimo emp : emprestimos) {
+            emp.getUtente().formataUtenteE();
+        }
     }
 
     /** Metodo devolverEmprestimo
@@ -335,7 +377,7 @@ public class Emprestimos {
             do{
                 System.out.print("Empréstimo encontrado, insira a data de devolução (dd/mm/yyyy): ");
                 dataDev = ler.next();
-                if(emp.verificarDatas(dataDev)){
+                if(emp.verificaData(dataDev)){
                     flag = true;
                 }else System.out.println("Formato incorreto!");
             }while(!flag);
@@ -352,7 +394,7 @@ public class Emprestimos {
 
             JornaisRevistas jrEmp = emp.getEmprestadosJornaisRevistas();
             JornaisRevistas jrs = new JornaisRevistas();
-            jrs.ler_jornaisRevistas(biblioteca);
+            jrs.lerJornaisRevistas(biblioteca);
 
             for(int i=0; i< livsEmp.size();i++){
                 livs.procuraLivro(livsEmp.getLivros().get(i).getISBN()).setLivre(true);
@@ -372,8 +414,7 @@ public class Emprestimos {
     /** Metodo totalEmprestimos
      * Apresenta duas opções ao utilizador
      * 1 -> mostra o total de empréstimos
-     * 2 -> mostra o total de empréstimos num intervalo de datas
-     */
+     * 2 -> mostra o total de empréstimos num intervalo de datas */
     public void totalEmprestimos () {
         Scanner ler = new Scanner(System.in);
         int total = 0;
@@ -404,8 +445,8 @@ public class Emprestimos {
     }
 
    /** Metodo diasAtraso
-    *  Apresenta uma lista dos utentes cuja devolução dos itens emprestados tenha um
-    atraso superior a um número de dias a inserir pelo utilizador;*/
+    * Apresenta uma lista dos utentes cuja devolução dos itens emprestados tenha um
+    + atraso superior a um número de dias a inserir pelo utilizador;*/
     public void diasAtraso(){
         Calendar calendar = Calendar.getInstance();
         Scanner ler = new Scanner(System.in);
@@ -431,6 +472,7 @@ public class Emprestimos {
 
     /** Metodo lerEmprestimos
      * Define a variável nLinhas com o resultado da função contLinhas;
+     * @param biblioteca -> biblioteca onde se encontra o ficheiro emprestimos
      * Se o nLinhas for diferente de 0 chama a função setEmpréstimos com o resultado da função lerFicheiro como parametro*/
     public void lerEmprestimos(String biblioteca) {
         int nLinhas = contLinhas(biblioteca);
@@ -439,6 +481,7 @@ public class Emprestimos {
 
     /** Metodo lerFicheiro
      * @param nLinhas  recebe como parametro o número de linhas que o ficheiro têm e cria um array de strings desse tamanho,
+     * @param biblioteca -> biblioteca onde se encontra o ficheiro emprestimos
      * de seguida lê as linhas do ficheiro e guarda-as num array retornando o mesmo */
     private String[] lerFicheiro(int nLinhas, String biblioteca) {
         int i=0;
@@ -487,6 +530,7 @@ public class Emprestimos {
     
     /** Metodo setEmprestimos
      * @param emprestimos recebe como parametro um array de strings
+     * @param biblioteca -> biblioteca onde se encontra o ficheiro emprestimos
      * Para cada string no array emprestimos cria um emprestimo e adiciona-o ao array conforme a informação encontrada no array */
     private void setEmprestimos(String[] emprestimos, String biblioteca) {
         for (String s : emprestimos) {
@@ -496,6 +540,7 @@ public class Emprestimos {
     }
 
     /** Metodo guardarEmprestimos
+     * @param biblioteca -> biblioteca onde guardar o ficheiro
      * Guarda o conteúdo do array no ficheiro verificando se é a primeira linha ou as seguintes */
     public void guardarEmprestimos(String biblioteca){
         try {

@@ -8,12 +8,11 @@ import java.util.Scanner;
 public class JornaisRevistas {
     private ArrayList<Jornal_revista> jornaisRevistas = new ArrayList<>();
 
-    /**
+    /** Metodo lerjormaisRevistas
      * Lê os dados dos jornais e revistas a partir de um ficheiro.
      * Chama a função "lerFicheiro" e guarda as linhas lidas num array,
-     * enviando-as para a função "setJornaisRevistas".
-     */
-    public void ler_jornaisRevistas(String biblioteca) {
+     * enviando-as para a função "setJornaisRevistas".*/
+    public void lerJornaisRevistas(String biblioteca) {
         int nLinhas = contLinhas(biblioteca);
         if (nLinhas != 0) setJornaisRevistas(lerFicheiro(nLinhas, biblioteca));
     }

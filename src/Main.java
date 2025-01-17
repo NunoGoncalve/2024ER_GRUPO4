@@ -43,44 +43,7 @@ public class Main {
                 System.out.println();
                 System.out.println("--------------- Bem vindo à secção Reservas ---------------");
                 System.out.println("1)  Exibir Reservas");
-                System.out.println("2)  Pesquisar ");
-                System.out.println("3)  Remover Reserva");
-                System.out.println("4)  Sair");
-                System.out.print("Todos os livros estão ocupados! Escolha uma opção: ");
-                op=ler.next();
-                switch (op) {
-                    case "1":
-                        reservas.exibirReservas();  // Exibe todas as reservas anonimamente
-                        break;
-                    case "2":
-                        reservas.menuPesquisaReserva(); // Exibe todas as reservas com NIF
-                        break;
-                    case "3":
-                        reservas.exibirReservas();
-                        System.out.print("Digite o número da reserva para remover: ");
-                        int numeroRemover = ler.nextInt();
-                        reservas.removerReserva(numeroRemover, biblioteca);  // Remove a reserva
-                        if(reservas.isEmpty()){
-                            reservas.guardarReservas(biblioteca);
-                            op="4";
-                        }
-                        break;
-                    case "4":
-                        reservas.guardarReservas(biblioteca);
-                        System.out.println("A sair ...");
-                        break;
-                    default:
-                        System.out.println("Opção incorreta!");
-                        break;
-                }
-            }while(!op.equals("4"));
-        }
-        if(!reservas.isEmpty()){
-            do{
-                System.out.println();
-                System.out.println("--------------- Bem vindo à secção Reservas ---------------");
-                System.out.println("1)  Adicionar Reserva");
-                System.out.println("2)  Exibir Reservas");
+                System.out.println("2)  Mostrar utentes");
                 System.out.println("3)  Pesquisar ");
                 System.out.println("4)  Remover Reserva");
                 System.out.println("5)  Sair");
@@ -88,22 +51,22 @@ public class Main {
                 op=ler.next();
                 switch (op) {
                     case "1":
-                        reservas.adicionarReserva(biblioteca);
+                        reservas.exibirReservas();  // Exibe todas as reservas anonimamente
                         break;
                     case "2":
-                        reservas.exibirReservas();
+                        reservas.listarUtentes(); // Exibe todas as reservas com NIF
                         break;
                     case "3":
-                        reservas.menuPesquisaReserva();
+                        reservas.menuPesquisaReserva(); // Exibe todas as reservas com NIF
                         break;
                     case "4":
                         reservas.exibirReservas();
                         System.out.print("Digite o número da reserva para remover: ");
                         int numeroRemover = ler.nextInt();
-                        reservas.removerReserva(numeroRemover, biblioteca);
+                        reservas.removerReserva(numeroRemover, biblioteca);  // Remove a reserva
                         if(reservas.isEmpty()){
                             reservas.guardarReservas(biblioteca);
-                            return true;
+                            op="4";
                         }
                         break;
                     case "5":
@@ -116,6 +79,52 @@ public class Main {
                 }
             }while(!op.equals("5"));
         }
+        if(!reservas.isEmpty()){
+            do{
+                System.out.println();
+                System.out.println("--------------- Bem vindo à secção Reservas ---------------");
+                System.out.println("1)  Adicionar Reserva");
+                System.out.println("2)  Exibir Reservas");
+                System.out.println("3)  Mostrar utentes");
+                System.out.println("4)  Pesquisar ");
+                System.out.println("5)  Remover Reserva");
+                System.out.println("6)  Sair");
+                System.out.print("Todos os livros estão ocupados! Escolha uma opção: ");
+                op=ler.next();
+                switch (op) {
+                    case "1":
+                        reservas.adicionarReserva(biblioteca);
+                        break;
+
+                    case "2":
+                        reservas.exibirReservas();
+                        break;
+                    case "3":
+                        reservas.listarUtentes();
+                        break;
+                    case "4":
+                        reservas.menuPesquisaReserva();
+                        break;
+                    case "5":
+                        reservas.exibirReservas();
+                        System.out.print("Digite o número da reserva para remover: ");
+                        int numeroRemover = ler.nextInt();
+                        reservas.removerReserva(numeroRemover, biblioteca);
+                        if(reservas.isEmpty()){
+                            reservas.guardarReservas(biblioteca);
+                            return true;
+                        }
+                        break;
+                    case "6":
+                        reservas.guardarReservas(biblioteca);
+                        System.out.println("A sair ...");
+                        break;
+                    default:
+                        System.out.println("Opção incorreta!");
+                        break;
+                }
+            }while(!op.equals("6"));
+        }
         return false;
     }
 
@@ -123,7 +132,7 @@ public class Main {
         int op;
         Scanner ler = new Scanner(System.in);
         JornaisRevistas jornaisRevistas =new JornaisRevistas();
-        jornaisRevistas.ler_jornaisRevistas(biblioteca);
+        jornaisRevistas.lerJornaisRevistas(biblioteca);
         do {
             System.out.println();
             System.out.println("--------------- Bem vindo à secção Jornais/Revistas ---------------");
@@ -252,13 +261,14 @@ public class Main {
                 System.out.println("--------------- Bem vindo à secção Empréstimos ---------------");
                 System.out.println("1)  Listar");
                 System.out.println("2)  Registar");
-                System.out.println("3)  Pesquisar ");
-                System.out.println("4)  Atualizar");
-                System.out.println("5)  Devolver");
-                System.out.println("6)  Total de empréstimos");
-                System.out.println("7)  Tempo médio");
-                System.out.println("8)  Mostrar empréstimos com atraso");
-                System.out.println("9)  Sair");
+                System.out.println("3)  Listar utentes");
+                System.out.println("4)  Pesquisar ");
+                System.out.println("5)  Atualizar");
+                System.out.println("6)  Devolver");
+                System.out.println("7)  Total de empréstimos");
+                System.out.println("8)  Tempo médio");
+                System.out.println("9)  Mostrar empréstimos com atraso");
+                System.out.println("0)  Sair");
                 System.out.print("Selecione uma opção: ");
                 opc = ler.next();
                 switch (opc) {
@@ -271,14 +281,18 @@ public class Main {
                         break;
 
                     case "3":
-                        emprestimos.menuPesquisaEmprestimo();
+                        emprestimos.listarEmprestimos();
                         break;
 
                     case "4":
-                        emprestimos.menuAtualizarEmprestimo(biblioteca);
+                        emprestimos.menuPesquisaEmprestimo();
                         break;
 
                     case "5":
+                        emprestimos.menuAtualizarEmprestimo(biblioteca);
+                        break;
+
+                    case "6":
                         emprestimos.devolverEmprestimo(biblioteca);
                         if(!emprestimos.empAtivos()){
                             emprestimos.guardarEmprestimos(biblioteca);
@@ -288,18 +302,18 @@ public class Main {
 
                         break;
 
-                    case "6":
+                    case "7":
                         emprestimos.totalEmprestimos();
                         break;
 
-                    case "7":
+                    case "8":
                         emprestimos.tempoMedio(emprestimos.pedeDatas());
                         break;
 
-                    case "8":
+                    case "9":
                         emprestimos.diasAtraso();
                         break;
-                    case "9":
+                    case "0":
                         emprestimos.guardarEmprestimos(biblioteca);
                         System.out.println("A sair ...");
                         break;
@@ -308,7 +322,7 @@ public class Main {
                         System.out.println("Opção incorreta! Tente novamente");
                         break;
                 }
-            } while (!opc.equals("9"));
+            } while (!opc.equals("0"));
         }
         return false;
     }
