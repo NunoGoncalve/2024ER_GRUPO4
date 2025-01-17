@@ -118,11 +118,11 @@ public class Main {
         return false;
     }
 
-    public static void menuJornaisRevistas(){
+    public static void menuJornaisRevistas(String bib){
         int op;
         Scanner ler = new Scanner(System.in);
         JornaisRevistas jornaisRevistas =new JornaisRevistas();
-        jornaisRevistas.ler_jornaisRevistas();
+        jornaisRevistas.ler_jornaisRevistas(bib);
         do {
             System.out.println();
             System.out.println("--------------- Bem vindo à secção Jornais/Revistas ---------------");
@@ -154,7 +154,7 @@ public class Main {
                     break;
 
                 case 6:
-                    jornaisRevistas.guardarJornaisRevistas();
+                    jornaisRevistas.guardarJornaisRevistas(bib);
                     jornaisRevistas.limparJornaisRevistas();
                     System.out.println("A sair do menu livro...");
                     break;
@@ -312,11 +312,11 @@ public class Main {
         return false;
     }
 
-    public static void menuLivros(){
+    public static void menuLivros(String bib){
         int op;
         Scanner ler = new Scanner(System.in);
-        Livros livros = new Livros();
-        livros.lerLivros();
+        Livros livros=new Livros();
+        livros.lerLivros(String bib);
         if(livros.isEmpty()){
             do {
                 System.out.println();
@@ -328,7 +328,7 @@ public class Main {
                 switch (op) {
                     case 1:
                         livros.adicionarLivro();
-                        livros.guardarLivros();
+                        livros.guardarLivros(bib);
                         op = 2;
                         break;
                     case 2:
@@ -355,7 +355,9 @@ public class Main {
                 op = ler.nextInt();
                 switch (op) {
                     case 1:
+                        System.out.println();
                         livros.listarLivros();
+                        System.out.println();
                         break;
                     case 2:
                         livros.adicionarLivro();
@@ -371,15 +373,14 @@ public class Main {
                     case 5:
                         livros.eliminarLivro(livros.pedeIsbn());
                         if(livros.isEmpty()){
-                            livros.guardarLivros();
+                            livros.guardarLivros(bib);
                             livros.limparLivros();
-                            System.out.println("A sair do menu livro...");
-                            op =6;
+                            return true;
                         }
                         break;
 
                     case 6:
-                        livros.guardarLivros();
+                        livros.guardarLivros(bib);
                         livros.limparLivros();
                         System.out.println("A sair do menu livro...");
                         break;
@@ -389,68 +390,92 @@ public class Main {
                 }
             }while (op != 6);
         }
+        return false;
     }
 
-
-    public static void menuUtente(){
-        int escolha;
+    public static void menuUtente(String bib){
+        String escolha;
         Utentes uts = new Utentes();
-        uts.lerUtentes();
-        if(uts.isEmpty()){}
-        do {
+        uts.lerUtentes(bib);
+        if(uts.isEmpty()){
+            do {
+                System.out.println();
+                System.out.println("--------------- Bem vindo à secção Utente ---------------");
+                System.out.println("1) Adicionar");
+                System.out.println("2) Sair");
+                System.out.print("Não existem utentes! Como deseja prosseguir?  ");
+                Scanner ler = new Scanner(System.in);
+                escolha = ler.next();
 
-            System.out.println("--------------- Bem vindo à secção Utente ---------------");
-            System.out.println("1)  Listar");
-            System.out.println("2)  Adicionar");
-            System.out.println("3)  Pesquisar");
-            System.out.println("4)  Atualizar");
-            System.out.println("5)  Eliminar");
-            System.out.println("6)  Sair");
-            System.out.print("Como deseja prosseguir?  ");
-            Scanner ler = new Scanner(System.in);
-            escolha = ler.nextInt();
-
-            switch (escolha) {
-                case 1:
-                    uts.listarUtentes();
-                    break;
-
-                case 2:
-                    uts.adicionarUtente();
-                    break;
-
-                case 3:
-                    int Nif;
-                    System.out.print("Insira o NIF do Utente:  ");
-                    Nif = ler.nextInt();
-                    uts.pesquisarUtente(uts.procurarUtente(Nif));
-                    break;
-
-                case 4:
-                    uts.atualizarUtente();
-                    break;
-
-                case 5:
-                    uts.eliminarUtente();
-                    break;
-
-                case 6:
-                    System.out.println("A sair do menu Utente....\n");
-                    uts.guardarUtentes();
-                    break;
-                default:
-                    System.out.println("ERRO!!  Escolha uma das opções");
-                    break;
+                switch (escolha) {
+                    case "1":
+                        uts.adicionarUtente();
+                        break;
+                    case "2":
+                        System.out.println("A sair do menu Utente....\n");
+                        uts.guardarUtentes(bib);
+                        break;
+                    default:
+                        System.out.println("ERRO!!  Escolha uma das opções");
+                        break;
                 }
-        }while (escolha != 6);
+            }while (!escolha.equals("2"));
+        }
+        if(!uts.isEmpty()){
+            do {
+                System.out.println();
+                System.out.println("--------------- Bem vindo à secção Utente ---------------");
+                System.out.println("1) Listar");
+                System.out.println("2) Adicionar");
+                System.out.println("3) Pesquisar");
+                System.out.println("4) Atualizar");
+                System.out.println("5) Eliminar");
+                System.out.println("6) Sair");
+                System.out.print("Como deseja prosseguir?  ");
+                Scanner ler = new Scanner(System.in);
+                escolha = ler.next();
+                switch (escolha) {
+                    case "1":
+                        uts.listarUtentes();
+                        break;
+
+                    case "2":
+                        uts.adicionarUtente();
+                        break;
+                    case 3:
+                        int Nif;
+                        System.out.print("Insira o NIF do Utente:  ");
+                        Nif = ler.nextInt();
+                        uts.pesquisarUtente(uts.procurarUtente(Nif));
+                    break;
+
+                    case "4":
+                        uts.atualizarUtente();
+                        break;
+
+                    case "5":
+                        uts.eliminarUtente();
+                        break;
+
+                    case "6":
+                        System.out.println("A sair do menu Utente....\n");
+                        uts.guardarUtentes(bib);
+                        break;
+                    default:
+                        System.out.println("ERRO!!  Escolha uma das opções");
+                        break;
+                }
+            }while (!escolha.equals("6"));
+        }
     }
+}
 
-
-    public static void menu(){
+    public static void menu(String bib){
         Scanner ler = new Scanner(System.in);
         String op;
         do{
             System.out.println();
+            System.out.println("--------------- Bem vindo à biblioteca "+bib.substring(bib.indexOf("/") + 1)+" ---------------");
             System.out.println("1)  Livros");
             System.out.println("2)  Jornais / Revistas");
             System.out.println("3)  Utentes");
@@ -462,15 +487,15 @@ public class Main {
 
             switch(op){
                 case "1":
-                    menuLivros();
+                    do{}while(menuLivros(bib));
                     break;
 
                 case "2":
-                    menuJornaisRevistas();
+                    menuJornaisRevistas(bib);
                     break;
 
                 case "3":
-                    menuUtente();
+                    menuUtente(bib);
                     break;
 
                 case "4":
@@ -490,7 +515,74 @@ public class Main {
         }while(!op.equals("6"));
     }
 
+    public static boolean menuBibliotecas(){
+        Scanner ler = new Scanner(System.in);
+        Bibliotecas bib = new Bibliotecas();
+        String op, biblioteca;
+        if(bib.isEmpty()){
+            do{
+                System.out.println();
+                System.out.println("--------------- Bem vindo à secção Bibliotecas ---------------");
+                System.out.println("1) - Adicionar");
+                System.out.println("2) - Sair");
+                System.out.print("Sem bibliotecas! Selecione uma opção: ");
+                op=ler.next();
+                switch(op){
+                    case "1":
+                        bib.adicionarBiblioteca();
+                        op="2";
+                        break;
+                    case "2":
+                        System.out.println("A sair ...");
+                        break;
+                    default:
+                        System.out.println("Opção inválida! Tente novamente");
+                        break;
+                }
+            }while(!op.equals("2"));
+        }
+        if(!bib.isEmpty()){
+            do{
+                System.out.println();
+                System.out.println("--------------- Bem vindo à secção Bibliotecas ---------------");
+                System.out.println("1) - Selecionar");
+                System.out.println("2) - Adicionar");
+                System.out.println("3) - Eliminar");
+                System.out.println("4) - Sair");
+                System.out.print("Selecione uma opção: ");
+                op=ler.next();
+
+                switch(op){
+                    case "1":
+                        biblioteca = bib.escolherBibliotecas();
+                        if(!biblioteca.isEmpty()) menu(biblioteca);
+                        break;
+
+                    case "2":
+                        bib.adicionarBiblioteca();
+                        break;
+
+                    case "3":
+                        biblioteca = bib.escolherBibliotecas();
+                        if(!biblioteca.isEmpty()) bib.eliminarBiblioteca(biblioteca);
+                        if(bib.isEmpty()){
+                            return true;
+                        }
+                        break;
+
+                    case "4":
+                        System.out.println("A sair ...");
+                        break;
+                    default:
+                        System.out.println("Opção inválida! Tente novamente");
+                        break;
+                }
+            }while(!op.equals("4"));
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
-        menu();
+         do{}while(menuBibliotecas());
     }
 }

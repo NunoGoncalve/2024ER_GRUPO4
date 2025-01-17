@@ -174,19 +174,19 @@ public class Utentes {
      * Chama a função contLinhas, e atribui o seu resultado a variável nLinhas
      * e de seguida chama o metodo setUtente com a função lerFicheiro como parâmetro.*/
 
-    public void lerUtentes() {
-        int nLinhas=contLinhas();
-        setUtente(lerFicheiro(nLinhas));
+    public void lerUtentes(String biblioteca) {
+        int nLinhas=contLinhas(biblioteca);
+        setUtente(lerFicheiro(nLinhas, biblioteca));
     }
 
     /** Metodo lerFicheiro
      * Recebe o número de linhas que o ficheiro têm e cria um array de strings desse tamanho, a seguir
      * lê as linhas do ficheiro e guarda-as num array retornando o mesmo */
 
-    private String[] lerFicheiro(int nLinhas){
+    private String[] lerFicheiro(int nLinhas, String biblioteca){
        int i=0;
         String[] uts = new String[nLinhas];
-        File myfile = new File("utentes.txt");
+        File myfile = new File(biblioteca+"/utentes.txt");
         try {
             Scanner myReader = new Scanner(myfile);
             while (myReader.hasNextLine()) {
@@ -201,9 +201,9 @@ public class Utentes {
     /** Metodo guardarUtentes
      * Guarda o conteúdo do array no ficheiro verificando se é a primeira linha ou as seguintes */
 
-    public void guardarUtentes(){
+    public void guardarUtentes(String biblioteca){
         try {
-            FileWriter writer = new FileWriter("utentes.txt");
+            FileWriter writer = new FileWriter(biblioteca+"/utentes.txt");
             for (Utente ut : this.utentes) {
                 if(this.utentes.getFirst()== ut) writer.write(ut.formataUtenteF());
                 else writer.write("\n"+ ut.formataUtenteF());
@@ -219,13 +219,13 @@ public class Utentes {
      * Caso o ficheiro exista conta as linhas presentes no ficheiro
      * @return i número de linhas*/
 
-    private int contLinhas(){
+    private int contLinhas(String biblioteca){
         int i=0;
-        File myfile = new File("utentes.txt");
+        File myfile = new File(biblioteca+"/utentes.txt");
         try {
             if (myfile.createNewFile()) return i;
             else {
-                try (BufferedReader reader = new BufferedReader(new FileReader("utentes.txt"))) {
+                try (BufferedReader reader = new BufferedReader(new FileReader(biblioteca+"/utentes.txt"))) {
                     while (reader.readLine() != null) i++;
                 } catch (IOException e) {
                     e.printStackTrace();

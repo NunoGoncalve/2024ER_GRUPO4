@@ -9,9 +9,9 @@ public class Livros {
     /** Metodo lerLivros
      * Define a variável nLinhas com o resultado da função contLinhas;
      * Se o nLinhas for diferente de 0 chama a função setLivros com o resultado da função lerFicheiro como parametro*/
-    public void lerLivros() {
-        int nLinhas = contLinhas();
-        if(nLinhas!=0) setLivros(lerFicheiro(nLinhas));
+    public void lerLivros(String biblioteca) {
+        int nLinhas = contLinhas(biblioteca);
+        if(nLinhas!=0) setLivros(lerFicheiro(nLinhas, biblioteca));
     }
 
     public ArrayList<Livro> getLivros() {
@@ -206,9 +206,9 @@ public class Livros {
 
     /** Metodo guardarLivros
      * Guarda o conteúdo do array no ficheiro verificando se é a primeira linha ou as seguintes */
-    public void guardarLivros(){
+    public void guardarLivros(String biblioteca){
         try {
-            FileWriter writer = new FileWriter("livros.txt");
+            FileWriter writer = new FileWriter(biblioteca+"/livros.txt");
             for (Livro livro : this.livros) {
                 if(this.livros.getFirst()==livro) writer.write(livro.formataLivroF());
                 else writer.write("\n"+livro.formataLivroF());
@@ -228,11 +228,11 @@ public class Livros {
     /** Metodo lerFicheiro
      * @param nLinhas  recebe como parametro o número de linhas que o ficheiro têm e cria um array de strings desse tamanho,
      * de seguida lê as linhas do ficheiro e guarda-as num array retornando o mesmo */
-    private String[] lerFicheiro(int nLinhas){
+    private String[] lerFicheiro(int nLinhas, String biblioteca){
         int i=0;
         String[] livros = new String[nLinhas];
 
-        File myfile = new File("livros.txt");
+        File myfile = new File(biblioteca+"/livros.txt");
         try {
             Scanner myReader = new Scanner(myfile);
             while (myReader.hasNextLine()) {
@@ -260,13 +260,13 @@ public class Livros {
      * Cria o ficheiro caso este não exista e retorna o número de linhas a 0.
      * Caso o ficheiro exista conta as linhas presentes no ficheiro
      * @return i número de linhas*/
-    private int contLinhas(){
+    private int contLinhas(String biblioteca){
         int i=0;
-        File myfile = new File("livros.txt");
+        File myfile = new File(biblioteca+"/livros.txt");
         try {
             if (myfile.createNewFile()) return i;
             else {
-                try (BufferedReader reader = new BufferedReader(new FileReader("livros.txt"))) {
+                try (BufferedReader reader = new BufferedReader(new FileReader(biblioteca+"/livros.txt"))) {
                     while (reader.readLine() != null) i++;
                 } catch (IOException e) {
                     e.printStackTrace();

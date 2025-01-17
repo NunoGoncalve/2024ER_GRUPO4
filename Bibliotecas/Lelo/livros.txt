@@ -1,0 +1,3 @@
+Os três porquinhos|Contos|Ana|Infantil|1234567890|2011|true;
+Branca de neve|Contos|Joana|Infantil|7418529630|1970|true;
+Ansel & Gretel|Contos|João|Infantil|1-23-456789-X|1980|true;
