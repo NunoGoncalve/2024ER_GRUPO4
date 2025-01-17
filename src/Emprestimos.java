@@ -126,10 +126,10 @@ public class Emprestimos {
     public void menuPesquisaEmprestimo() {
         Scanner ler = new Scanner(System.in);
         String op;
-        System.out.println("1) - Pesquisar empréstimos num intervalo de datas");
-        System.out.println("2) - Pesquisar os empréstimos de um utente num intervalo de datas");
-        System.out.println("3) - Pesquisar os empréstimos de um utente");
-        System.out.println("4) - Cancelar");
+        System.out.println("1)  Pesquisar empréstimos num intervalo de datas");
+        System.out.println("2)  Pesquisar os empréstimos de um utente num intervalo de datas");
+        System.out.println("3)  Pesquisar os empréstimos de um utente");
+        System.out.println("4)  Cancelar");
         System.out.print("Insira a sua opção: ");
         op=ler.next();
         switch (op) {
@@ -212,9 +212,9 @@ public class Emprestimos {
         System.out.println("O tempo médio é "+tempoMedio);
     }
 
-    /**
-     Função criada para devolver um empréstimo à biblioteca
-     */
+    /** Metodo devolverEmprestimo
+     * Pede ao utilizador o número do empréstimo, procura-o, quando encontrado pede a data de devolução,
+     * define os livros/jornais/revistas emprestados como livres */
     public void devolverEmprestimo() {
         Scanner ler = new Scanner(System.in);
         SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy");
@@ -240,19 +240,31 @@ public class Emprestimos {
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             }
+
             Livros livsEmp = emp.getEmprestadosLivros();
             Livros livs = new Livros();
             livs.lerLivros();
 
+            JornaisRevistas jrEmp = emp.getEmprestadosJornaisRevistas();
+            JornaisRevistas jrs = new JornaisRevistas();
+            jrs.ler_jornaisRevistas();
+
             for(int i=0; i< livsEmp.size();i++){
                 livs.procuraLivro(livsEmp.getLivros().get(i).getISBN()).setLivre(true);
             }
+            for(int i=0; i< jrEmp.size();i++){
+                jrs.procuraJornalRevista(jrEmp.getJornalRevistas().get(i).getISSN()).setLivre(true);
+            }
             livs.guardarLivros();
+            jrs.guardarJornaisRevistas();
 
         }
 
     }
 
+    /** Metodo pedeDatas
+     * Pede ao utilizador duas datas, faz as verificações necessárias
+     * @return das duas datas inseridas */
     public Date[] pedeDatas(){
         Scanner ler = new Scanner(System.in);
         SimpleDateFormat formatDate = new SimpleDateFormat("dd/MM/yyyy");
@@ -282,13 +294,18 @@ public class Emprestimos {
         return new Date[]{dataInicio, dataFim};
     }
 
+    /** Metodo totalEmprestimos
+     * Apresenta duas opções ao utilizador
+     * 1 -> mostra o total de empréstimos
+     * 2 -> mostra o total de empréstimos num intervalo de datas
+     */
     public void totalEmprestimos () {
         Scanner ler = new Scanner(System.in);
         int total = 0;
         String op;
         do{
-            System.out.println("1) - Total de empréstimos");
-            System.out.println("2) - Total de empréstimos num intervalo de datas");
+            System.out.println("1)  Total de empréstimos");
+            System.out.println("2)  Total de empréstimos num intervalo de datas");
             System.out.print("Escolha uma opção: ");
             op=ler.next();
             switch (op) {
@@ -337,14 +354,20 @@ public class Emprestimos {
         }
     }
 
+    /** Metodo lerEmprestimos
+     * Define a variável nLinhas com o resultado da função contLinhas;
+     * Se o nLinhas for diferente de 0 chama a função setEmprestimos com o resultado da função lerFicheiro como parametro*/
     public void lerEmprestimos() {
-        int n_linhas = contLinhas();
-        if(n_linhas!=0) setEmprestimos(lerFicheiro(n_linhas));
+        int nLinhas = contLinhas();
+        if(nLinhas!=0) setEmprestimos(lerFicheiro(nLinhas));
     }
 
-    private String[] lerFicheiro(int n_linhas){
+    /** Metodo lerFicheiro
+     * @param nLinhas  recebe como parametro o número de linhas que o ficheiro têm e cria um array de strings desse tamanho,
+     * de seguida lê as linhas do ficheiro e guarda-as num array retornando o mesmo */
+    private String[] lerFicheiro(int nLinhas){
         int i=0;
-        String[] livros = new String[n_linhas];
+        String[] livros = new String[nLinhas];
 
         File myfile = new File("emprestimos.txt");
         try {
@@ -360,6 +383,9 @@ public class Emprestimos {
         return livros;
     }
 
+    /** Metodo setEmprestimos
+     * @param emprestimos recebe como parametro um array de strings
+     * Para cada string no array emprestimos cria um emprestimo e adiciona-o ao array conforme a informação encontrada no array */
     private void setEmprestimos(String[] emprestimos) {
         for (String s : emprestimos) {
             Emprestimo emp = new Emprestimo(s);
@@ -367,6 +393,8 @@ public class Emprestimos {
         }
     }
 
+    /** Metodo guardarLivros
+     * Guarda o conteúdo do array no ficheiro verificando se é a primeira linha ou as seguintes */
     public void guardarEmprestimos(){
         try {
             FileWriter writer = new FileWriter("emprestimos.txt");
@@ -380,6 +408,10 @@ public class Emprestimos {
         }
     }
 
+    /** Metodo contLinhas
+     * Cria o ficheiro caso este não exista e retorna o número de linhas a 0.
+     * Caso o ficheiro exista conta as linhas presentes no ficheiro
+     * @return i número de linhas*/
     private int contLinhas(){
         int i=0;
         File myfile = new File("emprestimos.txt");

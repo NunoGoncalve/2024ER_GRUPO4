@@ -7,21 +7,16 @@ public class Livros {
     private ArrayList<Livro> livros = new ArrayList<>();
 
     /** Metodo lerLivros
-     * Define a variável n_linhas com o resultado da função contLinhas;
-     * Se o n_linhas for diferente de 0 chama a função setLivros com o resultado da função lerFicheiro como parametro*/
+     * Define a variável nLinhas com o resultado da função contLinhas;
+     * Se o nLinhas for diferente de 0 chama a função setLivros com o resultado da função lerFicheiro como parametro*/
     public void lerLivros() {
-        int n_linhas = contLinhas();
-        if(n_linhas!=0) setLivros(lerFicheiro(n_linhas));
+        int nLinhas = contLinhas();
+        if(nLinhas!=0) setLivros(lerFicheiro(nLinhas));
     }
-        public ArrayList<Livro> getLivros() {
-            return livros;
-        }
 
-        /** Chama a função ler_ficheiro e guarda as linhas lidas num array e envia-as para a função setLivros*/
-        public void lerLivros() {
-            int n_linhas = contLinhas();
-            if(n_linhas!=0) setLivros(lerFicheiro(n_linhas));
-        }
+    public ArrayList<Livro> getLivros() {
+        return livros;
+    }
 
     /** Metodo adicionarLivro
      * Cria uma variável livro chama a função criarLivro() e adiciona o resultado da mesma ao arraylist */
@@ -73,14 +68,14 @@ public class Livros {
         Scanner ler = new Scanner(System.in);
         int op;
         System.out.println("--------------- Atualizar Livro ---------------");
-        System.out.println("1) Titulo");
-        System.out.println("2) Editora");
-        System.out.println("3) Autor");
-        System.out.println("4) Categoria");
-        System.out.println("5) ISBN");
-        System.out.println("6) Ano de edição");
-        System.out.println("7) Todos");
-        System.out.println("8) Cancelar");
+        System.out.println("1)  Titulo");
+        System.out.println("2)  Editora");
+        System.out.println("3)  Autor");
+        System.out.println("4)  Categoria");
+        System.out.println("5)  ISBN");
+        System.out.println("6)  Ano de edição");
+        System.out.println("7)  Todos");
+        System.out.println("8)  Cancelar");
         System.out.print("Selecione uma opção: ");
         op = ler.nextInt();
         ler.skip("\n");
@@ -216,11 +211,11 @@ public class Livros {
     }
 
     /** Metodo lerFicheiro
-     * Recebe o número de linhas que o ficheiro têm e cria um array de strings desse tamanho, a seguir
-     * lê as linhas do ficheiro e guarda-as num array retornando o mesmo */
-    private String[] lerFicheiro(int n_linhas){
+     * @param nLinhas  recebe como parametro o número de linhas que o ficheiro têm e cria um array de strings desse tamanho,
+     * de seguida lê as linhas do ficheiro e guarda-as num array retornando o mesmo */
+    private String[] lerFicheiro(int nLinhas){
         int i=0;
-        String[] livros = new String[n_linhas];
+        String[] livros = new String[nLinhas];
 
         File myfile = new File("livros.txt");
         try {
@@ -237,6 +232,7 @@ public class Livros {
     }
 
     /** Metodo setLivros
+     * @param livros recebe como parametro um array de strings
      * Para cada string no array livros cria um livro e adiciona-o ao array conforme a informação encontrada no array */
     private void setLivros(String[] livros) {
         for (String s : livros) {

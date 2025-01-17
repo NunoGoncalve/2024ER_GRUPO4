@@ -1,2 +1,1 @@
-teste|porto|teste|1234-567X|1998|false;
-Jornal|Porto Editora|Aventura|4125-125X|1986|false;
+Jornal Noticias|Jornais|Noticias|1234-567X|2006|true;

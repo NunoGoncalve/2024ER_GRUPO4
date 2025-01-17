@@ -51,7 +51,7 @@ public class Utente {
         do { // validaçãodo NIF com 9 digitos
             System.out.print("NIF (9 Dígitos):  ");
             NIF = ler.next();
-        }while (verificaNif(NIF));
+        }while (!verificaNif(NIF));
 
 
         String tel;

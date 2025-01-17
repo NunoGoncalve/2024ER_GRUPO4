@@ -39,12 +39,14 @@ public class Emprestimo {
     public Emprestimo(String emprestimo) {
         String regra="[|;]", regraLivros="[*]";
         String[] campos = emprestimo.split(regra);
-        String[] livros = campos[4].split(regraLivros);
+        String[] livrosJornaisRevistas = campos[4].split(regraLivros);
         Date dataInicio, dataFimPrev, dataFim = null;
         Livros livs = new Livros();
+        JornaisRevistas jr = new JornaisRevistas();
         Utentes uts = new Utentes();
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         livs.lerLivros();
+        jr.ler_jornaisRevistas();
         uts.lerUtentes();
 
         this.num = Integer.parseInt(campos[0]);
@@ -62,9 +64,11 @@ public class Emprestimo {
         this.dataFimPrev= dataFimPrev;
         this.emprestadosLivros = new Livros();
         this.emprestadosJornaisRevistas = new JornaisRevistas();
-        for (String livro : livros) {
-            if (!livs.procuraLivro(livro).isEmpty()) {
-                this.emprestadosLivros.adicionarLivro(livs.procuraLivro(livro));
+        for (String livJorRev : livrosJornaisRevistas) {
+            if (!livs.procuraLivro(livJorRev).isEmpty()) {
+                this.emprestadosLivros.adicionarLivro(livs.procuraLivro(livJorRev));
+            } else if (!jr.procuraJornalRevista(livJorRev).isEmpty()) {
+                this.emprestadosJornaisRevistas.adicionarJornalRevista(jr.procuraJornalRevista(livJorRev));
             }
         }
 
@@ -76,16 +80,36 @@ public class Emprestimo {
         DateFormat df = new SimpleDateFormat(pattern);
         String dataFimPrev = df.format(this.dataFimPrev);
         String dataFim;
+        boolean flag=false;
+
         if(this.dataFim!=null) dataFim = df.format(this.dataFim);
         else dataFim = "00/00/0000";
         String dataInicio = df.format(this.dataInicio);
-
         String format= this.num+"|"+dataInicio+"|"+dataFimPrev+"|"+dataFim+"|";
-        for(Livro liv: this.emprestadosLivros.getLivros()){
-            if(liv == this.emprestadosLivros.getLivros().getLast()) format+=liv.getISBN()+"|";
-            else format+=liv.getISBN()+"*";
+
+        if(!this.emprestadosLivros.isEmpty()) {
+            flag=true;
+            for(Livro liv: this.emprestadosLivros.getLivros()){
+                if(liv == this.emprestadosLivros.getLivros().getLast()) format+=liv.getISBN();
+                else format+=liv.getISBN()+"*";
+            }
         }
-        format+=this.utente.getNif()+";";
+        if(!this.emprestadosJornaisRevistas.isEmpty()){
+            if(flag){
+                for(Jornal_revista jr: this.emprestadosJornaisRevistas.getJornalRevistas()){
+                    if (jr == this.emprestadosJornaisRevistas.getJornalRevistas().getFirst()) format+="*"+jr.getISSN();
+                    else if (jr == this.emprestadosJornaisRevistas.getJornalRevistas().getLast()) format+=jr.getISSN();
+                    else format+=jr.getISSN()+"*";
+                }
+            }else{
+                for(Jornal_revista jr: this.emprestadosJornaisRevistas.getJornalRevistas()){
+                    if (jr == this.emprestadosJornaisRevistas.getJornalRevistas().getLast()) format+=jr.getISSN();
+                    else format+=jr.getISSN()+"*";
+                }
+            }
+
+        }
+        format+="|"+this.utente.getNif()+";";
         return format;
     }
 
@@ -112,10 +136,13 @@ public class Emprestimo {
         this.num = num;
         System.out.println("Numero:" + this.num);
         uts.listarUtentes();
-        int Nif;
-        System.out.print("Insira o NIF do Utente:  ");
-        Nif = ler.nextInt();
-        this.utente =uts.procurarUtente(Nif);
+        String nif;
+        do{
+            System.out.print("Insira o NIF do Utente:  ");
+            nif = ler.next();
+        }while(!utente.verificaNif(nif));
+        int NIF = Integer.parseInt(nif);
+        if(uts.procurarUtente(NIF)!=null) this.utente = uts.procurarUtente(NIF);
         String codigo;
         System.out.print("Quantos livros/jornais/revistas deseja emprestar: ");
         int numljr = ler.nextInt();

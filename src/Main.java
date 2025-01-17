@@ -8,14 +8,14 @@ public class Main {
         JornaisRevistas jornaisRevistas =new JornaisRevistas();
         jornaisRevistas.ler_jornaisRevistas();
         do {
-
-            System.out.println("- Jornais/Revistas -");
-            System.out.println("1) - Listar");
-            System.out.println("2) - Adicionar");
-            System.out.println("3) - Pesquisar");
-            System.out.println("4) - Atualizar");
-            System.out.println("5) - Eliminar");
-            System.out.println("6) - Sair");
+            System.out.println();
+            System.out.println("--------------- Bem vindo à secção Jornais/Revistas ---------------");
+            System.out.println("1)  Listar");
+            System.out.println("2)  Adicionar");
+            System.out.println("3)  Pesquisar");
+            System.out.println("4)  Atualizar");
+            System.out.println("5)  Eliminar");
+            System.out.println("6)  Sair");
             System.out.print("Selecione uma opção: ");
             op = ler.nextInt();
             switch (op) {
@@ -56,13 +56,17 @@ public class Main {
         String opc;
         if(emprestimos.isEmpty()){
             do {
-                System.out.println("1 - Adicionar");
-                System.out.println("2 - Sair");
-                System.out.print("Selecione uma opção: ");
+                System.out.println();
+                System.out.println("--------------- Bem vindo à secção Empréstimos ---------------");
+                System.out.println("1)  Adicionar");
+                System.out.println("2)  Sair");
+                System.out.print("Sem empréstimos! Selecione uma opção: ");
                 opc = ler.next();
                 switch (opc) {
                     case "1":
                         emprestimos.registarEmprestimo();
+                        emprestimos.guardarEmprestimos();
+                        opc="2";
                         break;
 
                     case "2":
@@ -77,13 +81,15 @@ public class Main {
         }
         if(!emprestimos.empAtivos()){
             do {
-                System.out.println("1 - Listar");
-                System.out.println("2 - Registar ");
-                System.out.println("3 - Pesquisar ");
-                System.out.println("4 - Total de empréstimos");
-                System.out.println("5 - Tempo médio");
-                System.out.println("6 - Mostrar empréstimos com atraso");
-                System.out.println("7 - Sair");
+                System.out.println();
+                System.out.println("--------------- Bem vindo à secção Empréstimos ---------------");
+                System.out.println("1)  Listar");
+                System.out.println("2)  Registar ");
+                System.out.println("3)  Pesquisar ");
+                System.out.println("4)  Total de empréstimos");
+                System.out.println("5)  Tempo médio");
+                System.out.println("6)  Mostrar empréstimos com atraso");
+                System.out.println("7)  Sair");
                 System.out.print("Selecione uma opção: ");
                 opc = ler.next();
                 switch (opc) {
@@ -125,15 +131,17 @@ public class Main {
         }
         if(emprestimos.empAtivos()){
             do {
-                System.out.println("1 - Listar");
-                System.out.println("2 - Registar");
-                System.out.println("3 - Pesquisar ");
-                System.out.println("4 - Atualizar");
-                System.out.println("5 - Devolver");
-                System.out.println("6 - Total de empréstimos");
-                System.out.println("7 - Tempo médio");
-                System.out.println("8 - Mostrar empréstimos com atraso");
-                System.out.println("9 - Sair");
+                System.out.println();
+                System.out.println("--------------- Bem vindo à secção Empréstimos ---------------");
+                System.out.println("1)  Listar");
+                System.out.println("2)  Registar");
+                System.out.println("3)  Pesquisar ");
+                System.out.println("4)  Atualizar");
+                System.out.println("5)  Devolver");
+                System.out.println("6)  Total de empréstimos");
+                System.out.println("7)  Tempo médio");
+                System.out.println("8)  Mostrar empréstimos com atraso");
+                System.out.println("9)  Sair");
                 System.out.print("Selecione uma opção: ");
                 opc = ler.next();
                 switch (opc) {
@@ -191,13 +199,14 @@ public class Main {
     public static void menuLivros(){
         int op;
         Scanner ler = new Scanner(System.in);
-        Livros livros=new Livros();
+        Livros livros = new Livros();
         livros.lerLivros();
         if(livros.isEmpty()){
             do {
-                System.out.println("- Livros -");
-                System.out.println("1) - Adicionar");
-                System.out.println("2) - Sair");
+                System.out.println();
+                System.out.println("--------------- Bem vindo à secção Livros ---------------");
+                System.out.println("1)  Adicionar");
+                System.out.println("2)  Sair");
                 System.out.print("Biblioteca vazia! Selecione uma opção: ");
                 op = ler.nextInt();
                 switch (op) {
@@ -218,13 +227,14 @@ public class Main {
         }
         if(!livros.isEmpty()){
             do {
-                System.out.println("- Livros -");
-                System.out.println("1) - Listar");
-                System.out.println("2) - Adicionar");
-                System.out.println("3) - Pesquisar");
-                System.out.println("4) - Atualizar");
-                System.out.println("5) - Eliminar");
-                System.out.println("6) - Sair");
+                System.out.println();
+                System.out.println("--------------- Bem vindo à secção Livros ---------------");
+                System.out.println("1)  Listar");
+                System.out.println("2)  Adicionar");
+                System.out.println("3)  Pesquisar");
+                System.out.println("4)  Atualizar");
+                System.out.println("5)  Eliminar");
+                System.out.println("6)  Sair");
                 System.out.print("Selecione uma opção: ");
                 op = ler.nextInt();
                 switch (op) {
@@ -274,12 +284,12 @@ public class Main {
         do {
 
             System.out.println("--------------- Bem vindo à secção Utente ---------------");
-            System.out.println("1) Listar");
-            System.out.println("2) Adicionar");
-            System.out.println("3) Pesquisar");
-            System.out.println("4) Atualizar");
-            System.out.println("5) Eliminar");
-            System.out.println("6) Sair");
+            System.out.println("1)  Listar");
+            System.out.println("2)  Adicionar");
+            System.out.println("3)  Pesquisar");
+            System.out.println("4)  Atualizar");
+            System.out.println("5)  Eliminar");
+            System.out.println("6)  Sair");
             System.out.print("Como deseja prosseguir?  ");
             Scanner ler = new Scanner(System.in);
             escolha = ler.nextInt();
@@ -324,12 +334,13 @@ public class Main {
         Scanner ler = new Scanner(System.in);
         String op;
         do{
-            System.out.println("1) - Livros");
-            System.out.println("2) - Jornais / Revistas");
-            System.out.println("3) - Utentes");
-            System.out.println("4) - Reservas");
-            System.out.println("5) - Empréstimos");
-            System.out.println("6) - Sair");
+            System.out.println();
+            System.out.println("1)  Livros");
+            System.out.println("2)  Jornais / Revistas");
+            System.out.println("3)  Utentes");
+            System.out.println("4)  Reservas");
+            System.out.println("5)  Empréstimos");
+            System.out.println("6)  Sair");
             System.out.print("Selecione uma opção: ");
             op=ler.next();
 

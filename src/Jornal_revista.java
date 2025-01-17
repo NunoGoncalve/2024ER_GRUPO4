@@ -109,11 +109,9 @@ public class Jornal_revista {
         return data.matches(regexData);
     }
 
-    /**
+    /** Metodo criarJornalRevista
      * Cria um novo jornal ou revista, solicitando os dados ao utilizador.
-     *
-     * @return Objeto Jornal_revista criado.
-     */
+     * @return Objeto Jornal_revista criado.*/
     public Jornal_revista criarJornalRevista() {
         Scanner ler = new Scanner(System.in);
 
@@ -136,7 +134,7 @@ public class Jornal_revista {
             }
         }
 
-        System.out.print("Insira a data de publicação (dd-MM-yyyy): ");
+        System.out.print("Insira a data de publicação (dd-mm-yyyy): ");
         while (true) {
             String data = ler.nextLine();
             if (validarData(data)) {
@@ -179,15 +177,10 @@ public class Jornal_revista {
         return livre;
     }
 
-    public void setLivre(boolean livre) {
-        this.livre = livre;
-    }
-    /**
+    /** Metodo setLivre
      * Define o estado de empréstimo do jornal ou revista.
-     *
-     * @param livre Estado a ser definido.
-     */
-    public void setEmprestado(boolean livre) {
+     * @param livre Estado a ser definido. */
+    public void setLivre(boolean livre) {
         this.livre = livre;
     }
 

@@ -14,8 +14,12 @@ public class JornaisRevistas {
      * enviando-as para a função "setJornaisRevistas".
      */
     public void ler_jornaisRevistas() {
-        int n_linhas = contLinhas();
-        if (n_linhas != 0) setJornaisRevistas(lerFicheiro(n_linhas));
+        int nLinhas = contLinhas();
+        if (nLinhas != 0) setJornaisRevistas(lerFicheiro(nLinhas));
+    }
+
+    public int size(){
+        return jornaisRevistas.size();
     }
 
     /**
@@ -86,13 +90,13 @@ public class JornaisRevistas {
         Scanner ler = new Scanner(System.in);
         int op;
         System.out.println("--------------- Atualizar Jornal/Revista ---------------");
-        System.out.println("1) Título");
-        System.out.println("2) Editora");
-        System.out.println("3) Categoria");
-        System.out.println("4) ISSN");
-        System.out.println("5) Ano de publicação");
-        System.out.println("6) Todos");
-        System.out.println("7) Cancelar");
+        System.out.println("1)  Título");
+        System.out.println("2)  Editora");
+        System.out.println("3)  Categoria");
+        System.out.println("4)  ISSN");
+        System.out.println("5)  Ano de publicação");
+        System.out.println("6)  Todos");
+        System.out.println("7)  Cancelar");
         System.out.print("Selecione uma opção: ");
         op = ler.nextInt();
         ler.nextLine(); // Consumir o newline
@@ -219,6 +223,10 @@ public class JornaisRevistas {
         return issn;
     }
 
+    public ArrayList<Jornal_revista> getJornalRevistas() {
+        return this.jornaisRevistas;
+    }
+
     /**
      * Escreve os dados da coleção no ficheiro.
      */
@@ -245,12 +253,12 @@ public class JornaisRevistas {
     /**
      * Lê os dados do ficheiro e os armazena num array.
      *
-     * @param n_linhas O número de linhas no ficheiro.
+     * @param nLinhas O número de linhas no ficheiro.
      * @return Um array que contem os dados lidos.
      */
-    private String[] lerFicheiro(int n_linhas) {
+    private String[] lerFicheiro(int nLinhas) {
         int i = 0;
-        String[] jornaisRevistas = new String[n_linhas];
+        String[] jornaisRevistas = new String[nLinhas];
 
         File myfile = new File("jornais_revistas.txt");
         try {

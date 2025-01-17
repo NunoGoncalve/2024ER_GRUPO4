@@ -63,10 +63,9 @@ public class Utentes {
      * Imprime no ecrã as informações do Utente desejado.
      * A busca é feita através do NIF; após o usúario inserir o NIF  a função 'For' vai comparar com os NIF's registrados
      * e guardados no ficheiro ".txt"; após o encontar, imprime no ecrã. */
-
     public Utente procurarUtente(int nif){
         Utente utFlag = null;
-        for (Utente ut : this.uts) {
+        for (Utente ut : this.utentes) {
             if (ut.getNif() == nif)  return ut;
         }
         return utFlag;
@@ -120,12 +119,12 @@ public class Utentes {
            if (ut.getNif() == Nif) {
                do {
                    System.out.println("--------------- Selecione Campo Para Atualizar ---------------");
-                   System.out.println("1) Nome");
-                   System.out.println("2) Género");
-                   System.out.println("3) NIF");
-                   System.out.println("4) Telemóvel");
-                   System.out.println("5) Todos os campos acima");
-                   System.out.println("6) Cancelar");
+                   System.out.println("1)  Nome");
+                   System.out.println("2)  Género");
+                   System.out.println("3)  NIF");
+                   System.out.println("4)  Telemóvel");
+                   System.out.println("5)  Todos os campos acima");
+                   System.out.println("6)  Cancelar");
                    System.out.print("Selecione uma opção  ");
                    escolha = ler.nextInt();
 
@@ -172,21 +171,21 @@ public class Utentes {
         }
     }
     /**Metodo lerUtente
-     * Chama a função contLinhas, e atribui o seu resultado a variável n_linhas
+     * Chama a função contLinhas, e atribui o seu resultado a variável nLinhas
      * e de seguida chama o metodo setUtente com a função lerFicheiro como parâmetro.*/
 
     public void lerUtentes() {
-        int n_linhas=contLinhas();
-        setUtente(lerFicheiro(n_linhas));
+        int nLinhas=contLinhas();
+        setUtente(lerFicheiro(nLinhas));
     }
 
     /** Metodo lerFicheiro
      * Recebe o número de linhas que o ficheiro têm e cria um array de strings desse tamanho, a seguir
      * lê as linhas do ficheiro e guarda-as num array retornando o mesmo */
 
-    private String[] lerFicheiro(int n_linhas){
+    private String[] lerFicheiro(int nLinhas){
        int i=0;
-        String[] uts = new String[n_linhas];
+        String[] uts = new String[nLinhas];
         File myfile = new File("utentes.txt");
         try {
             Scanner myReader = new Scanner(myfile);
